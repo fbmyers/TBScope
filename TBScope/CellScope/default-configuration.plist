@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CellScopeBTUUID</key>
+	<string>2B25CA72-B4EF-1B23-7315-F010B2026CB0</string>
+	<key>PatientIDFormat</key>
+	<string>\w\w\w\d\d\d</string>
+	<key>DoAnalysisByDefault</key>
+	<true/>
+	<key>DateFormat</key>
+	<string>yyyy-MM-dd &apos;at&apos; HH:mm</string>
+	<key>DefaultLocation</key>
+	<string>Fletcher Lab</string>
+	<key>CellScopeID</key>
+	<string>UCB-001</string>
+	<key>MaxNameLocationAddressLength</key>
+	<string>50</string>
+	<key>MaxPatientIDLength</key>
+	<integer>10</integer>
+	<key>MinPatientIDLength</key>
+	<string>5</string>
+	<key>ExampleTBImageURL</key>
+	<string>assets-library://asset/asset.TIF?id=9056B581-0AD1-43A3-B7F5-20DCE03F0A27&amp;ext=TIF</string>
+	<key>RunWithExampleTBImage</key>
+	<false/>
+	<key>RedThreshold</key>
+	<string>0.5</string>
+	<key>YellowThreshold</key>
+	<string>0.3</string>
+	<key>NumFieldsPerSlide</key>
+	<integer>5</integer>
+	<key>BypassLogin</key>
+	<string>NO</string>
+	<key>ResetCoreDataOnStartup</key>
+	<true/>
+	<key>DiagnosticThreshold</key>
+	<real>0.5</real>
+	<key>NumPatchesToAverage</key>
+	<integer>3</integer>
+</dict>
+</plist>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="ImageAnalysisResults" representedClassName="ImageAnalysisResults" syncable="YES">
+        <attribute name="dateAnalyzed" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="diagnosis" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="numPositive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="image" maxCount="1" deletionRule="Nullify" destinationEntity="Images" inverseName="imageAnalysisResults" inverseEntity="Images" syncable="YES"/>
+        <relationship name="imageROIs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ROIs" inverseName="imageAnalysisResult" inverseEntity="ROIs" syncable="YES"/>
+    </entity>
+    <entity name="Images" representedClassName="Images" syncable="YES">
+        <attribute name="fieldNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="metadata" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="imageAnalysisResults" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageAnalysisResults" inverseName="image" inverseEntity="ImageAnalysisResults" syncable="YES"/>
+        <relationship name="slide" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Slides" inverseName="slideImages" inverseEntity="Slides" syncable="YES"/>
+    </entity>
+    <entity name="ROIs" representedClassName="ROIs" syncable="YES">
+        <attribute name="score" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="x" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="y" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="imageAnalysisResult" maxCount="1" deletionRule="Nullify" destinationEntity="ImageAnalysisResults" inverseName="imageROIs" inverseEntity="ImageAnalysisResults" syncable="YES"/>
+    </entity>
+    <entity name="SlideAnalysisResults" representedClassName="SlideAnalysisResults" syncable="YES">
+        <attribute name="dateDiagnosed" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="diagnosis" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numPositive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="slide" maxCount="1" deletionRule="Nullify" destinationEntity="Slides" inverseName="slideAnalysisResults" inverseEntity="Slides" syncable="YES"/>
+    </entity>
+    <entity name="Slides" representedClassName="Slides" syncable="YES">
+        <attribute name="datePrepared" attributeType="Date" syncable="YES"/>
+        <attribute name="gpsLocation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="patientAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="patientID" attributeType="String" syncable="YES"/>
+        <attribute name="patientName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="readNumber" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="slideNumber" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="slideAnalysisResults" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SlideAnalysisResults" inverseName="slide" inverseEntity="SlideAnalysisResults" syncable="YES"/>
+        <relationship name="slideImages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Images" inverseName="slide" inverseEntity="Images" syncable="YES"/>
+    </entity>
+    <entity name="Users" representedClassName="Users" syncable="YES">
+        <attribute name="accessLevel" attributeType="String" syncable="YES"/>
+        <attribute name="password" attributeType="String" syncable="YES"/>
+        <attribute name="username" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ImageAnalysisResults" positionX="63" positionY="144" width="128" height="133"/>
+        <element name="Images" positionX="-135" positionY="81" width="128" height="118"/>
+        <element name="ROIs" positionX="261" positionY="248" width="128" height="103"/>
+        <element name="SlideAnalysisResults" positionX="-119" positionY="-160" width="128" height="133"/>
+        <element name="Slides" positionX="-360" positionY="-196" width="128" height="223"/>
+        <element name="Users" positionX="135" positionY="-216" width="128" height="90"/>
+    </elements>
+</model>
