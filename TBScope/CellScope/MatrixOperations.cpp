@@ -55,8 +55,8 @@ namespace MatrixOperations
         max_y = std::max(max_y, pt.y);
       }
 
-			for (int j = min_y; j < max_y; j++) {
-				for (int k = min_x; k < max_x; k++) {
+			for (int j = min_y; j <= max_y; j++) {
+				for (int k = min_x; k <= max_x; k++) {
 					int val = filledImage.at<uchar>(j, k);
 					if (val != 0) {
 						const double original_val = static_cast<double>(originalImage.at<TDataType>(j, k));
