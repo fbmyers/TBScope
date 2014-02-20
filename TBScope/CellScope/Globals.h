@@ -4,6 +4,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <opencv2/opencv.hpp>
 #include <stdlib.h>
+#include <unordered_map>
 
 #define DEBUG 0
 #define MODEL_PATH ""
@@ -15,7 +16,7 @@
 #define M_PI 3.1415926
 #endif
 
-typedef std::map<const char*, cv::Mat> MatDict;
+typedef std::unordered_map<std::string, cv::Mat> MatDict;
 typedef std::vector<cv::Point> ContourType;
 typedef std::vector<ContourType> ContourContainerType;
 
