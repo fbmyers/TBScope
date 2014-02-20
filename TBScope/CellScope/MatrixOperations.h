@@ -15,7 +15,7 @@ namespace MatrixOperations
 		@param mat        The matrix to compare values from
 		@return           Returns a copy of |mat|, with all values > val as 1 and all values <= val as 0.
 	*/
-	cv::Mat greaterThanValue(float compareVal, cv::Mat mat);
+	cv::Mat greaterThanValue(float compareVal, const cv::Mat &mat);
 
   std::vector<cv::Point2d> findWeightedCentroids(const ContourContainerType &contours, const cv::Mat &thresholdImage, const cv::Mat &originalImage);
 }
