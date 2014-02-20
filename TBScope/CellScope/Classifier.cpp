@@ -69,8 +69,8 @@ namespace Classifier
 				rowMat.at<float>(0, 0) = (float)row;
 				colMat.at<float>(0, 0) = (float)col;
 				
-                cv::Mat patch = *new cv::Mat(Features::makePatch(row, col, original));
-                cv::Mat binPatch = *new cv::Mat(Features::calculateBinarizedPatch(patch));
+        cv::Mat patch(Features::makePatch(row, col, original));
+        cv::Mat binPatch(Features::calculateBinarizedPatch(patch));
 				MatDict data;
 
 				data.insert(std::make_pair("row", rowMat));
@@ -228,20 +228,32 @@ namespace Classifier
         
         // Classify objects and get probabilities
         
-        for (int i = 0; i < testMatrix.rows; i++) {
-          svm_node *node = new svm_node[testMatrix.cols + 2];
-          for (int j = 0; j < testMatrix.cols; j++) {
-            double d = testMatrix.at<double>(i, j);
-            node[j].index = j+1;
-            node[j].value = d;
-          }
-          node[testMatrix.cols].index = -1;
-          node[testMatrix.cols].value = 0;
-            
+        svm_node *node = new svm_node[testMatrix.cols + 2];
+        try {
           double *probabilities = new double[2];
-          svm_predict_probability(model, node, probabilities);
-          prob_results.push_back(probabilities[0]);
+          try {
+            for (int i = 0; i < testMatrix.rows; i++) {
+              for (int j = 0; j < testMatrix.cols; j++) {
+                double d = testMatrix.at<double>(i, j);
+                node[j].index = j+1;
+                node[j].value = d;
+              }
+              node[testMatrix.cols].index = -1;
+              node[testMatrix.cols].value = 0;
+                
+              svm_predict_probability(model, node, probabilities);
+              prob_results.push_back(probabilities[0]);
+            }
+          } catch (const std::exception &ex) {
+            delete []probabilities;
+            throw ex;
+          }
+          delete []probabilities;
+        } catch (const std::exception &ex) {
+          delete []node;
+          throw ex;
         }
+        delete []node;
         
         cout << "Finished classifying features" << endl;
 		    Debug::printVector(prob_results, "dvtest.txt");
