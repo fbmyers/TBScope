@@ -131,81 +131,81 @@ namespace Classifier
     vector<double> classifyObjects(vector<MatDict > features)
     {
         
-        // Load the SVM
-        svm_model *model;
-        Mat train_max;
-        Mat train_min;
-        if (DEBUG) {
-            model = svm_load_model(MODEL_PATH);
-            train_max = loadCSV(TRAIN_MAX_PATH);
-            train_min = loadCSV(TRAIN_MIN_PATH);
-        } else {
-            CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                            CFSTR("model_out"), CFSTR("txt"),
-                                                            NULL);
-            CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                         CFSTR("train_max"), CFSTR("csv"),
-                                                         NULL);
-            CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                         CFSTR("train_min"), CFSTR("csv"),
-                                                         NULL);
-            
-            char model_path[1024];
-            char max_path[1024];
-            char min_path[1024];
-            
-            CFURLGetFileSystemRepresentation(model_url, true, (UInt8*)model_path, sizeof(model_path));
-            CFURLGetFileSystemRepresentation(max_url, true, (UInt8*)max_path, sizeof(max_path));
-            CFURLGetFileSystemRepresentation(min_url, true, (UInt8*)min_path, sizeof(min_path));
+      // Load the SVM
+      svm_model *model = nullptr;
+      Mat train_max;
+      Mat train_min;
+      if (DEBUG) {
+        model = svm_load_model(MODEL_PATH);
+        train_max = loadCSV(TRAIN_MAX_PATH);
+        train_min = loadCSV(TRAIN_MIN_PATH);
+      } else {
+        CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                     CFSTR("model_out"), CFSTR("txt"),
+                                                     NULL);
+        CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                   CFSTR("train_max"), CFSTR("csv"),
+                                                   NULL);
+        CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                   CFSTR("train_min"), CFSTR("csv"),
+                                                   NULL);
+        
+        char model_path[1024];
+        char max_path[1024];
+        char min_path[1024];
+        
+        CFURLGetFileSystemRepresentation(model_url, true, (UInt8*)model_path, sizeof(model_path));
+        CFURLGetFileSystemRepresentation(max_url, true, (UInt8*)max_path, sizeof(max_path));
+        CFURLGetFileSystemRepresentation(min_url, true, (UInt8*)min_path, sizeof(min_path));
 
-            CFRelease(model_url);
-            CFRelease(max_url);
-            CFRelease(min_url);
-            
-            model = svm_load_model(model_path);
-            train_max = loadCSV(max_path);
-            train_min = loadCSV(min_path);
-            
-        }
+        CFRelease(model_url);
+        CFRelease(max_url);
+        CFRelease(min_url);
+        
+        model = svm_load_model(model_path);
+        train_max = loadCSV(max_path);
+        train_min = loadCSV(min_path);
+        
+      }
+      
+      vector<double> prob_results;
+      try {
 
         // Combine the features
         cv::Mat featuresMatrix = cv::Mat((int)features.size(), 22, CV_64F);
         
         vector<MatDict >::const_iterator it = features.begin();
         int row = 0;
-        for (; it != features.end(); it++)
-        {
-            MatDict patch = *it;
-            cv::Mat geom = patch.find("geom")->second;
-            cv::Mat phi = patch.find("phi")->second;
-            int index = 0;
-            for (int i = 0; i < phi.rows; i++)
-            {
-				double val = phi.at<double>(i, 0);
-                featuresMatrix.at<double>(row, index) = val;
-				index++;
-            }
-            for (int i = 0; i < geom.rows; i++)
-            {
-				cv::Mat rowMat = patch.find("row")->second;
-				cv::Mat colMat = patch.find("col")->second;
-				//float patchrow = rowMat.at<float>(0,0);
-				//float patchcol = colMat.at<float>(0,0);
-				//bool is_float = geom.type() == CV_32F;
-				//bool is_double = geom.type() == CV_64F;
-				float geom_val = geom.at<float>(i, 0);
-				//double val = (double) geom_val;
-				//bool debug = false;
-				//if (geom_val < 0.01) {
-				//	debug = true;
-				//}
-				//if (debug) {
-				//	int x = 1;
-				//}
-                featuresMatrix.at<double>(row, index) = (double) geom_val;
-				index++;
-            }
-            row++;
+        for (; it != features.end(); it++) {
+          MatDict patch = *it;
+          cv::Mat geom = patch.find("geom")->second;
+          cv::Mat phi = patch.find("phi")->second;
+          int index = 0;
+          for (int i = 0; i < phi.rows; i++) {
+            double val = phi.at<double>(i, 0);
+            featuresMatrix.at<double>(row, index) = val;
+            index++;
+          }
+          for (int i = 0; i < geom.rows; i++) {
+  					cv::Mat rowMat = patch.find("row")->second;
+  					cv::Mat colMat = patch.find("col")->second;
+  					//float patchrow = rowMat.at<float>(0,0);
+  					//float patchcol = colMat.at<float>(0,0);
+  					//bool is_float = geom.type() == CV_32F;
+  					//bool is_double = geom.type() == CV_64F;
+  					float geom_val = geom.at<float>(i, 0);
+  					//double val = (double) geom_val;
+  					//bool debug = false;
+  					//if (geom_val < 0.01) {
+  					//	debug = true;
+  					//}
+  					//if (debug) {
+  					//	int x = 1;
+  					//}
+  	        featuresMatrix.at<double>(row, index) = (double) geom_val;
+  					index++;
+  				}
+          row++;
         }
         
         Debug::print(featuresMatrix, "xtest.txt");
@@ -221,33 +221,37 @@ namespace Classifier
         cv::subtract(maxMatrix, minMatrix, denominator);
         cv::divide(numerator, denominator, testMatrix);
         
-		Debug::print(numerator, "numerator.txt");
+		    Debug::print(numerator, "numerator.txt");
         Debug::print(testMatrix, "xtest_final.txt");
 
-		//testMatrix = Debug::loadMatrix("xtest_final.txt", 120, 22, CV_64F);
+		    //testMatrix = Debug::loadMatrix("xtest_final.txt", 120, 22, CV_64F);
         
         // Classify objects and get probabilities
-        vector<double> prob_results;
         
         for (int i = 0; i < testMatrix.rows; i++) {
-
-            svm_node *node = new svm_node[testMatrix.cols + 2];
-            for (int j = 0; j < testMatrix.cols; j++) {
-                double d = testMatrix.at<double>(i, j);
-                node[j].index = j+1;
-                node[j].value = d;
-            }
-            node[testMatrix.cols].index = -1;
-            node[testMatrix.cols].value = 0;
+          svm_node *node = new svm_node[testMatrix.cols + 2];
+          for (int j = 0; j < testMatrix.cols; j++) {
+            double d = testMatrix.at<double>(i, j);
+            node[j].index = j+1;
+            node[j].value = d;
+          }
+          node[testMatrix.cols].index = -1;
+          node[testMatrix.cols].value = 0;
             
-            double *probabilities = new double[2];
-            svm_predict_probability(model, node, probabilities);
-            prob_results.push_back(probabilities[0]);
+          double *probabilities = new double[2];
+          svm_predict_probability(model, node, probabilities);
+          prob_results.push_back(probabilities[0]);
         }
         
         cout << "Finished classifying features" << endl;
-		Debug::printVector(prob_results, "dvtest.txt");
-        return prob_results;
+		    Debug::printVector(prob_results, "dvtest.txt");
+      } catch (const std::exception &ex) {
+      	svm_free_and_destroy_model(&model);
+      	model = nullptr;
+      	throw ex;
+      }
+      svm_free_and_destroy_model(&model);
+      return prob_results;
     }
     
     bool comparator ( const pair<double, int>& l, const pair<double, int>& r)
