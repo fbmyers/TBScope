@@ -1,0 +1,100 @@
+/* 
+  Localizable.strings
+  TBScope
+
+  Created by Frankie Myers on 1/29/14.
+  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
+*/
+
+//Login Screen
+"Automated Tuberculosis Diagnostic System" = "Automatic Tuberculosis Diagnostic System";
+"username" = "username";
+"password" = "password";
+"Invalid username or password" = "Invalid username or password";
+
+//Main Menu
+"Main Menu" = "Main Menu";
+"Logged in as: %@" = "Logged in as: %@";
+"Scan Slide" = "Scan Slide";
+"Review Results" = "Review Results";
+"Configuration" = "Configuration";
+"Logout" = "Logout";
+
+//Assay Screen
+"Assay Parameters" = "Assay Parameters";
+"Name" = "Name";
+"Patient ID" = "Patient ID";
+"Slide #" = "Slide #";
+"Read #" = "Read #";
+"Location" = "Location";
+"Patient Address" = "Patient Address";
+"Intake Notes" = "Intake Notes";
+"User: %@" = "User: %@";
+"Date: %@" = "Date: %@";
+"Run Analysis" = "Run Analysis";
+"Patient name cannot be blank." = "Patient name cannot be blank.";
+"Patient ID cannot be blank." = "Patient ID cannot be blank.";
+"Patient ID is improperly formatted." = "Patient ID is improperly formatted.";
+"Slide number cannot be blank." = "Slide number cannot be blank.";
+"Read number cannot be blank." = "Read number cannot be blank.";
+"Input Error" = "Input Error";
+"OK" = "OK";
+"Next" = "Next";
+"Back" = "Back";
+
+//Slide Loading
+"Load Sample Slide" = "Load Sample Slide";
+"Load the slide as shown below:" = "Load the slide as shown below:";
+"Wait for loading tray to come to a stop before inserting slide. Insert slide with sputum side up and gently push into machine. Click next. Slide will automatically load into position for image capture." = "Wait for loading tray to come to a stop before inserting slide. Insert slide with sputum side up and gently push into machine. Click next. Slide will automatically load into position for image capture.";
+
+//Image Capture
+"Capture Field %d of %d" = "Capture Field %d of %d";
+"Analyze" = "Analyze";
+"Done" = "Done";
+"BF Off" = "BF Off";
+"BF On" = "BF On";
+"FL Off" = "FL Off";
+"FL On" = "FL On";
+"AE Off" = "AE Off";
+"AE On" = "AE On";
+"AF Off" = "AF Off";
+"AF On" = "AF On";
+"Not Connected" = "Not Connected";
+"Connected" = "Connected";
+"Capture Complete" = "Capture Complete";
+"Loading sample..." = "Loading sample...";
+"Focusing..." = "Focusing...";
+"Acquiring image %d of %d..." = "Acquiring image %d of %d...";
+"Next field..." = "Next field...";
+"Acquisition complete..." = "Acquisition complete...";
+"Auto Focus" = "Auto Focus";
+"Auto Scan" = "Auto Scan";
+
+//Analysis
+"Analyzing...";
+"Processing image %d of %d..." = "Processing image %d of %d...";
+
+//Diagnosis
+"Review Slide" = "Review Slide";
+"Slide Info" = "Slide Info";
+"Analysis Result" = "Analysis Result";
+"Analysis Date" = "Analysis Date";
+"Slide Score" = "Slide Score";
+"Image Quality" = "Image Quality";
+"Fields" = "Fields";
+"Diagnosis Notes" = "Diagnosis Notes";
+"Re-run Analysis" = "Re-run Analysis";
+"Upload" = "Upload";
+"Results" = "Results";
+"Images" = "Images";
+
+"NONE" = "NONE";
+"ANALYSIS HAS NOT BEEN PERFORMED" = "ANALYSIS HAS NOT BEEN PERFORMED";
+"SLIDE IS POSITIVE FOR TUBERCULOSIS" = "SLIDE IS POSITIVE FOR TUBERCULOSIS";
+"SLIDE IS NEGATIVE FOR TUBERCULOSIS" = "SLIDE IS NEGATIVE FOR TUBERCULOSIS";
+"SLIDE IS INDETERMINATE" = "SLIDE IS INDETERMINATE";
+
+//Review list
+"Review Results" = "Review Results";
+"N/A" = "N/A";
+

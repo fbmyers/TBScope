@@ -34,12 +34,6 @@
 		A50B06171831D6C800880350 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = A50B06161831D6C800880350 /* model_out.txt */; };
 		A50B06191831D74600880350 /* train_max.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B06181831D74600880350 /* train_max.csv */; };
 		A50B061B1831D75500880350 /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B061A1831D75500880350 /* train_min.csv */; };
-		A50B06301831E75700880350 /* Users.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B062F1831E75700880350 /* Users.m */; };
-		A50B06331831E75700880350 /* Images.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06321831E75700880350 /* Images.m */; };
-		A50B06361831E75700880350 /* ROIs.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06351831E75700880350 /* ROIs.m */; };
-		A50B06391831E75700880350 /* Slides.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06381831E75700880350 /* Slides.m */; };
-		A50B063C1831E75700880350 /* SlideAnalysisResults.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B063B1831E75700880350 /* SlideAnalysisResults.m */; };
-		A50B063F1831E75700880350 /* ImageAnalysisResults.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B063E1831E75700880350 /* ImageAnalysisResults.m */; };
 		A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06511835695100880350 /* SlideDiagnosisViewController.m */; };
 		A50B06551835697700880350 /* ImageResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06541835697700880350 /* ImageResultViewController.m */; };
 		A52BDEB71859236F00B4ECB2 /* TBScope.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A52BDEB51859236F00B4ECB2 /* TBScope.xcdatamodeld */; };
@@ -118,18 +112,18 @@
 		A570148418A5BE4F00881F95 /* imagesicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A570148118A5BE4F00881F95 /* imagesicon.png */; };
 		A570148C18A5BE5500881F95 /* resultsicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A570148618A5BE5500881F95 /* resultsicon.png */; };
 		A570149018A5BE5500881F95 /* usericon.png in Resources */ = {isa = PBXBuildFile; fileRef = A570148A18A5BE5500881F95 /* usericon.png */; };
-		A57014AF18A6F0BE00881F95 /* TBScopeContext.m in Sources */ = {isa = PBXBuildFile; fileRef = A57014AE18A6F0BE00881F95 /* TBScopeContext.m */; };
+		A57014AF18A6F0BE00881F95 /* TBScopeHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = A57014AE18A6F0BE00881F95 /* TBScopeHardware.m */; };
 		A57014B418A7091E00881F95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57014B318A7091D00881F95 /* Images.xcassets */; };
 		A599E1111824413300B52EF2 /* ResultsTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A599E1101824413300B52EF2 /* ResultsTabBarController.m */; };
 		A599E11418247BEF00B52EF2 /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A599E11318247BEF00B52EF2 /* AnalysisViewController.m */; };
 		A59AE396182B4F3B00BD3802 /* TBScopeStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */; };
 		A5B45F8018302D4E002F4D30 /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */; };
 		A5B45F95183039BE002F4D30 /* LoadSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F94183039BE002F4D30 /* LoadSampleViewController.m */; };
-		A5B45F9818303E51002F4D30 /* SlideListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F9718303E51002F4D30 /* SlideListViewController.m */; };
+		A5B45F9818303E51002F4D30 /* ExamListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F9718303E51002F4D30 /* ExamListViewController.m */; };
 		A5B72A7318988FB90013DA9F /* GoogleDriveSync.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */; };
 		A5B72A8F1899F88F0013DA9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5B72A911899F88F0013DA9F /* Localizable.strings */; };
 		A5C27AA1182C3AB900A8CB1D /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */; };
-		A5C27AA4182C3E8600A8CB1D /* AssayParametersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA3182C3E8600A8CB1D /* AssayParametersViewController.m */; };
+		A5C27AA4182C3E8600A8CB1D /* EditExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA3182C3E8600A8CB1D /* EditExamViewController.m */; };
 		A5C27AA7182C562C00A8CB1D /* CaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA6182C562C00A8CB1D /* CaptureViewController.m */; };
 		A5C27AAF182EFAF400A8CB1D /* TBSlideViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AAC182EFAF400A8CB1D /* TBSlideViewer.m */; };
 		A5C27AB0182EFAF400A8CB1D /* TBSlideViewerSubview.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AAE182EFAF400A8CB1D /* TBSlideViewerSubview.m */; };
@@ -156,7 +150,17 @@
 		A5CF1A2E187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A2A187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif */; };
 		A5CF1A2F187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A2B187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif */; };
 		A5CF1A31187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A2D187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif */; };
-		A5CF1A38187F3EDC00C2C2E1 /* SlideListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CF1A37187F3EDC00C2C2E1 /* SlideListTableViewCell.m */; };
+		A5CF1A38187F3EDC00C2C2E1 /* ExamListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CF1A37187F3EDC00C2C2E1 /* ExamListTableViewCell.m */; };
+		A5FCCCB518B444260004B2F5 /* Images.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCB418B444260004B2F5 /* Images.m */; };
+		A5FCCCB818B444260004B2F5 /* Slides.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCB718B444260004B2F5 /* Slides.m */; };
+		A5FCCCBB18B444270004B2F5 /* ROIs.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCBA18B444270004B2F5 /* ROIs.m */; };
+		A5FCCCBE18B444270004B2F5 /* Logs.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCBD18B444270004B2F5 /* Logs.m */; };
+		A5FCCCC418B444270004B2F5 /* ImageAnalysisResults.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCC318B444270004B2F5 /* ImageAnalysisResults.m */; };
+		A5FCCCC718B444270004B2F5 /* Users.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCC618B444270004B2F5 /* Users.m */; };
+		A5FCCCCD18B446BC0004B2F5 /* SlideAnalysisResults.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCCC18B446BC0004B2F5 /* SlideAnalysisResults.m */; };
+		A5FCCCD018B446BD0004B2F5 /* Exams.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCCF18B446BD0004B2F5 /* Exams.m */; };
+		A5FCCCF118B576D00004B2F5 /* TBScopeData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCF018B576D00004B2F5 /* TBScopeData.m */; };
+		A5FCCCF418B596330004B2F5 /* EditSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCCF318B596330004B2F5 /* EditSlideViewController.m */; };
 		A5FD379A183DBE6400C67D85 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FD3799183DBE6400C67D85 /* SettingsViewController.m */; };
 		A5FD379D183DCF4700C67D85 /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FD379C183DCF4700C67D85 /* UsersViewController.m */; };
 		A5FD37A0183DDEB400C67D85 /* GoogleDriveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FD379F183DDEB400C67D85 /* GoogleDriveViewController.m */; };
@@ -371,18 +375,6 @@
 		A50B06161831D6C800880350 /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_out.txt; sourceTree = "<group>"; };
 		A50B06181831D74600880350 /* train_max.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = train_max.csv; sourceTree = "<group>"; };
 		A50B061A1831D75500880350 /* train_min.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = train_min.csv; sourceTree = "<group>"; };
-		A50B062E1831E75700880350 /* Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Users.h; path = CellScope/Users.h; sourceTree = "<group>"; };
-		A50B062F1831E75700880350 /* Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Users.m; path = CellScope/Users.m; sourceTree = "<group>"; };
-		A50B06311831E75700880350 /* Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Images.h; path = CellScope/Images.h; sourceTree = "<group>"; };
-		A50B06321831E75700880350 /* Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Images.m; path = CellScope/Images.m; sourceTree = "<group>"; };
-		A50B06341831E75700880350 /* ROIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROIs.h; path = CellScope/ROIs.h; sourceTree = "<group>"; };
-		A50B06351831E75700880350 /* ROIs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ROIs.m; path = CellScope/ROIs.m; sourceTree = "<group>"; };
-		A50B06371831E75700880350 /* Slides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Slides.h; path = CellScope/Slides.h; sourceTree = "<group>"; };
-		A50B06381831E75700880350 /* Slides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Slides.m; path = CellScope/Slides.m; sourceTree = "<group>"; };
-		A50B063A1831E75700880350 /* SlideAnalysisResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideAnalysisResults.h; path = CellScope/SlideAnalysisResults.h; sourceTree = "<group>"; };
-		A50B063B1831E75700880350 /* SlideAnalysisResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideAnalysisResults.m; path = CellScope/SlideAnalysisResults.m; sourceTree = "<group>"; };
-		A50B063D1831E75700880350 /* ImageAnalysisResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAnalysisResults.h; path = CellScope/ImageAnalysisResults.h; sourceTree = "<group>"; };
-		A50B063E1831E75700880350 /* ImageAnalysisResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageAnalysisResults.m; path = CellScope/ImageAnalysisResults.m; sourceTree = "<group>"; };
 		A50B06501835695100880350 /* SlideDiagnosisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideDiagnosisViewController.h; sourceTree = "<group>"; };
 		A50B06511835695100880350 /* SlideDiagnosisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideDiagnosisViewController.m; sourceTree = "<group>"; };
 		A50B06531835697700880350 /* ImageResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResultViewController.h; sourceTree = "<group>"; };
@@ -521,8 +513,8 @@
 		A570148118A5BE4F00881F95 /* imagesicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imagesicon.png; sourceTree = "<group>"; };
 		A570148618A5BE5500881F95 /* resultsicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resultsicon.png; sourceTree = "<group>"; };
 		A570148A18A5BE5500881F95 /* usericon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = usericon.png; sourceTree = "<group>"; };
-		A57014AD18A6F0BE00881F95 /* TBScopeContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeContext.h; path = CellScope/TBScopeContext.h; sourceTree = "<group>"; };
-		A57014AE18A6F0BE00881F95 /* TBScopeContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeContext.m; path = CellScope/TBScopeContext.m; sourceTree = "<group>"; };
+		A57014AD18A6F0BE00881F95 /* TBScopeHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeHardware.h; path = CellScope/TBScopeHardware.h; sourceTree = "<group>"; };
+		A57014AE18A6F0BE00881F95 /* TBScopeHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeHardware.m; path = CellScope/TBScopeHardware.m; sourceTree = "<group>"; };
 		A57014B318A7091D00881F95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CellScope/Images.xcassets; sourceTree = "<group>"; };
 		A599E10F1824413300B52EF2 /* ResultsTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsTabBarController.h; sourceTree = "<group>"; };
 		A599E1101824413300B52EF2 /* ResultsTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsTabBarController.m; sourceTree = "<group>"; };
@@ -533,16 +525,16 @@
 		A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
 		A5B45F93183039BE002F4D30 /* LoadSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadSampleViewController.h; sourceTree = "<group>"; };
 		A5B45F94183039BE002F4D30 /* LoadSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadSampleViewController.m; sourceTree = "<group>"; };
-		A5B45F9618303E51002F4D30 /* SlideListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideListViewController.h; sourceTree = "<group>"; };
-		A5B45F9718303E51002F4D30 /* SlideListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideListViewController.m; sourceTree = "<group>"; };
+		A5B45F9618303E51002F4D30 /* ExamListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamListViewController.h; sourceTree = "<group>"; };
+		A5B45F9718303E51002F4D30 /* ExamListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamListViewController.m; sourceTree = "<group>"; };
 		A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GoogleDriveSync.m; path = CellScope/GoogleDriveSync.m; sourceTree = "<group>"; };
 		A5B72A901899F88F0013DA9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A5B72A931899FF6C0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A5B72A95189A025F0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A5C27A9F182C3AB900A8CB1D /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
 		A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
-		A5C27AA2182C3E8600A8CB1D /* AssayParametersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssayParametersViewController.h; sourceTree = "<group>"; };
-		A5C27AA3182C3E8600A8CB1D /* AssayParametersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssayParametersViewController.m; sourceTree = "<group>"; };
+		A5C27AA2182C3E8600A8CB1D /* EditExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditExamViewController.h; sourceTree = "<group>"; };
+		A5C27AA3182C3E8600A8CB1D /* EditExamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditExamViewController.m; sourceTree = "<group>"; };
 		A5C27AA5182C562C00A8CB1D /* CaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureViewController.h; sourceTree = "<group>"; };
 		A5C27AA6182C562C00A8CB1D /* CaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureViewController.m; sourceTree = "<group>"; };
 		A5C27AAB182EFAF400A8CB1D /* TBSlideViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSlideViewer.h; sourceTree = "<group>"; };
@@ -573,9 +565,29 @@
 		A5CF1A2A187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif; sourceTree = "<group>"; };
 		A5CF1A2B187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif; sourceTree = "<group>"; };
 		A5CF1A2D187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif; sourceTree = "<group>"; };
-		A5CF1A36187F3EDC00C2C2E1 /* SlideListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideListTableViewCell.h; sourceTree = "<group>"; };
-		A5CF1A37187F3EDC00C2C2E1 /* SlideListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideListTableViewCell.m; sourceTree = "<group>"; };
+		A5CF1A36187F3EDC00C2C2E1 /* ExamListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamListTableViewCell.h; sourceTree = "<group>"; };
+		A5CF1A37187F3EDC00C2C2E1 /* ExamListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamListTableViewCell.m; sourceTree = "<group>"; };
 		A5D3951B182F559A00E2A323 /* CellScope-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CellScope-Prefix.pch"; sourceTree = "<group>"; };
+		A5FCCCB318B444260004B2F5 /* Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Images.h; sourceTree = "<group>"; };
+		A5FCCCB418B444260004B2F5 /* Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Images.m; sourceTree = "<group>"; };
+		A5FCCCB618B444260004B2F5 /* Slides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slides.h; sourceTree = "<group>"; };
+		A5FCCCB718B444260004B2F5 /* Slides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Slides.m; sourceTree = "<group>"; };
+		A5FCCCB918B444270004B2F5 /* ROIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROIs.h; sourceTree = "<group>"; };
+		A5FCCCBA18B444270004B2F5 /* ROIs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROIs.m; sourceTree = "<group>"; };
+		A5FCCCBC18B444270004B2F5 /* Logs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logs.h; sourceTree = "<group>"; };
+		A5FCCCBD18B444270004B2F5 /* Logs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logs.m; sourceTree = "<group>"; };
+		A5FCCCC218B444270004B2F5 /* ImageAnalysisResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAnalysisResults.h; sourceTree = "<group>"; };
+		A5FCCCC318B444270004B2F5 /* ImageAnalysisResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAnalysisResults.m; sourceTree = "<group>"; };
+		A5FCCCC518B444270004B2F5 /* Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Users.h; sourceTree = "<group>"; };
+		A5FCCCC618B444270004B2F5 /* Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Users.m; sourceTree = "<group>"; };
+		A5FCCCCB18B446BC0004B2F5 /* SlideAnalysisResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideAnalysisResults.h; sourceTree = "<group>"; };
+		A5FCCCCC18B446BC0004B2F5 /* SlideAnalysisResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideAnalysisResults.m; sourceTree = "<group>"; };
+		A5FCCCCE18B446BD0004B2F5 /* Exams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exams.h; sourceTree = "<group>"; };
+		A5FCCCCF18B446BD0004B2F5 /* Exams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exams.m; sourceTree = "<group>"; };
+		A5FCCCEF18B576CF0004B2F5 /* TBScopeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBScopeData.h; sourceTree = "<group>"; };
+		A5FCCCF018B576D00004B2F5 /* TBScopeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBScopeData.m; sourceTree = "<group>"; };
+		A5FCCCF218B596330004B2F5 /* EditSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSlideViewController.h; sourceTree = "<group>"; };
+		A5FCCCF318B596330004B2F5 /* EditSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSlideViewController.m; sourceTree = "<group>"; };
 		A5FD3798183DBE6400C67D85 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		A5FD3799183DBE6400C67D85 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		A5FD379B183DCF4700C67D85 /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
@@ -655,8 +667,6 @@
 			isa = PBXGroup;
 			children = (
 				A57014B318A7091D00881F95 /* Images.xcassets */,
-				A57014AD18A6F0BE00881F95 /* TBScopeContext.h */,
-				A57014AE18A6F0BE00881F95 /* TBScopeContext.m */,
 				A5C5079C18662AF500187BBC /* BLE */,
 				9B6BF0C115E19ACD002834C5 /* Supporting Files */,
 				9B6BF0ED15E19AFD002834C5 /* Core Data */,
@@ -666,6 +676,10 @@
 				AC0353A61786106D001AE3FA /* Classifier */,
 				9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */,
 				9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.mm */,
+				A5FCCCEF18B576CF0004B2F5 /* TBScopeData.h */,
+				A5FCCCF018B576D00004B2F5 /* TBScopeData.m */,
+				A57014AD18A6F0BE00881F95 /* TBScopeHardware.h */,
+				A57014AE18A6F0BE00881F95 /* TBScopeHardware.m */,
 				A52D7FDB18400B6C00A487EA /* DataValidationHelper.h */,
 				A52D7FDC18400B6C00A487EA /* DataValidationHelper.m */,
 				A500C0B018AC0DF300D8C569 /* GoogleDriveSync.h */,
@@ -732,20 +746,24 @@
 			isa = PBXGroup;
 			children = (
 				A52BDEB51859236F00B4ECB2 /* TBScope.xcdatamodeld */,
+				A5FCCCCE18B446BD0004B2F5 /* Exams.h */,
+				A5FCCCCF18B446BD0004B2F5 /* Exams.m */,
+				A5FCCCCB18B446BC0004B2F5 /* SlideAnalysisResults.h */,
+				A5FCCCCC18B446BC0004B2F5 /* SlideAnalysisResults.m */,
+				A5FCCCC518B444270004B2F5 /* Users.h */,
+				A5FCCCC618B444270004B2F5 /* Users.m */,
+				A5FCCCC218B444270004B2F5 /* ImageAnalysisResults.h */,
+				A5FCCCC318B444270004B2F5 /* ImageAnalysisResults.m */,
+				A5FCCCBC18B444270004B2F5 /* Logs.h */,
+				A5FCCCBD18B444270004B2F5 /* Logs.m */,
+				A5FCCCB918B444270004B2F5 /* ROIs.h */,
+				A5FCCCBA18B444270004B2F5 /* ROIs.m */,
+				A5FCCCB618B444260004B2F5 /* Slides.h */,
+				A5FCCCB718B444260004B2F5 /* Slides.m */,
+				A5FCCCB318B444260004B2F5 /* Images.h */,
+				A5FCCCB418B444260004B2F5 /* Images.m */,
 				9BD352AC15FAABE800E331E9 /* CoreDataHelper.h */,
 				9BD352AD15FAABE800E331E9 /* CoreDataHelper.m */,
-				A50B063D1831E75700880350 /* ImageAnalysisResults.h */,
-				A50B063E1831E75700880350 /* ImageAnalysisResults.m */,
-				A50B063A1831E75700880350 /* SlideAnalysisResults.h */,
-				A50B063B1831E75700880350 /* SlideAnalysisResults.m */,
-				A50B06371831E75700880350 /* Slides.h */,
-				A50B06381831E75700880350 /* Slides.m */,
-				A50B06341831E75700880350 /* ROIs.h */,
-				A50B06351831E75700880350 /* ROIs.m */,
-				A50B06311831E75700880350 /* Images.h */,
-				A50B06321831E75700880350 /* Images.m */,
-				A50B062E1831E75700880350 /* Users.h */,
-				A50B062F1831E75700880350 /* Users.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -995,8 +1013,6 @@
 			isa = PBXGroup;
 			children = (
 				A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */,
-				A5CF1A36187F3EDC00C2C2E1 /* SlideListTableViewCell.h */,
-				A5CF1A37187F3EDC00C2C2E1 /* SlideListTableViewCell.m */,
 				A5FD3798183DBE6400C67D85 /* SettingsViewController.h */,
 				A5FD3799183DBE6400C67D85 /* SettingsViewController.m */,
 				A50B06501835695100880350 /* SlideDiagnosisViewController.h */,
@@ -1007,8 +1023,10 @@
 				A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */,
 				9B6BF10015E19F2A002834C5 /* LoginViewController.h */,
 				9B6BF10115E19F2A002834C5 /* LoginViewController.m */,
-				A5C27AA2182C3E8600A8CB1D /* AssayParametersViewController.h */,
-				A5C27AA3182C3E8600A8CB1D /* AssayParametersViewController.m */,
+				A5C27AA2182C3E8600A8CB1D /* EditExamViewController.h */,
+				A5C27AA3182C3E8600A8CB1D /* EditExamViewController.m */,
+				A5FCCCF218B596330004B2F5 /* EditSlideViewController.h */,
+				A5FCCCF318B596330004B2F5 /* EditSlideViewController.m */,
 				A5B45F93183039BE002F4D30 /* LoadSampleViewController.h */,
 				A5B45F94183039BE002F4D30 /* LoadSampleViewController.m */,
 				A5C27AA5182C562C00A8CB1D /* CaptureViewController.h */,
@@ -1017,8 +1035,10 @@
 				A599E11318247BEF00B52EF2 /* AnalysisViewController.m */,
 				A599E10F1824413300B52EF2 /* ResultsTabBarController.h */,
 				A599E1101824413300B52EF2 /* ResultsTabBarController.m */,
-				A5B45F9618303E51002F4D30 /* SlideListViewController.h */,
-				A5B45F9718303E51002F4D30 /* SlideListViewController.m */,
+				A5B45F9618303E51002F4D30 /* ExamListViewController.h */,
+				A5B45F9718303E51002F4D30 /* ExamListViewController.m */,
+				A5CF1A36187F3EDC00C2C2E1 /* ExamListTableViewCell.h */,
+				A5CF1A37187F3EDC00C2C2E1 /* ExamListTableViewCell.m */,
 				A5B45F7E18302D4E002F4D30 /* ConfigurationViewController.h */,
 				A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */,
 				A5FD379B183DCF4700C67D85 /* UsersViewController.h */,
@@ -1191,6 +1211,11 @@
 			attributes = {
 				LastUpgradeCheck = 0440;
 				ORGANIZATIONNAME = "UC Berkeley Fletcher Lab";
+				TargetAttributes = {
+					9B6BF0B315E19ACD002834C5 = {
+						DevelopmentTeam = NPZGJ9L3C2;
+					};
+				};
 			};
 			buildConfigurationList = 9B6BF0AE15E19ACD002834C5 /* Build configuration list for PBXProject "TBScope" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1417,46 +1442,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A50B06331831E75700880350 /* Images.m in Sources */,
 				9B6BF0C715E19ACD002834C5 /* main.m in Sources */,
 				9B6BF0CB15E19ACD002834C5 /* CSAppDelegate.mm in Sources */,
 				9B6BF10215E19F2A002834C5 /* LoginViewController.m in Sources */,
-				A5B45F9818303E51002F4D30 /* SlideListViewController.m in Sources */,
+				A5B45F9818303E51002F4D30 /* ExamListViewController.m in Sources */,
 				A5C27AAF182EFAF400A8CB1D /* TBSlideViewer.m in Sources */,
-				A5C27AA4182C3E8600A8CB1D /* AssayParametersViewController.m in Sources */,
+				A5C27AA4182C3E8600A8CB1D /* EditExamViewController.m in Sources */,
 				9BD352B215FAABE800E331E9 /* CoreDataHelper.m in Sources */,
 				ACFC05AF1698D13500411641 /* TBDiagnoser.mm in Sources */,
-				A50B063C1831E75700880350 /* SlideAnalysisResults.m in Sources */,
-				A50B06391831E75700880350 /* Slides.m in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
 				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
 				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
 				A500C0B818AC0E4100D8C569 /* CJSONSerializer.m in Sources */,
+				A5FCCCF118B576D00004B2F5 /* TBScopeData.m in Sources */,
+				A5FCCCCD18B446BC0004B2F5 /* SlideAnalysisResults.m in Sources */,
 				A500C0B718AC0E4100D8C569 /* CJSONDeserializer.m in Sources */,
-				A57014AF18A6F0BE00881F95 /* TBScopeContext.m in Sources */,
+				A57014AF18A6F0BE00881F95 /* TBScopeHardware.m in Sources */,
 				AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */,
 				A5B45F95183039BE002F4D30 /* LoadSampleViewController.m in Sources */,
 				A5B45F8018302D4E002F4D30 /* ConfigurationViewController.m in Sources */,
 				A50B06551835697700880350 /* ImageResultViewController.m in Sources */,
 				A500C0BD18AC0E8F00D8C569 /* BLE.m in Sources */,
+				A5FCCCB818B444260004B2F5 /* Slides.m in Sources */,
 				AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
+				A5FCCCC718B444270004B2F5 /* Users.m in Sources */,
 				AC1CF6B0179E52DB007FA438 /* Region.cpp in Sources */,
-				A5CF1A38187F3EDC00C2C2E1 /* SlideListTableViewCell.m in Sources */,
+				A5CF1A38187F3EDC00C2C2E1 /* ExamListTableViewCell.m in Sources */,
 				A5FD379D183DCF4700C67D85 /* UsersViewController.m in Sources */,
 				A5CF19FA187A39DF00C2C2E1 /* CameraScrollView.m in Sources */,
-				A50B06301831E75700880350 /* Users.m in Sources */,
 				AC5E748D179F3DA700BDC4EB /* Debug.cpp in Sources */,
 				AC5E749F179F3F3200BDC4EB /* Classifier.cpp in Sources */,
 				A5FD379A183DBE6400C67D85 /* SettingsViewController.m in Sources */,
 				A599E1111824413300B52EF2 /* ResultsTabBarController.m in Sources */,
 				AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */,
-				A50B06361831E75700880350 /* ROIs.m in Sources */,
 				AC5E74AD179F421900BDC4EB /* svm-train.c in Sources */,
 				A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */,
 				A5C27AB0182EFAF400A8CB1D /* TBSlideViewerSubview.m in Sources */,
 				AC5E74AF179F421900BDC4EB /* svm.cpp in Sources */,
 				A599E11418247BEF00B52EF2 /* AnalysisViewController.m in Sources */,
-				A50B063F1831E75700880350 /* ImageAnalysisResults.m in Sources */,
 				A5C27AA1182C3AB900A8CB1D /* MainMenuViewController.m in Sources */,
 				AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */,
 				A5C27AA7182C562C00A8CB1D /* CaptureViewController.m in Sources */,
@@ -1475,6 +1498,7 @@
 				A52D7E58183DEBB000A487EA /* GTLDriveApp.m in Sources */,
 				A52D7E62183DEBB000A487EA /* GTLDriveCommentReplyList.m in Sources */,
 				A52D7E63183DEBB000A487EA /* GTLDriveConstants.m in Sources */,
+				A5FCCCC418B444270004B2F5 /* ImageAnalysisResults.m in Sources */,
 				A52D7E65183DEBB000A487EA /* GTLDriveFileList.m in Sources */,
 				A52D7D51183DEBB000A487EA /* GTMReadMonitorInputStream.m in Sources */,
 				A52D7E6D183DEBB000A487EA /* GTLDriveRevision.m in Sources */,
@@ -1492,20 +1516,25 @@
 				A52D7D4B183DEBB000A487EA /* GTMHTTPFetcherLogging.m in Sources */,
 				A52D7E66183DEBB000A487EA /* GTLDriveParentList.m in Sources */,
 				A52D7D66183DEBB000A487EA /* GTMOAuth2SignIn.m in Sources */,
+				A5FCCCBE18B444270004B2F5 /* Logs.m in Sources */,
 				A52D7E70183DEBB000A487EA /* GTLQueryDrive.m in Sources */,
 				A52D7E67183DEBB000A487EA /* GTLDriveParentReference.m in Sources */,
 				A52D7FAF183DEBB000A487EA /* GTLUtilities.m in Sources */,
 				A52D7E6C183DEBB000A487EA /* GTLDrivePropertyList.m in Sources */,
 				A52D7D4C183DEBB000A487EA /* GTMHTTPFetcherLogViewController.m in Sources */,
 				A52D7E5A183DEBB000A487EA /* GTLDriveChange.m in Sources */,
+				A5FCCCD018B446BD0004B2F5 /* Exams.m in Sources */,
 				A52D7FAE183DEBB000A487EA /* GTLJSONParser.m in Sources */,
 				A500C0B918AC0E4100D8C569 /* NSDictionary_JSONExtensions.m in Sources */,
+				A5FCCCBB18B444270004B2F5 /* ROIs.m in Sources */,
 				A52D7E69183DEBB000A487EA /* GTLDrivePermissionId.m in Sources */,
 				A52D7E5B183DEBB000A487EA /* GTLDriveChangeList.m in Sources */,
 				A52D7D73183DEBB000A487EA /* GTLRuntimeCommon.m in Sources */,
 				A52D7E5E183DEBB000A487EA /* GTLDriveChildReference.m in Sources */,
 				A52D7E64183DEBB000A487EA /* GTLDriveFile.m in Sources */,
+				A5FCCCB518B444260004B2F5 /* Images.m in Sources */,
 				A52D7D6F183DEBB000A487EA /* GTLDateTime.m in Sources */,
+				A5FCCCF418B596330004B2F5 /* EditSlideViewController.m in Sources */,
 				A52D7D6D183DEBB000A487EA /* GTLBatchQuery.m in Sources */,
 				A52D7D64183DEBB000A487EA /* GTLClientLoginAuthentication.m in Sources */,
 				A52D7E68183DEBB000A487EA /* GTLDrivePermission.m in Sources */,
@@ -1591,7 +1620,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1613,6 +1642,7 @@
 				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1622,7 +1652,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1637,6 +1667,7 @@
 				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
