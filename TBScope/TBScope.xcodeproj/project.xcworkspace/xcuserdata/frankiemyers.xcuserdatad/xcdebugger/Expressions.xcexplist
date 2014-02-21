@@ -11,6 +11,9 @@
             <PersistentString
                value = "imageBw.cols">
             </PersistentString>
+            <PersistentString
+               value = "">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -153,13 +156,13 @@
          contextName = "-[TBDiagnoser runWithImage:]:TBDiagnoser.mm">
          <PersistentStrings>
             <PersistentString
-               value = "results.diagnosis">
+               value = "numPatchesToAvg">
             </PersistentString>
             <PersistentString
                value = "((float*)results.data)[0,0]">
             </PersistentString>
             <PersistentString
-               value = "numPatchesToAvg">
+               value = "results.diagnosis">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

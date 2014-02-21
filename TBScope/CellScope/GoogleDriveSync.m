@@ -44,6 +44,15 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
     return self;
 }
 
+- (BOOL) isLoggedIn {
+    return [self.driveService.authorizer canAuthorize];
+}
+
+- (NSString*) userEmail
+{
+    return [self.driveService.authorizer userEmail];
+}
+
 - (NSDictionary*)dataStructureFromManagedObject:(NSManagedObject*)managedObject
 {
     NSDictionary *attributesByName = [[managedObject entity] attributesByName];

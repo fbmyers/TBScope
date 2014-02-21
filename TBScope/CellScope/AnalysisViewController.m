@@ -11,7 +11,7 @@
 @implementation AnalysisViewController
 
 
-@synthesize managedObjectContext,currentUser,currentSlide,progress,spinner;
+@synthesize currentSlide,progress,spinner;
 
 //@synthesize imagePath;
 
@@ -22,9 +22,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(analysisCompleteCallback) name:@"AnalysisComplete" object:nil];
 	
-    diagnoser = [[TBDiagnoser alloc] init];
-    diagnoser.managedObjectContext = self.managedObjectContext;
-    
+    diagnoser = [[TBDiagnoser alloc] init]; //TODO: use delegate instead
+   
     
 }
 
@@ -41,7 +40,7 @@
     
     if (self.currentSlide.slideAnalysisResults!=nil) {
         NSLog(@"deleting old slide results");
-        [self.managedObjectContext deleteObject:self.currentSlide.slideAnalysisResults];
+        [[[TBScopeData sharedData] managedObjectContext] deleteObject:self.currentSlide.slideAnalysisResults];
         
 
     }
@@ -51,12 +50,12 @@
         if (im.imageAnalysisResults!=nil)
         {
             NSLog(@"deleting old image results");
-            [self.managedObjectContext deleteObject:im.imageAnalysisResults];
+            [[[TBScopeData sharedData] managedObjectContext] deleteObject:im.imageAnalysisResults];
         }
     }
     
     // Commit
-    [self.managedObjectContext save:nil];
+    [[TBScopeData sharedData] saveCoreData];
     
     self.currentField = 0;
     [self analyzeField:self.currentField]; //begin by analyzing the 0th field.
@@ -143,10 +142,7 @@
                  //do analysis on this image
                  currentImage.imageAnalysisResults = [diagnoser runWithImage:(imageColor)]; //todo: spin out as new thread
                  
-                 // Commit to core data
-                 NSError *error;
-                 if (![self.managedObjectContext save:&error])
-                     NSLog(@"Failed to commit to core data: %@", [error description]);
+                 [[TBScopeData sharedData] saveCoreData];
              }
              
              [[NSNotificationCenter defaultCenter] postNotificationName:@"AnalysisComplete" object:nil];
@@ -167,8 +163,7 @@
 
             // Commit to core data
             NSError *error;
-            if (![self.managedObjectContext save:&error])
-                NSLog(@"Failed to commit to core data: %@", [error description]);
+            [[TBScopeData sharedData] saveCoreData];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AnalysisComplete" object:nil];
         });
@@ -188,7 +183,7 @@
     else
     {
         //TODO: do the slide-level diagnosis
-        SlideAnalysisResults* slideResults = (SlideAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"SlideAnalysisResults" inManagedObjectContext:self.managedObjectContext];
+        SlideAnalysisResults* slideResults = (SlideAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"SlideAnalysisResults" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
         
         Images* im;
         NSMutableSet* allROIs = [[NSMutableSet alloc] init];
@@ -235,10 +230,7 @@
         
         NSLog(@"analysis complete");
         
-        // Commit to core data
-        NSError *error;
-        if (![self.managedObjectContext save:&error])
-            NSLog(@"Failed to commit to core data: %@", [error description]);
+        [[TBScopeData sharedData] saveCoreData];
         
         [self performSegueWithIdentifier:@"ResultsSegue" sender:nil];
     }

@@ -7,14 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CoreDataHelper.h"
-#import "ROIs.h"
-#import "ImageAnalysisResults.h"
+#import "TBScopeData.h"
 
 
 @interface TBDiagnoser : NSObject
-
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 - (ImageAnalysisResults*) runWithImage: (UIImage*)img;
 

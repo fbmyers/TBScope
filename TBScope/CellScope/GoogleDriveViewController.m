@@ -31,9 +31,9 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
     //[self showCamera];
     
     //if logged in, display current username and the logout button, else, load the login screen
-    if ([self.driveService.authorizer canAuthorize]) {
+    if ([[GoogleDriveSync sharedGDS] isLoggedIn]) {
         NSMutableString* s = [NSMutableString stringWithString:@"Logged in as: "];
-        [s appendString:[self.driveService.authorizer userEmail]];
+        [s appendString:[[GoogleDriveSync sharedGDS] userEmail]];
         self.usernameLabel.text = s;
         [self.loginButton setTitle:@"Log Out" forState:UIControlStateNormal];
     }
@@ -47,8 +47,10 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
 - (IBAction)logInOut:(id)sender
 {
     
-    if ([[GoogleDriveSync sharedGDS] canAuthorize]) {
+    if ([[GoogleDriveSync sharedGDS] isLoggedIn]) {
         [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:@"CellScope"];
+        [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:[[[GoogleDriveSync sharedGDS] driveService] authorizer]];
+        [[[GoogleDriveSync sharedGDS] driveService] setAuthorizer:nil];
         [self viewDidAppear:NO];
     }
     else
@@ -98,7 +100,7 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
     {
         
         [[[GoogleDriveSync sharedGDS] driveService] setAuthorizer:authResult];
-        
+        [self viewDidAppear:NO];
     }
 }
 

@@ -35,18 +35,12 @@
     
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    
-    [[self navigationController] popToRootViewControllerAnimated:YES];
-    
-}
 
 
 //TODO: make "back" button go back two screens
 - (IBAction)done:(id)sender
 {
-    
+    [[self navigationController] popToRootViewControllerAnimated:YES];
 }
 
 @end

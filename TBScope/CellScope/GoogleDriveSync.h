@@ -22,7 +22,7 @@
 
 + (id)sharedGDS;
 
-@property (nonatomic, retain) GTLServiceDrive *driveService; //TODO: make this a singleton
+@property (nonatomic, retain) GTLServiceDrive *driveService;
 
 @property (strong, nonatomic) Exams* examToUpload;
 
@@ -33,10 +33,11 @@
 
 - (NSDictionary*)dataStructureFromManagedObject:(NSManagedObject*)managedObject;
 
-- (void)uploadSlide;
+- (void)uploadExam;
 
-//internal function
-- (void)uploadImage:(NSNotification*)notification;
+- (BOOL) isLoggedIn;
+
+- (NSString*) userEmail;
 
 
 @end

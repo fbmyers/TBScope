@@ -74,10 +74,7 @@
     [user setPassword:@"default"];
     [user setAccessLevel:@"ADMIN"];
     
-    // Commit to core data
-    NSError *error;
-    if (![self.managedObjectContext save:&error])
-        NSLog(@"Failed to add default data with error: %@", [error domain]);
+    [[TBScopeData sharedData] saveCoreData];
     
     Exams* exam;
     Slides* slide;
@@ -96,12 +93,14 @@
     [exam setPatientDOB:[NSDate timeIntervalSinceReferenceDate]];
     [exam setPatientGender:@"M"];
     [exam setPatientHIVStatus:@"+"];
+    [exam setDateModified:[NSDate timeIntervalSinceReferenceDate]];
     
     slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:self.managedObjectContext];
     [slide setSlideNumber:1];
     [slide setDateCollected:[NSDate timeIntervalSinceReferenceDate]];
     [slide setDateScanned:[NSDate timeIntervalSinceReferenceDate]];
     [slide setSputumQuality:@"B"];
+    [exam addExamSlidesObject:slide];
     
     image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
     [image setFieldNumber:1];
@@ -124,9 +123,7 @@
     [image setMetadata:@"example image"];
     [slide addSlideImagesObject:image];
     
-    // Commit to core data
-    if (![self.managedObjectContext save:&error])
-        NSLog(@"Failed to add default data with error: %@", [error domain]);
+    [[TBScopeData sharedData] saveCoreData];
     
     exam = (Exams*)[NSEntityDescription insertNewObjectForEntityForName:@"Exams" inManagedObjectContext:self.managedObjectContext];
     [exam setExamID:@"HLH1010107"];
@@ -141,12 +138,14 @@
     [exam setPatientDOB:[NSDate timeIntervalSinceReferenceDate]];
     [exam setPatientGender:@"M"];
     [exam setPatientHIVStatus:@"-"];
+    [exam setDateModified:[NSDate timeIntervalSinceReferenceDate]];
     
     slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:self.managedObjectContext];
     [slide setSlideNumber:1];
     [slide setDateCollected:[NSDate timeIntervalSinceReferenceDate]];
     [slide setDateScanned:[NSDate timeIntervalSinceReferenceDate]];
     [slide setSputumQuality:@"BS"];
+    [exam addExamSlidesObject:slide];
     
     image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
     [image setFieldNumber:1];
@@ -163,12 +162,9 @@
     [image setPath:@"DHC5_CHP21_1010107_S1_R1_HLH_I3_Fluor_N_F.tif"];
     [image setMetadata:@"example image"];
     [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    
-    // Commit to core data
-    if (![self.managedObjectContext save:&error])
-        NSLog(@"Failed to add default data with error: %@", [error domain]);
 
+    [[TBScopeData sharedData] saveCoreData];
+    
     exam = (Exams*)[NSEntityDescription insertNewObjectForEntityForName:@"Exams" inManagedObjectContext:self.managedObjectContext];
     [exam setExamID:@"HLH1010195"];
     [exam setUserName:@"example"];
@@ -182,12 +178,14 @@
     [exam setPatientDOB:[NSDate timeIntervalSinceReferenceDate]];
     [exam setPatientGender:@"F"];
     [exam setPatientHIVStatus:@""];
+    [exam setDateModified:[NSDate timeIntervalSinceReferenceDate]];
     
     slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:self.managedObjectContext];
     [slide setSlideNumber:1];
     [slide setDateCollected:[NSDate timeIntervalSinceReferenceDate]];
     [slide setDateScanned:[NSDate timeIntervalSinceReferenceDate]];
     [slide setSputumQuality:@""];
+    [exam addExamSlidesObject:slide];
     
     image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
     [image setFieldNumber:1];
@@ -205,9 +203,7 @@
     [image setMetadata:@"example image"];
     [slide addSlideImagesObject:image];
     
-    // Commit to core data
-    if (![self.managedObjectContext save:&error])
-        NSLog(@"Failed to add default data with error: %@", [error domain]);
+    [[TBScopeData sharedData] saveCoreData];
     
 
 }

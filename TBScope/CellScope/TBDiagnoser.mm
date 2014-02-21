@@ -100,11 +100,12 @@
     //run the image (C++ algorithm), returning a C++ vector (1D)
     
     //for debugging, get a string to the local bundle documents folder path
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docs_dir = [paths objectAtIndex:0];
+    //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //const char *docs_dir = [[paths objectAtIndex:0] fileSystemRepresentation];
     
+    const char *docs_dir = "";
     
-    cv::vector<float> resVector = Classifier::runWithImage(converted_img, [docs_dir fileSystemRepresentation]);
+    cv::vector<float> resVector = Classifier::runWithImage(converted_img, docs_dir);
     
     converted_img.release();
     
@@ -113,12 +114,12 @@
     NSLog(@"Execution Time: %f", executionTime);
 
     //get a new ImageAnalysisResults instance from Core Data
-    ImageAnalysisResults* results = (ImageAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"ImageAnalysisResults" inManagedObjectContext:self.managedObjectContext];
+    ImageAnalysisResults* results = (ImageAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"ImageAnalysisResults" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
     
     //populate the ROI list based on the returned C++ vector
     for (int i = 0; i< resVector.size(); i+=3)
     {
-        ROIs* roi = (ROIs*)[NSEntityDescription insertNewObjectForEntityForName:@"ROIs" inManagedObjectContext:self.managedObjectContext];
+        ROIs* roi = (ROIs*)[NSEntityDescription insertNewObjectForEntityForName:@"ROIs" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
         
         roi.score = resVector.at(i);
         roi.y = (int)resVector.at(i+1);

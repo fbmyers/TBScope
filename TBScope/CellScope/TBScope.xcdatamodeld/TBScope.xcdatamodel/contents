@@ -19,7 +19,7 @@
         <attribute name="patientID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="patientName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="examSlides" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Slides" inverseName="exam" inverseEntity="Slides" syncable="YES"/>
+        <relationship name="examSlides" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Slides" inverseName="exam" inverseEntity="Slides" syncable="YES"/>
     </entity>
     <entity name="ImageAnalysisResults" representedClassName="ImageAnalysisResults" syncable="YES">
         <attribute name="dateAnalyzed" optional="YES" attributeType="Date" syncable="YES"/>
@@ -63,8 +63,8 @@
         <attribute name="slideNumber" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="sputumQuality" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exams" inverseName="examSlides" inverseEntity="Exams" syncable="YES"/>
-        <relationship name="slideAnalysisResults" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="SlideAnalysisResults" inverseName="slide" inverseEntity="SlideAnalysisResults" syncable="YES"/>
-        <relationship name="slideImages" optional="YES" toMany="YES" deletionRule="No Action" ordered="YES" destinationEntity="Images" inverseName="slide" inverseEntity="Images" syncable="YES"/>
+        <relationship name="slideAnalysisResults" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SlideAnalysisResults" inverseName="slide" inverseEntity="SlideAnalysisResults" syncable="YES"/>
+        <relationship name="slideImages" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Images" inverseName="slide" inverseEntity="Images" syncable="YES"/>
     </entity>
     <entity name="Users" representedClassName="Users" syncable="YES">
         <attribute name="accessLevel" attributeType="String" syncable="YES"/>
@@ -72,13 +72,13 @@
         <attribute name="username" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Exams" positionX="-344" positionY="-193" width="128" height="328"/>
         <element name="ImageAnalysisResults" positionX="196" positionY="218" width="128" height="133"/>
         <element name="Images" positionX="25" positionY="99" width="128" height="133"/>
+        <element name="Logs" positionX="288" positionY="-214" width="128" height="103"/>
         <element name="ROIs" positionX="369" positionY="278" width="128" height="118"/>
         <element name="SlideAnalysisResults" positionX="25" positionY="-70" width="128" height="118"/>
-        <element name="Exams" positionX="-344" positionY="-193" width="128" height="328"/>
-        <element name="Users" positionX="288" positionY="-99" width="128" height="90"/>
-        <element name="Logs" positionX="288" positionY="-214" width="128" height="103"/>
         <element name="Slides" positionX="-162" positionY="-0" width="128" height="148"/>
+        <element name="Users" positionX="288" positionY="-99" width="128" height="90"/>
     </elements>
 </model>

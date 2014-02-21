@@ -398,7 +398,6 @@
                                     <outlet property="locationLabel" destination="kMP-i7-dfv" id="ilW-fu-enj"/>
                                     <outlet property="patientIDLabel" destination="A2x-JL-ocw" id="7aQ-xa-W5U"/>
                                     <outlet property="patientNameLabel" destination="XFS-pq-o78" id="kIZ-qD-PH3"/>
-                                    <outlet property="scoreLabel" destination="Yk7-w5-uOh" id="nCB-tJ-fW3"/>
                                     <outlet property="scoreLabel1" destination="rKg-yd-dsp" id="z48-CD-qaH"/>
                                     <outlet property="scoreLabel2" destination="fhc-1X-FhG" id="zzt-rz-9pT"/>
                                     <outlet property="scoreLabel3" destination="Yk7-w5-uOh" id="xl8-QJ-1ad"/>
@@ -1834,7 +1833,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="titleShadowOffset" width="10" height="10"/>
-                                <state key="normal" image="scanslide3.png">
+                                <state key="normal" image="scanslide.png">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -1846,7 +1845,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="titleShadowOffset" width="10" height="10"/>
-                                <state key="normal" image="reviewresults3.png">
+                                <state key="normal" image="reviewresults.png">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -1858,7 +1857,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="titleShadowOffset" width="10" height="10"/>
-                                <state key="normal" image="configuration2.png">
+                                <state key="normal" image="configuration.png">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -1870,7 +1869,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="titleShadowOffset" width="10" height="10"/>
-                                <state key="normal" image="logout2.png">
+                                <state key="normal" image="logout.png">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -1901,16 +1900,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     <resources>
         <image name="cellscope_logo_1600-bkgd.png" width="1600" height="800"/>
         <image name="configicon.png" width="25" height="25"/>
-        <image name="configuration2.png" width="400" height="80"/>
+        <image name="configuration.png" width="400" height="80"/>
         <image name="down.png" width="100" height="80"/>
         <image name="googleicon.png" width="25" height="25"/>
         <image name="icon_clipboard.jpg" width="170" height="200"/>
         <image name="left.png" width="100" height="80"/>
-        <image name="logout2.png" width="400" height="80"/>
-        <image name="reviewresults3.png" width="400" height="80"/>
+        <image name="logout.png" width="400" height="80"/>
+        <image name="reviewresults.png" width="400" height="80"/>
         <image name="right.png" width="100" height="80"/>
         <image name="scalearrow.png" width="25" height="25"/>
-        <image name="scanslide3.png" width="400" height="80"/>
+        <image name="scanslide.png" width="400" height="80"/>
         <image name="snap.png" width="100" height="80"/>
         <image name="up.png" width="100" height="80"/>
         <image name="usericon.png" width="25" height="25"/>

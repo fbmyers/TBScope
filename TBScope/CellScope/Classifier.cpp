@@ -57,7 +57,7 @@ namespace Classifier
         
         vector<cv::Point2d>::iterator it = centroids.begin();
         for (; it != centroids.end(); ++it) {
-            cv::Point pt = *it;
+            cv::Point2d pt = *it;
 			int row = (int)pt.x;
             int col = (int)pt.y;
 			
@@ -69,8 +69,8 @@ namespace Classifier
 				rowMat.at<float>(0, 0) = (float)row;
 				colMat.at<float>(0, 0) = (float)col;
 				
-        cv::Mat patch(Features::makePatch(row, col, original));
-        cv::Mat binPatch(Features::calculateBinarizedPatch(patch));
+                cv::Mat patch(Features::makePatch(row, col, original));
+                cv::Mat binPatch(Features::calculateBinarizedPatch(patch));
 				MatDict data;
 
 				data.insert(std::make_pair("row", rowMat));

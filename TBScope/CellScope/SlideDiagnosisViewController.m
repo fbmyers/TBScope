@@ -171,7 +171,7 @@
 {
     [[GoogleDriveSync sharedGDS] setExamToUpload:self.currentExam];
     
-    [[GoogleDriveSync sharedGDS] uploadSlide];
+    [[GoogleDriveSync sharedGDS] uploadExam];
     
     
 }
