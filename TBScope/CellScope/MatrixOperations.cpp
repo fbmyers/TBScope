@@ -4,29 +4,32 @@
 
 namespace MatrixOperations
 {
-	cv::Mat greaterThanValue(float compareVal, cv::Mat mat)
-	{
+  template <typename TFromType, typename TToType>
+  cv::Mat greaterThanValueImpl(float compareVal, const cv::Mat &mat) {
 		cv::Mat parsedMatrix = cv::Mat(mat.rows, mat.cols, mat.type());
-
-		for (int i = 0; i < mat.rows; i++) {
+    for (int i = 0; i < mat.rows; i++) {
 			for (int j = 0; j < mat.cols; j++) {
-				if (mat.type() == CV_32F) {
-					float val = mat.at<float>(i, j);
-					float newVal = val > compareVal ? (float)1.0 : (float)0.0;
-					parsedMatrix.at<float>(i, j) = newVal;
-				} else if (mat.type() == CV_64F) {
-					double val = mat.at<double>(i, j);
-					double newVal = val > compareVal ? 1 : 0;
-					parsedMatrix.at<double>(i, j) = newVal;
-				} else if (mat.type() == CV_8UC1) {
-					int val = (int)mat.at<uchar>(i, j);
-					int newVal = val > compareVal ? 1 : 0;
-					parsedMatrix.at<int>(i, j) = newVal;
-				}
-			}
-		}
-
+        parsedMatrix.at<TToType>(i, j) = (static_cast<TToType>(mat.at<TFromType>(i, j)) > compareVal) ? static_cast<TToType>(1) : static_cast<TToType>(0);
+      }
+    }
 		return parsedMatrix;
+	}
+
+	cv::Mat greaterThanValue(float compareVal, const cv::Mat &mat) {
+    switch (mat.type()) {
+      case CV_8UC1: {
+        return greaterThanValueImpl<uchar, int>(compareVal, mat);
+      }
+      case CV_64F: {
+        return greaterThanValueImpl<double, double>(compareVal, mat);
+      }
+      case CV_32F: {
+        return greaterThanValueImpl<float, float>(compareVal, mat);
+      }
+      default: {
+        throw std::logic_error("Unimplemented image type");
+      }
+    }
 	}
 
   template <typename TDataType>
@@ -67,6 +70,7 @@ namespace MatrixOperations
 					}
 				}
 			}
+      assert(pixelCount > 0);
 
 			double xbar = weightedXSum / sumRegion;
 			double ybar = weightedYSum / sumRegion;
