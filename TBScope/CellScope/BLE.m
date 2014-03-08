@@ -194,7 +194,7 @@ static int rssi = 0;
     [self.CM scanForPeripheralsWithServices:nil options:nil]; // Start scanning
 #endif
     
-    NSLog(@"scanForPeripheralsWithServices");
+    //NSLog(@"scanForPeripheralsWithServices");
     
     return 0; // Started scanning OK !
 }
@@ -244,14 +244,14 @@ static int rssi = 0;
 - (void) scanTimer:(NSTimer *)timer
 {
     [self.CM stopScan];
-    NSLog(@"Stopped Scanning");
-    NSLog(@"Known peripherals : %lu", (unsigned long)[self.peripherals count]);
+    //NSLog(@"Stopped Scanning");
+    //NSLog(@"Known peripherals : %lu", (unsigned long)[self.peripherals count]);
     [self printKnownPeripherals];
 }
 
 - (void) printKnownPeripherals
 {
-    NSLog(@"List of currently known peripherals :");
+    //NSLog(@"List of currently known peripherals :");
     
     for (int i = 0; i < self.peripherals.count; i++)
     {

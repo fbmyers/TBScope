@@ -117,6 +117,7 @@
     ImageAnalysisResults* results = (ImageAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"ImageAnalysisResults" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
     
     //populate the ROI list based on the returned C++ vector
+    results.numAFBAlgorithm = 0;
     for (int i = 0; i< resVector.size(); i+=3)
     {
         ROIs* roi = (ROIs*)[NSEntityDescription insertNewObjectForEntityForName:@"ROIs" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
@@ -126,6 +127,10 @@
         roi.x = (int)resVector.at(i+2);
         
         [results addImageROIsObject:roi];
+        
+        if (roi.score>diagnosticThreshold) {
+            results.numAFBAlgorithm++;
+        }
     }
 
     //do the diagnosis
@@ -154,7 +159,8 @@
     
     results.score = topAverage;
     results.diagnosis = (topAverage>diagnosticThreshold);
-    results.dateAnalyzed = [NSDate timeIntervalSinceReferenceDate];
+    results.numAFBManual = 0;
+    results.dateAnalyzed = [TBScopeData stringFromDate:[NSDate date]];
     
     return results;
 }

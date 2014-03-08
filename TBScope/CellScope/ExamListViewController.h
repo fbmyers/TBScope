@@ -16,5 +16,7 @@
 
 @property (strong, nonatomic) NSMutableArray *examListData;
 
+@property (strong,nonatomic) NSDateFormatter* dateFormatter;
+@property (strong,nonatomic) NSDateFormatter* timeFormatter;
 
 @end

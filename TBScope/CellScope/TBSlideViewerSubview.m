@@ -28,8 +28,6 @@
     CGRect bounds = CGRectMake(0,0,im.size.width,im.size.height);
     self = [super initWithFrame:bounds];
     
-    zoomFactor = 1.0;
-    
     if (self) {
         self.image = im;
         self.roiList = nil;
@@ -43,6 +41,7 @@
         self.contrast = 1.0;
         self.zoomFactor = 1.0;
         
+        //self.image = im;
         [im drawInRect:bounds];
     }
     return self;

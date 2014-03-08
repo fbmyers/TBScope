@@ -12,7 +12,7 @@
 
 
 
-@property (strong,nonatomic) NSSet* roiList;
+@property (strong,nonatomic) NSOrderedSet* roiList;
 @property (nonatomic) int roiSizeX;
 @property (nonatomic) int roiSizeY;
 @property (nonatomic) float redThreshold;

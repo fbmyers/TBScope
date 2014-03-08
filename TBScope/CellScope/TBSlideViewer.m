@@ -54,13 +54,23 @@
     subView = [[TBSlideViewerSubview alloc] initWithImage:i];
     //subView = [[TBSlideViewerSubview alloc] initWithFrame:[self bounds]];
     
+
     [self addSubview:subView];
     [self setContentSize:i.size];
     
     [self setDelegate:self];
     [self zoomExtents];
+
     
-    
+    //self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+    /*self.opaque = YES;
+    self.clipsToBounds = NO;
+    self.layer.masksToBounds = NO;
+    self.autoresizesSubviews = NO;
+    self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    */
+
     //TODO: are these necessary?
     [subView setNeedsDisplay];
     [self setNeedsDisplay];
@@ -73,7 +83,13 @@
 
 - (void)scrollViewDidZoom:(UIScrollView*)scrollView
 {
+    //putting needsdisplay in here results in severe performance hit on retina display.
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
     subView.zoomFactor = self.zoomScale;
+    
     [subView setNeedsDisplay];
 }
 

@@ -21,8 +21,6 @@
 @property (strong,nonatomic) Exams* currentExam;
 
 
-@property (weak, nonatomic) SlideDiagnosisViewController* slideDiagnosisVC;
-@property (weak, nonatomic) ImageResultViewController* imageResultsVC;
 
 - (IBAction)done:(id)sender;
 

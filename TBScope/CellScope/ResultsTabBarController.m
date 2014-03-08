@@ -13,31 +13,49 @@
 
 @implementation ResultsTabBarController
 
-@synthesize currentExam;
-@synthesize slideDiagnosisVC,imageResultsVC;
-
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
+    [super viewDidLoad];
     
-    self.navigationItem.title = NSLocalizedString(@"Review Slide", nil);
+    self.navigationItem.title = NSLocalizedString(@"Review Exam", nil);
+    [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Results", nil)];
     
     //TODO: only show image view if user has permission.  also tailor slide diagnosis view accordingly
     
-    slideDiagnosisVC = (SlideDiagnosisViewController*)(self.viewControllers[0]);
+    NSMutableArray* tabVCs = [[NSMutableArray alloc] init];
+    
+    SlideDiagnosisViewController* slideDiagnosisVC = (SlideDiagnosisViewController*)(self.viewControllers[0]);
     slideDiagnosisVC.currentExam = self.currentExam;
-    [slideDiagnosisVC viewWillAppear:NO]; //kludge
     
-    //TODO: create multiple imageresultVCs
-    imageResultsVC = (ImageResultViewController*)(self.viewControllers[1]);
-    imageResultsVC.currentSlide = (Slides*)self.currentExam.examSlides[0];
+    [tabVCs addObject:slideDiagnosisVC];
     
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TBScopeStoryboard" bundle: nil];
+    
+    
+    if (self.currentExam.examSlides.count>0) {
+        ImageResultViewController *imageResultsVC1 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
+        imageResultsVC1.currentSlide = (Slides*)self.currentExam.examSlides[0];
+        imageResultsVC1.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),1];
+        [tabVCs addObject:imageResultsVC1];
+    }
+    if (self.currentExam.examSlides.count>1) {
+        ImageResultViewController *imageResultsVC2 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
+        imageResultsVC2.currentSlide = (Slides*)self.currentExam.examSlides[1];
+        imageResultsVC2.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),2];
+        [tabVCs addObject:imageResultsVC2];
+    }
+    if (self.currentExam.examSlides.count>2) {
+        ImageResultViewController *imageResultsVC3 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
+        imageResultsVC3.currentSlide = (Slides*)self.currentExam.examSlides[2];
+        imageResultsVC3.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),3];
+        [tabVCs addObject:imageResultsVC3];
+    }
+    
+    self.viewControllers = tabVCs;
     
 }
 
 
-
-//TODO: make "back" button go back two screens
 - (IBAction)done:(id)sender
 {
     [[self navigationController] popToRootViewControllerAnimated:YES];

@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Slides.h"
-#import "Users.h"
+#import "TBScopeData.h"
 
 @protocol TBScopeViewControllerContext <NSObject>
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (strong, nonatomic) Users* currentUser;
+
 @property (strong,nonatomic) Slides* currentSlide;
+@property (strong,nonatomic) Exams* currentExam;
 
 @end

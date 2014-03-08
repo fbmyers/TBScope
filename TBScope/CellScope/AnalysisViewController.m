@@ -55,6 +55,7 @@
     }
     
     // Commit
+    [TBScopeData touchExam:self.currentExam];
     [[TBScopeData sharedData] saveCoreData];
     
     self.currentField = 0;
@@ -141,7 +142,8 @@
                  
                  //do analysis on this image
                  currentImage.imageAnalysisResults = [diagnoser runWithImage:(imageColor)]; //todo: spin out as new thread
-                 
+                
+                 [TBScopeData touchExam:self.currentExam];
                  [[TBScopeData sharedData] saveCoreData];
              }
              
@@ -162,7 +164,6 @@
             currentImage.imageAnalysisResults = [diagnoser runWithImage:(image)]; //spin out as new thread
 
             // Commit to core data
-            NSError *error;
             [[TBScopeData sharedData] saveCoreData];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AnalysisComplete" object:nil];
@@ -193,7 +194,7 @@
         for (im in self.currentSlide.slideImages)
         {
             [allROIs addObjectsFromArray:[im.imageAnalysisResults.imageROIs array]];
-            numPositive += im.imageAnalysisResults.numPositive;
+            numPositive += im.imageAnalysisResults.numAFBAlgorithm;
         }
         
         NSArray *sortedROIs = [[allROIs allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"score" ascending:NO]]];
@@ -211,12 +212,13 @@
         }
         slideScore /= [[NSUserDefaults standardUserDefaults] integerForKey:@"NumPatchesToAverage"];
         
-        NSLog([sortedROIs description]);
+        //NSLog([sortedROIs description]);
         NSLog(@"slide score: %f",slideScore);
         
-        slideResults.dateDiagnosed = [NSDate timeIntervalSinceReferenceDate];
-        slideResults.numPositive = numPositive;
+        slideResults.dateDiagnosed = [TBScopeData stringFromDate:[NSDate date]];
+        slideResults.numAFBAlgorithm = numPositive;
         slideResults.score = slideScore;
+        slideResults.numAFBManual = 0;
         if (slideScore>[[NSUserDefaults standardUserDefaults] floatForKey:@"DiagnosticThreshold"])
         {
             slideResults.diagnosis = @"POSITIVE";
@@ -230,6 +232,7 @@
         
         NSLog(@"analysis complete");
         
+        [TBScopeData touchExam:self.currentExam];
         [[TBScopeData sharedData] saveCoreData];
         
         [self performSegueWithIdentifier:@"ResultsSegue" sender:nil];

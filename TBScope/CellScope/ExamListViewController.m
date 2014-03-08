@@ -24,6 +24,14 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //setup date/time formatters
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [self.dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    self.timeFormatter = [[NSDateFormatter alloc] init];
+    [self.timeFormatter setDateStyle:NSDateFormatterNoStyle];
+    [self.timeFormatter setTimeStyle:NSDateFormatterShortStyle];
+    
     //  Grab the data
     self.examListData = [CoreDataHelper getObjectsForEntity:@"Exams" withSortKey:@"examID" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
     
@@ -51,38 +59,40 @@
     ExamListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Get the core data object we need to use to populate this table cell
-    Exams* currentCell = [self.examListData objectAtIndex:indexPath.row];
+    Exams* currentExam = [self.examListData objectAtIndex:indexPath.row];
     Slides* currentSlide1; Slides* currentSlide2; Slides* currentSlide3;
-    if (currentCell.examSlides.count > 0)
-        currentSlide1 = (Slides*)[currentCell.examSlides objectAtIndex:0];
-    if (currentCell.examSlides.count > 1)
-        currentSlide2 = (Slides*)[currentCell.examSlides objectAtIndex:1];
-    if (currentCell.examSlides.count > 2)
-        currentSlide3 = (Slides*)[currentCell.examSlides objectAtIndex:2];
+    if (currentExam.examSlides.count > 0)
+        currentSlide1 = (Slides*)[currentExam.examSlides objectAtIndex:0];
+    if (currentExam.examSlides.count > 1)
+        currentSlide2 = (Slides*)[currentExam.examSlides objectAtIndex:1];
+    if (currentExam.examSlides.count > 2)
+        currentSlide3 = (Slides*)[currentExam.examSlides objectAtIndex:2];
     
     
     
     // Fill in the cell contents
     NSString* dateString;
+    NSString* timeString;
     if (currentSlide1!=nil) {
-        NSDate* date = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:currentSlide1.dateCollected];
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:[[NSUserDefaults standardUserDefaults] stringForKey:@"DateFormat"]];
-        dateString = [dateFormatter stringFromDate:date];
+        dateString = [self.dateFormatter stringFromDate:[TBScopeData dateFromString:currentSlide1.dateCollected]];
+        dateString = [self.timeFormatter stringFromDate:[TBScopeData dateFromString:currentSlide1.dateCollected]];
+        
     }
     else
     {
         dateString = @"N/A";
+        timeString = @"";
     }
     
+    cell.examIDLabel.text = currentExam.examID;
+    cell.patientIDLabel.text = currentExam.patientID;
+    cell.patientNameLabel.text = currentExam.patientName;
+    cell.locationLabel.text = currentExam.location;
+    cell.usernameLabel.text = currentExam.userName;
+    cell.dateLabel.text = dateString;
+    cell.timeLabel.text = timeString;
     
-    cell.patientIDLabel.text = currentCell.patientID;
-    cell.patientNameLabel.text = currentCell.patientName;
-    cell.locationLabel.text = currentCell.location;
-    cell.examIDLabel.text = currentCell.examID;
-    
-    
-    cell.scoreLabel1.text = [NSString stringWithFormat:@"%3.2f",currentSlide1.slideAnalysisResults.score*100];
+    cell.scoreLabel1.text = [NSString stringWithFormat:@"%3.1f",currentSlide1.slideAnalysisResults.score*100];
     
     if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
         cell.scoreLabel1.backgroundColor = [UIColor redColor];
@@ -96,7 +106,7 @@
         cell.scoreLabel1.text = @"N/A";
     }
 
-    cell.scoreLabel2.text = [NSString stringWithFormat:@"%3.2f",currentSlide2.slideAnalysisResults.score*100];
+    cell.scoreLabel2.text = [NSString stringWithFormat:@"%3.1f",currentSlide2.slideAnalysisResults.score*100];
     
     if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
         cell.scoreLabel2.backgroundColor = [UIColor redColor];
@@ -110,7 +120,7 @@
         cell.scoreLabel2.text = @"N/A";
     }
     
-    cell.scoreLabel3.text = [NSString stringWithFormat:@"%3.2f",currentSlide3.slideAnalysisResults.score*100];
+    cell.scoreLabel3.text = [NSString stringWithFormat:@"%3.1f",currentSlide3.slideAnalysisResults.score*100];
     
     if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
         cell.scoreLabel3.backgroundColor = [UIColor redColor];
@@ -124,8 +134,39 @@
         cell.scoreLabel3.text = @"N/A";
     }
     
-    cell.usernameLabel.text = currentCell.userName;
-    cell.dateLabel.text = dateString;
+    //figure out upload state
+    if ([[[GoogleDriveSync sharedGDS] examUploadQueue] containsObject:currentExam]) { //pending upload
+        cell.syncIcon.backgroundColor = [UIColor yellowColor];
+    }
+    else
+    {
+
+    }
+    
+
+    //figure out sync indicator color
+    if (currentExam.googleDriveFileID!=nil) {
+        cell.syncIcon.backgroundColor = [UIColor greenColor]; //default, fully synced
+        
+        for (Slides* sl in currentExam.examSlides)
+            for (Images* im in sl.slideImages)
+                  if (im.path==nil)
+                     cell.syncIcon.backgroundColor = [UIColor purpleColor]; //some images pending download
+        
+        NSDate* lastSyncDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"LastSyncDate"];
+        NSDate* examModifiedDate = [TBScopeData dateFromString:currentExam.dateModified];
+        if ([examModifiedDate timeIntervalSinceDate:lastSyncDate]>0)
+            cell.syncIcon.backgroundColor = [UIColor yellowColor]; //has been modified locally
+    }
+    else {
+        cell.syncIcon.backgroundColor = [UIColor clearColor]; //default, hasn't synced at all
+        
+        for (Slides* sl in currentExam.examSlides)
+            for (Images* im in sl.slideImages)
+                if (im.googleDriveFileID!=nil)
+                    cell.syncIcon.backgroundColor = [UIColor redColor]; //some images pending upload
+    }
+    
     
     return cell;
 }

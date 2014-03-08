@@ -23,11 +23,10 @@
 
 
 @property (strong,nonatomic) Slides* currentSlide;
-@property (nonatomic) BOOL doAnalysis;
 
-@property (weak, nonatomic) IBOutlet CameraScrollView* previewView; //TODO: should this be weak?
+
+@property (weak, nonatomic) IBOutlet CameraScrollView* previewView;
 @property (weak, nonatomic) IBOutlet UIButton* snapButton;
-@property (weak, nonatomic) IBOutlet UIButton* nextFieldButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem* analyzeButton;
 @property (weak, nonatomic) IBOutlet UINavigationItem* navItem;
 

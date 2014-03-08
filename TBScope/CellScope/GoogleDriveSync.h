@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import <AssetsLibrary/AssetsLibrary.h>
+#import "Reachability.h"
+
 #import "TBScopeHardware.h"
 #import "TBScopeData.h"
 
@@ -24,20 +25,24 @@
 
 @property (nonatomic, retain) GTLServiceDrive *driveService;
 
-@property (strong, nonatomic) Exams* examToUpload;
+@property (strong, nonatomic) Reachability* reachability;
 
-@property (strong, nonatomic) UIAlertView* waitIndicator;
+@property (strong, nonatomic) NSMutableArray* imageUploadQueue;
+@property (strong, nonatomic) NSMutableArray* imageDownloadQueue;
+@property (strong, nonatomic) NSMutableArray* examUploadQueue;
+@property (strong, nonatomic) NSMutableArray* examDownloadQueue;
 
+//move these to json helper
 - (NSData*)jsonStructureFromManagedObjects:(NSArray*)managedObjects;
-- (NSArray*)managedObjectsFromJSONStructure:(NSString*)json withManagedObjectContext:(NSManagedObjectContext*)moc;
+- (NSArray*)managedObjectsFromJSONStructure:(NSData*)json withManagedObjectContext:(NSManagedObjectContext*)moc;
 
 - (NSDictionary*)dataStructureFromManagedObject:(NSManagedObject*)managedObject;
-
-- (void)uploadExam;
 
 - (BOOL) isLoggedIn;
 
 - (NSString*) userEmail;
 
+- (void)doSync;
 
 @end
+

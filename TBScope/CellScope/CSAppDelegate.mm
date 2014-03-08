@@ -28,17 +28,36 @@
     //setup data singleton
     [[TBScopeData sharedData] setManagedObjectContext:self.managedObjectContext];
     
+    
     //start bluetooth connection
     [[TBScopeHardware sharedHardware] setupBLEConnection];
     
+    //setup location services
+    //set up location manager for geotagging photos
+    [[TBScopeData sharedData] startGPS];
     
+
     // if this is the first time the app has run, or if the Reset Button was pressed in config settings, this will initialize core data
     // note that at this point, the database has already been deleted (that happened when the message was sent to managedObjectContext
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ResetCoreDataOnStartup"])
     {
-        [self initializeCoreData];
+        NSLog(@"Re-initializing Core Data...");
+        
+        // Set flag so we know not to run this next time
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ResetCoreDataOnStartup"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        
+        [[TBScopeData sharedData] resetCoreData];
         
     }
+    
+    
+    //dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[GoogleDriveSync sharedGDS] doSync]; //gets the ball rolling for sync
+    //});
+                  
+
     return YES;
 }
 
@@ -60,153 +79,7 @@
     }
 }
 
-- (void) initializeCoreData
-{
-    NSLog(@"Re-initializing Core Data...");
-    
-    // Set flag so we know not to run this next time
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ResetCoreDataOnStartup"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    // Add our default user object in Core Data
-    Users *user = (Users*)[NSEntityDescription insertNewObjectForEntityForName:@"Users" inManagedObjectContext:self.managedObjectContext];
-    [user setUsername:@"admin"];
-    [user setPassword:@"default"];
-    [user setAccessLevel:@"ADMIN"];
-    
-    [[TBScopeData sharedData] saveCoreData];
-    
-    Exams* exam;
-    Slides* slide;
-    Images* image;
-    
-    exam = (Exams*)[NSEntityDescription insertNewObjectForEntityForName:@"Exams" inManagedObjectContext:self.managedObjectContext];
-    [exam setExamID:@"HLH1010296"];
-    [exam setUserName:@"example"];
-    [exam setGpsLocation:@"0,0"];
-    [exam setLocation:@"Hanoi Lung Hospital"];
-    [exam setIntakeNotes:@"Patient presented with persistent cough lasting >2 weeks."];
-    [exam setDiagnosisNotes:@"Slide is positive for TB."];
-    [exam setPatientName:@"John Doe 1"];
-    [exam setPatientID:@"92037"];
-    [exam setPatientAddress:@"463 Hoang Hoa Tham, Hanoi 10000"];
-    [exam setPatientDOB:[NSDate timeIntervalSinceReferenceDate]];
-    [exam setPatientGender:@"M"];
-    [exam setPatientHIVStatus:@"+"];
-    [exam setDateModified:[NSDate timeIntervalSinceReferenceDate]];
-    
-    slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:self.managedObjectContext];
-    [slide setSlideNumber:1];
-    [slide setDateCollected:[NSDate timeIntervalSinceReferenceDate]];
-    [slide setDateScanned:[NSDate timeIntervalSinceReferenceDate]];
-    [slide setSputumQuality:@"B"];
-    [exam addExamSlidesObject:slide];
-    
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:1];
-    [image setPath:@"DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:2];
-    [image setPath:@"DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:3];
-    [image setPath:@"DHC5_CHP21_1010296_S1_R1_HLH_I3_Fluor_Y_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:4];
-    [image setPath:@"DHC5_CHP21_1010296_S1_R1_HLH_I4_Fluor_Y_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    
-    [[TBScopeData sharedData] saveCoreData];
-    
-    exam = (Exams*)[NSEntityDescription insertNewObjectForEntityForName:@"Exams" inManagedObjectContext:self.managedObjectContext];
-    [exam setExamID:@"HLH1010107"];
-    [exam setUserName:@"example"];
-    [exam setGpsLocation:@"0,0"];
-    [exam setLocation:@"Hanoi Lung Hospital"];
-    [exam setIntakeNotes:@"Patient presented with persistent cough lasting >2 weeks."];
-    [exam setDiagnosisNotes:@"Slide is positive for TB."];
-    [exam setPatientName:@"John Doe 2"];
-    [exam setPatientID:@"38293"];
-    [exam setPatientAddress:@"463 Hoang Hoa Tham, Hanoi 10000"];
-    [exam setPatientDOB:[NSDate timeIntervalSinceReferenceDate]];
-    [exam setPatientGender:@"M"];
-    [exam setPatientHIVStatus:@"-"];
-    [exam setDateModified:[NSDate timeIntervalSinceReferenceDate]];
-    
-    slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:self.managedObjectContext];
-    [slide setSlideNumber:1];
-    [slide setDateCollected:[NSDate timeIntervalSinceReferenceDate]];
-    [slide setDateScanned:[NSDate timeIntervalSinceReferenceDate]];
-    [slide setSputumQuality:@"BS"];
-    [exam addExamSlidesObject:slide];
-    
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:1];
-    [image setPath:@"DHC5_CHP21_1010107_S1_R1_HLH_I1_Fluor_N_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:2];
-    [image setPath:@"DHC5_CHP21_1010107_S1_R1_HLH_I2_Fluor_N_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:3];
-    [image setPath:@"DHC5_CHP21_1010107_S1_R1_HLH_I3_Fluor_N_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
 
-    [[TBScopeData sharedData] saveCoreData];
-    
-    exam = (Exams*)[NSEntityDescription insertNewObjectForEntityForName:@"Exams" inManagedObjectContext:self.managedObjectContext];
-    [exam setExamID:@"HLH1010195"];
-    [exam setUserName:@"example"];
-    [exam setGpsLocation:@"0,0"];
-    [exam setLocation:@"Hanoi Lung Hospital"];
-    [exam setIntakeNotes:@"Patient presented with persistent cough lasting >2 weeks."];
-    [exam setDiagnosisNotes:@"Slide is positive for TB."];
-    [exam setPatientName:@"Jane Doe 3"];
-    [exam setPatientID:@"23439"];
-    [exam setPatientAddress:@"463 Hoang Hoa Tham, Hanoi 10000"];
-    [exam setPatientDOB:[NSDate timeIntervalSinceReferenceDate]];
-    [exam setPatientGender:@"F"];
-    [exam setPatientHIVStatus:@""];
-    [exam setDateModified:[NSDate timeIntervalSinceReferenceDate]];
-    
-    slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:self.managedObjectContext];
-    [slide setSlideNumber:1];
-    [slide setDateCollected:[NSDate timeIntervalSinceReferenceDate]];
-    [slide setDateScanned:[NSDate timeIntervalSinceReferenceDate]];
-    [slide setSputumQuality:@""];
-    [exam addExamSlidesObject:slide];
-    
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:1];
-    [image setPath:@"DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:2];
-    [image setPath:@"DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    image = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:self.managedObjectContext];
-    [image setFieldNumber:3];
-    [image setPath:@"DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif"];
-    [image setMetadata:@"example image"];
-    [slide addSlideImagesObject:image];
-    
-    [[TBScopeData sharedData] saveCoreData];
-    
-
-}
 
 #pragma mark - Core Data stack
 

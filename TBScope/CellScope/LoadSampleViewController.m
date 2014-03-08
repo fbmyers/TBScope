@@ -55,7 +55,6 @@
 {
     CaptureViewController* cvc = (CaptureViewController*)[segue destinationViewController];
     cvc.currentSlide = self.currentSlide;
-    cvc.doAnalysis = self.doAnalysis;
 }
 
 @end

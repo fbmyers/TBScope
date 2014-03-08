@@ -11,36 +11,37 @@
 #import "TBScopeHardware.h"
 
 #import "EditSlideViewController.h"
-
+#import "MapViewController.h"
 
 @interface EditExamViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong,nonatomic) Exams* currentExam;
 
-@property (weak, nonatomic) IBOutlet UITextField* nameTextField;
+//exam fields
+@property (weak, nonatomic) IBOutlet UITextField* examIDTextField;
 @property (weak, nonatomic) IBOutlet UITextField* patientIDTextField;
-@property (weak, nonatomic) IBOutlet UITextField* slideNumberTextField;
-@property (weak, nonatomic) IBOutlet UITextField* readNumberTextField;
-@property (weak, nonatomic) IBOutlet UITextField* locationTextField;
+@property (weak, nonatomic) IBOutlet UITextField* nameTextField;
+@property (weak, nonatomic) IBOutlet UITextField* genderTextField;
+@property (weak, nonatomic) IBOutlet UITextField* dobTextField;
+@property (weak, nonatomic) IBOutlet UITextField* clinicTextField;
 @property (weak, nonatomic) IBOutlet UITextField* addressTextField;
-@property (weak, nonatomic) IBOutlet UITextView* notesTextView;
+@property (weak, nonatomic) IBOutlet UITextField* hivStatusTextField;
+@property (weak, nonatomic) IBOutlet UITextView* intakeNotesTextView;
 
 @property (weak, nonatomic) IBOutlet UILabel* userLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel* gpsLabel;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView* gpsSpinner;
-@property (weak, nonatomic) IBOutlet UILabel* dateLabel;
 
-@property (weak, nonatomic) IBOutlet UISwitch* doAnalysisSwitch;
+//localization
+@property (weak, nonatomic) IBOutlet UILabel* examIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel* patientIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel* nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel* genderLabel;
+@property (weak, nonatomic) IBOutlet UILabel* dobLabel;
+@property (weak, nonatomic) IBOutlet UILabel* clinicLabel;
+@property (weak, nonatomic) IBOutlet UILabel* addressLabel;
+@property (weak, nonatomic) IBOutlet UILabel* hivStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel* intakeNotesLabel;
 
-
-
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *patientIDLabel;
-@property (weak, nonatomic) IBOutlet UILabel *slideNumLabel;
-@property (weak, nonatomic) IBOutlet UILabel *readNumLabel;
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
-@property (weak, nonatomic) IBOutlet UILabel *patientAddressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *notesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *runAnalysisLabel;
 
 @end

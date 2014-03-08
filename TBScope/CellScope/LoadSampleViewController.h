@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "CoreDataHelper.h"
-#import "Users.h"
-#import "Slides.h"
+#import "TBScopeData.h"
+#import "TBScopeHardware.h"
+
 #import "CaptureViewController.h"
 
 @interface LoadSampleViewController : UIViewController

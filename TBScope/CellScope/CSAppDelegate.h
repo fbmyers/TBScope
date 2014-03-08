@@ -25,6 +25,4 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
-- (void) initializeCoreData;
-
 @end

@@ -109,9 +109,9 @@ static NSData *kTrue = NULL;
         theResult = [self serializeNumber:inObject error:outError];
         }
     else if ([inObject isKindOfClass:[NSDate class]])
-    {
-        theResult = [self serializeString:[inObject description] error:outError];
-    }
+        {
+        theResult = [self serializeString:[inObject description] error:outError]; //FBM
+        }
     else if ([inObject isKindOfClass:[NSString class]])
         {
         theResult = [self serializeString:inObject error:outError];

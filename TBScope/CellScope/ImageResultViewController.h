@@ -19,9 +19,6 @@
 @property (strong,nonatomic) Slides* currentSlide;
 @property (nonatomic) int currentImageIndex;
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (strong, nonatomic) Users* currentUser;
-
 @property (weak, nonatomic) IBOutlet TBSlideViewer* slideViewer;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *fieldSelector;
 

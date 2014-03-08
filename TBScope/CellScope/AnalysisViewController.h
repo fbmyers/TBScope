@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "DataValidationHelper.h"
 #import "TBScopeHardware.h"
 #import "TBScopeData.h"
 
-//#import "TBScopeViewControllerContext.h"
 #import "TBDiagnoser.h"
 #import "ResultsTabBarController.h"
 
@@ -26,6 +24,7 @@
 }
 
 @property (strong,nonatomic) Slides* currentSlide;
+@property (strong,nonatomic) Exams* currentExam;
 
 @property (weak, nonatomic) IBOutlet UIProgressView* progress;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView* spinner;

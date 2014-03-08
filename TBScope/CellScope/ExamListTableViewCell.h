@@ -10,15 +10,19 @@
 
 @interface ExamListTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *examIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *patientIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *patientNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel3;
 
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *syncIcon;
 
 @end

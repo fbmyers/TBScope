@@ -13,7 +13,6 @@
 @synthesize currentSlide,snapButton,analyzeButton,bleConnectionLabel,holdTimer;
 
 @synthesize previewView;
-//@synthesize imagePath;
 
 - (void)viewDidLoad
 {
@@ -31,6 +30,7 @@
     [self.aeButton setTitle:NSLocalizedString(@"AE On",nil) forState:UIControlStateNormal];
     [self.afButton setTitle:NSLocalizedString(@"AF On",nil) forState:UIControlStateNormal];
     self.bleConnectionLabel.text = NSLocalizedString(@"Not Connected", nil);
+    self.analyzeButton.title = NSLocalizedString(@"Analyze",nil);
     
     //setup the camera view
     [previewView setupCamera];
@@ -47,17 +47,9 @@
     self.analyzeButton.enabled = NO;
     self.analyzeButton.tintColor = [UIColor grayColor];
     
-    
     [previewView setAutoresizesSubviews:NO];  //TODO: necessary?
     
-    
-    self.snapButton.titleLabel.text = @"Snap";
-    
-    if (self.doAnalysis)
-        self.analyzeButton.title = NSLocalizedString(@"Analyze",nil);
-    else
-        self.analyzeButton.title = NSLocalizedString(@"Done",nil);
-    
+
     self.analyzeButton.enabled = NO;
     
     //TODO: i'd rather do this as a delegate
@@ -79,24 +71,6 @@
 }
 
 
-
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    if ([identifier isEqualToString:@"AnalysisSegue"])
-    {
-        if (self.doAnalysis)
-        {
-            return YES;
-        }
-        else
-        {
-            [[self navigationController] popToRootViewControllerAnimated:YES];
-            return NO;
-        }
-    }
-    return YES;
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"AnalysisSegue"]) {
@@ -107,26 +81,14 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+   
+    
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
     
     [self.previewView stopPreview];
     
     [self.previewView takeDownCamera];
-    
-    
-    if ([self isMovingFromParentViewController])
-    {
-        //user pressed back, so roll back changes
-        [[[TBScopeData sharedData] managedObjectContext] rollback];
-    }
-    else
-    {
-        // Commit to core data
-        NSError *error;
-        if (![[[TBScopeData sharedData] managedObjectContext] save:&error])
-            NSLog(@"Failed to commit to core data: %@", [error domain]);
-    }
     
     [self.previewView.session stopRunning];
     
@@ -153,7 +115,7 @@
     UIImage* image = previewView.lastCapturedImage; //[self convertImageToGrayScale:previewView.lastCapturedImage];
     
     NSLog(@"did get image");
-    
+
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
         if (error) {
@@ -164,33 +126,28 @@
             newImage.path = assetURL.absoluteString;
             newImage.fieldNumber = self.currentField;
             newImage.metadata = previewView.lastImageMetadata;
-            [self.currentSlide addSlideImagesObject:newImage]; //TODO: rollback if they discard a frame
+            [self.currentSlide addSlideImagesObject:newImage];
+            
+            // Commit to core data
+            [TBScopeData touchExam:self.currentSlide.exam];
+            [[TBScopeData sharedData] saveCoreData];
             
             self.currentField++;
-            
-            self.analyzeButton.enabled = NO;
-            self.analyzeButton.tintColor = [UIColor grayColor];
-            
+
             [self updatePrompt];
+            
             if (self.currentField==[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]) {
                 //done
                 self.snapButton.enabled = NO;
                 self.snapButton.alpha = 0.4;
                 self.analyzeButton.enabled = YES;
-                self.analyzeButton.tintColor = [UIColor blueColor];
+                self.analyzeButton.tintColor = [UIColor whiteColor];
             }
             
             NSLog(@"did save");
         }
     }];
-    
-    /*
-    //probably don't need this
-    [previewView stopPreview];
-    self.snapButton.titleLabel.text = @"Retry";
-    self.analyzeButton.enabled = YES; //have this enable the button w/ >N images
-    self.nextFieldButton.hidden = NO;
-    */
+
 }
 
 - (IBAction)didTouchDownStageButton:(id)sender

@@ -3,6 +3,79 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Classifier::runWithImage(cv::Mat):Classifier.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "((float*)scores_and_centers.data)[0,0]">
+            </PersistentString>
+            <PersistentString
+               value = "scores_and_centers.data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CaptureViewController viewWillDisappear:]:CaptureViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[GoogleDriveSync processUploadQueue:]:GoogleDriveSync.m">
+      </ContextState>
+      <ContextState
+         contextName = "__25-[GoogleDriveSync doSync]_block_invoke:GoogleDriveSync.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "ex">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[GoogleDriveSync uploadImage:]:GoogleDriveSync.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.slideToUpload.slideImages.count">
+            </PersistentString>
+            <PersistentString
+               value = "notification.userInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[GTLDateTime date]:GTLDateTime.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.calendar">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[GoogleDriveSync managedObjectFromStructure:withManagedObjectContext:]:GoogleDriveSync.m">
+      </ContextState>
+      <ContextState
+         contextName = "__25-[GoogleDriveSync doSync]_block_invoke_2:GoogleDriveSync.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[UIColor yellowColor]">
+            </PersistentString>
+            <PersistentString
+               value = "buttonPressed.tag">
+            </PersistentString>
+            <PersistentString
+               value = "buttonPressed.titleLabel.textColor">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ResultsTabBarController viewWillAppear:]:ResultsTabBarController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ImageResultViewController viewWillAppear:]:ImageResultViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[Runner imagePickerController:didFinishPickingMediaWithInfo:]:Runner.mm">
+      </ContextState>
+      <ContextState
          contextName = "Classifier::featureDetection(cv::Mat, cv::Mat):Classifier.cpp">
          <PersistentStrings>
             <PersistentString
@@ -17,74 +90,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[GoogleDriveSync dataStructureFromManagedObject:]:GoogleDriveSync.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[GoogleDriveSync uploadImage:]:GoogleDriveSync.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.slideToUpload.slideImages.count">
-            </PersistentString>
-            <PersistentString
-               value = "notification.userInfo">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AssayParametersViewController viewWillAppear:]:AssayParametersViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.nameTextField.layer.borderColor">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__31-[GoogleDriveSync uploadSlide:]_block_invoke:GoogleDriveSync.m">
-      </ContextState>
-      <ContextState
-         contextName = "__31-[GoogleDriveSync uploadImage:]_block_invoke_3:GoogleDriveSync.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "nextNumber.intValue">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__40-[AnalysisViewController viewDidAppear:]_block_invoke:AnalysisViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.imagePath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AnalysisViewController viewDidAppear:]:AnalysisViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.currentSlide.slideAnalysisResults">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[LoginViewController resignAndLogin:]:LoginViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.currentUser.accessLevel">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__39-[ResultsViewController viewDidAppear:]_block_invoke:ResultsViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.image">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ImageTools::normalizeImage(cv::Mat):ImageTools.cpp">
-      </ContextState>
-      <ContextState
          contextName = "__37-[AnalysisViewController viewDidLoad]_block_invoke:AnalysisViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -96,24 +101,35 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[Runner imagePickerController:didFinishPickingMediaWithInfo:]:Runner.mm">
-      </ContextState>
-      <ContextState
-         contextName = "-[SlideDiagnosisViewController viewWillAppear:]:SlideDiagnosisViewController.m">
+         contextName = "__31-[GoogleDriveSync uploadImage:]_block_invoke_3:GoogleDriveSync.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.scoreMarker.hidden">
+               value = "nextNumber.intValue">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Classifier::runWithImage(cv::Mat):Classifier.cpp">
+         contextName = "__63-[GoogleDriveSync downloadExam:completionHandler:errorHandler:]_block_invoke:GoogleDriveSync.m">
          <PersistentStrings>
             <PersistentString
-               value = "((float*)scores_and_centers.data)[0,0]">
+               value = "im.googleDriveFileID">
             </PersistentString>
             <PersistentString
-               value = "scores_and_centers.data">
+               value = "localMatchingImage.googleDriveFileID">
+            </PersistentString>
+            <PersistentString
+               value = "localMatchingImage.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__64-[GoogleDriveSync downloadImage:completionHandler:errorHandler:]_block_invoke:GoogleDriveSync.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CaptureViewController didPressCapture:]:CaptureViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "previewView.lastCapturedImage.size">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -122,6 +138,14 @@
          <PersistentStrings>
             <PersistentString
                value = "self.roiData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__39-[ResultsViewController viewDidAppear:]_block_invoke:ResultsViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.image">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -137,20 +161,34 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AnalysisViewController viewDidLoad]:AnalysisViewController.m">
+         contextName = "-[AssayParametersViewController viewWillAppear:]:AssayParametersViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "picture.path">
+               value = "self.nameTextField.layer.borderColor">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CaptureViewController didPressCapture:]:CaptureViewController.m">
+         contextName = "-[AnalysisViewController viewDidAppear:]:AnalysisViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "previewView.lastCapturedImage.size">
+               value = "self.currentSlide.slideAnalysisResults">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__31-[GoogleDriveSync uploadSlide:]_block_invoke:GoogleDriveSync.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController resignAndLogin:]:LoginViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.currentUser.accessLevel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ImageTools::normalizeImage(cv::Mat):ImageTools.cpp">
       </ContextState>
       <ContextState
          contextName = "-[TBDiagnoser runWithImage:]:TBDiagnoser.mm">
@@ -167,16 +205,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
+         contextName = "-[ResultsViewController viewDidAppear:]:ResultsViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "[UIColor yellowColor]">
+               value = "self.view.subviews">
             </PersistentString>
             <PersistentString
-               value = "buttonPressed.tag">
+               value = "((UIViewController*)(self.viewControllers[0])).view.subviews">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AnalysisViewController viewDidLoad]:AnalysisViewController.m">
+         <PersistentStrings>
             <PersistentString
-               value = "buttonPressed.titleLabel.textColor">
+               value = "picture.path">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -207,13 +250,68 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ResultsViewController viewDidAppear:]:ResultsViewController.m">
+         contextName = "__40-[AnalysisViewController viewDidAppear:]_block_invoke:AnalysisViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.view.subviews">
+               value = "self.imagePath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[GoogleDriveSync doSync]:GoogleDriveSync.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "im.googleDriveFileID">
             </PersistentString>
             <PersistentString
-               value = "((UIViewController*)(self.viewControllers[0])).view.subviews">
+               value = "ex.googleDriveFileID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[CaptureViewController saveImageCallback]_block_invoke:CaptureViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.currentSlide">
+            </PersistentString>
+            <PersistentString
+               value = "self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[EditSlideViewController viewWillDisappear:]:EditSlideViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.currentSlide.sputumQuality">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__25-[GoogleDriveSync doSync]_block_invoke255:GoogleDriveSync.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "file.identifier">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MapViewController handleTapBehind:]:MapViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "+[TBScopeData dateFromString:]:TBScopeData.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[SlideDiagnosisViewController viewWillAppear:]:SlideDiagnosisViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.currentExam">
+            </PersistentString>
+            <PersistentString
+               value = "self.dateScannedLabel1.text">
+            </PersistentString>
+            <PersistentString
+               value = "self.scoreMarker.hidden">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
