@@ -232,7 +232,7 @@
         
         NSLog(@"analysis complete");
         
-        [TBScopeData touchExam:self.currentExam];
+        [TBScopeData touchExam:self.currentSlide.exam];
         [[TBScopeData sharedData] saveCoreData];
         
         [self performSegueWithIdentifier:@"ResultsSegue" sender:nil];

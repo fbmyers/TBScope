@@ -381,10 +381,9 @@
     
     //commit any notes added here
     if (![self.currentExam.diagnosisNotes isEqualToString:self.diagnosisNotesTextView.text])
+    {
         self.currentExam.diagnosisNotes = self.diagnosisNotesTextView.text;
-    
-    // Commit to core data (for comments)
-    if (self.currentExam.hasChanges) {
+        
         [TBScopeData touchExam:self.currentExam];
         [[TBScopeData sharedData] saveCoreData];
     }

@@ -227,6 +227,8 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
         //reachability?
         if ([self isOkToSync])
         {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStarted" object:nil];
+            
             NSPredicate* pred; NSMutableArray* results;
             
             /////////////////////////
@@ -382,6 +384,8 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
         else if (self.imageDownloadQueue.count>0)
             [self.imageDownloadQueue removeObjectAtIndex:0];
 
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncUpdate" object:nil];
+        
         [self processTransferQueues];
     };
     
@@ -413,6 +417,8 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
                errorHandler:errorBlock];
     }
     else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncUpdate" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStopped" object:nil];
         NSLog(@"upload/download queues empty");
     }
     

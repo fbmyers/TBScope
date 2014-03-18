@@ -19,4 +19,6 @@
 @property (strong,nonatomic) NSDateFormatter* dateFormatter;
 @property (strong,nonatomic) NSDateFormatter* timeFormatter;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *syncSpinner;
+
 @end

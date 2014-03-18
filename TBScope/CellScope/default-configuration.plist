@@ -7,7 +7,7 @@
 	<key>LastSyncDate</key>
 	<date>1984-01-30T13:40:00Z</date>
 	<key>SyncInterval</key>
-	<integer>60</integer>
+	<integer>30</integer>
 	<key>ExamIDFormat</key>
 	<string>.*</string>
 	<key>CellScopeBTUUID</key>

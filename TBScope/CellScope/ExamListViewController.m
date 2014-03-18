@@ -22,6 +22,38 @@
     return self;
 }
 
+- (void) viewDidLoad
+{
+    // react to google sync notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTable)
+                                                 name:@"GoogleSyncUpdate"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self.syncSpinner
+                                             selector:@selector(startAnimating)
+                                                 name:@"GoogleSyncStarted"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self.syncSpinner
+                                             selector:@selector(stopAnimating)
+                                                 name:@"GoogleSyncStopped"
+                                               object:nil];
+}
+
+- (void)updateTable
+{
+    NSLog(@"updateTable");
+    
+    //  Grab the data
+    self.examListData = [CoreDataHelper getObjectsForEntity:@"Exams" withSortKey:@"examID" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     //setup date/time formatters
@@ -31,15 +63,18 @@
     self.timeFormatter = [[NSDateFormatter alloc] init];
     [self.timeFormatter setDateStyle:NSDateFormatterNoStyle];
     [self.timeFormatter setTimeStyle:NSDateFormatterShortStyle];
-    
-    //  Grab the data
-    self.examListData = [CoreDataHelper getObjectsForEntity:@"Exams" withSortKey:@"examID" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
-    
-    //  Force table refresh
-    [self.tableView reloadData];
+
+    [self updateTable];
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    //[self.syncSpinner stopAnimating];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self.syncSpinner];
+    
+}
 
 #pragma mark - Table view data source
 
@@ -75,7 +110,7 @@
     NSString* timeString;
     if (currentSlide1!=nil) {
         dateString = [self.dateFormatter stringFromDate:[TBScopeData dateFromString:currentSlide1.dateCollected]];
-        dateString = [self.timeFormatter stringFromDate:[TBScopeData dateFromString:currentSlide1.dateCollected]];
+        timeString = [self.timeFormatter stringFromDate:[TBScopeData dateFromString:currentSlide1.dateCollected]];
         
     }
     else
@@ -93,57 +128,75 @@
     cell.timeLabel.text = timeString;
     
     cell.scoreLabel1.text = [NSString stringWithFormat:@"%3.1f",currentSlide1.slideAnalysisResults.score*100];
-    
-    if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
-        cell.scoreLabel1.backgroundColor = [UIColor redColor];
-    else if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
-        cell.scoreLabel1.backgroundColor = [UIColor greenColor];
-    else if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
-        cell.scoreLabel1.backgroundColor = [UIColor yellowColor];
-    else
+    [cell.scoreLabel1.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+    [cell.scoreLabel1.layer setBorderWidth:1];
+    if (currentSlide1!=nil)
     {
-        cell.scoreLabel1.backgroundColor = [UIColor lightGrayColor];
-        cell.scoreLabel1.text = @"N/A";
+        if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
+            cell.scoreLabel1.backgroundColor = [UIColor redColor];
+        else if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
+            cell.scoreLabel1.backgroundColor = [UIColor greenColor];
+        else if ([currentSlide1.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
+            cell.scoreLabel1.backgroundColor = [UIColor yellowColor];
+        else
+        {
+            cell.scoreLabel1.backgroundColor = [UIColor lightGrayColor];
+            cell.scoreLabel1.text = @"N/A";
+        }
     }
-
-    cell.scoreLabel2.text = [NSString stringWithFormat:@"%3.1f",currentSlide2.slideAnalysisResults.score*100];
-    
-    if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
-        cell.scoreLabel2.backgroundColor = [UIColor redColor];
-    else if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
-        cell.scoreLabel2.backgroundColor = [UIColor greenColor];
-    else if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
-        cell.scoreLabel2.backgroundColor = [UIColor yellowColor];
     else
     {
-        cell.scoreLabel2.backgroundColor = [UIColor lightGrayColor];
-        cell.scoreLabel2.text = @"N/A";
+        cell.scoreLabel1.backgroundColor = [UIColor blackColor];
+
+        cell.scoreLabel1.text = @"";
+    }
+    
+    cell.scoreLabel2.text = [NSString stringWithFormat:@"%3.1f",currentSlide2.slideAnalysisResults.score*100];
+    [cell.scoreLabel2.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+    [cell.scoreLabel2.layer setBorderWidth:1];
+    if (currentSlide2!=nil)
+    {
+        if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
+            cell.scoreLabel2.backgroundColor = [UIColor redColor];
+        else if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
+            cell.scoreLabel2.backgroundColor = [UIColor greenColor];
+        else if ([currentSlide2.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
+            cell.scoreLabel2.backgroundColor = [UIColor yellowColor];
+        else
+        {
+            cell.scoreLabel2.backgroundColor = [UIColor lightGrayColor];
+            cell.scoreLabel2.text = @"N/A";
+        }
+    }
+    else
+    {
+        cell.scoreLabel2.backgroundColor = [UIColor blackColor];
+        cell.scoreLabel2.text = @"";
     }
     
     cell.scoreLabel3.text = [NSString stringWithFormat:@"%3.1f",currentSlide3.slideAnalysisResults.score*100];
-    
-    if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
-        cell.scoreLabel3.backgroundColor = [UIColor redColor];
-    else if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
-        cell.scoreLabel3.backgroundColor = [UIColor greenColor];
-    else if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
-        cell.scoreLabel3.backgroundColor = [UIColor yellowColor];
+    [cell.scoreLabel3.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+    [cell.scoreLabel3.layer setBorderWidth:1];
+    if (currentSlide3!=nil)
+    {
+        if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
+            cell.scoreLabel3.backgroundColor = [UIColor redColor];
+        else if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
+            cell.scoreLabel3.backgroundColor = [UIColor greenColor];
+        else if ([currentSlide3.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
+            cell.scoreLabel3.backgroundColor = [UIColor yellowColor];
+        else //algorithm hasn't run yet
+        {
+            cell.scoreLabel3.backgroundColor = [UIColor lightGrayColor];
+            cell.scoreLabel3.text = @"N/A";
+        }
+    }
     else
     {
-        cell.scoreLabel3.backgroundColor = [UIColor lightGrayColor];
-        cell.scoreLabel3.text = @"N/A";
+        cell.scoreLabel3.backgroundColor = [UIColor blackColor];
+        cell.scoreLabel3.text = @"";
     }
     
-    //figure out upload state
-    if ([[[GoogleDriveSync sharedGDS] examUploadQueue] containsObject:currentExam]) { //pending upload
-        cell.syncIcon.backgroundColor = [UIColor yellowColor];
-    }
-    else
-    {
-
-    }
-    
-
     //figure out sync indicator color
     if (currentExam.googleDriveFileID!=nil) {
         cell.syncIcon.backgroundColor = [UIColor greenColor]; //default, fully synced
