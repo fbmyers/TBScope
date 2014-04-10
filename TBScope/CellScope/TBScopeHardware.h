@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BLE.h"
+#import "TBScopeData.h"
 
 @interface TBScopeHardware : NSObject <BLEDelegate, UIAlertViewDelegate>
 

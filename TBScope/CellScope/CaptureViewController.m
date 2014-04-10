@@ -55,7 +55,7 @@
     //TODO: i'd rather do this as a delegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveImageCallback) name:@"ImageCaptured" object:nil];
 
-    
+    [TBScopeData CSLog:@"Capture screen presented" inCategory:@"USER"];
 
     
 }
@@ -114,17 +114,17 @@
 {
     UIImage* image = previewView.lastCapturedImage; //[self convertImageToGrayScale:previewView.lastCapturedImage];
     
-    NSLog(@"did get image");
-
+    [TBScopeData CSLog:@"Snapped an image" inCategory:@"CAPTURE"];
+    
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
         if (error) {
-            NSLog(@"Error writing image to photo album");
+            [TBScopeData CSLog:@"Error saving image to asset library" inCategory:@"CAPTURE"];
         }
         else {
             Images* newImage = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
             newImage.path = assetURL.absoluteString;
-            newImage.fieldNumber = self.currentField;
+            newImage.fieldNumber = self.currentField+1;
             newImage.metadata = previewView.lastImageMetadata;
             [self.currentSlide addSlideImagesObject:newImage];
             
@@ -144,7 +144,14 @@
                 self.analyzeButton.tintColor = [UIColor whiteColor];
             }
             
-            NSLog(@"did save");
+            [TBScopeData CSLog:[NSString stringWithFormat:@"Saved image for %@ - %d-%d, to filename: %@",
+                                               self.currentSlide.exam.examID,
+                                               self.currentSlide.slideNumber,
+                                               newImage.fieldNumber,
+                                               newImage.path]
+                    inCategory:@"CAPTURE"];
+            
+            
         }
     }];
 
@@ -275,7 +282,6 @@
 
 - (void) didReceiveMemoryWarning
 {
-    NSLog(@"captureviewcontroller did receive mem warning");
     self.previewView.lastCapturedImage = nil;
 }
 

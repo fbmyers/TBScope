@@ -23,6 +23,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [self fetchValuesFromPreferences];
+    
+    [TBScopeData CSLog:@"Settings screen presented" inCategory:@"USER"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -71,7 +73,6 @@
 
 - (void)saveValuesToPreferences
 {
-    NSLog(@"Saving preferences.");
     
     NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
     NSString* alertString = @"";

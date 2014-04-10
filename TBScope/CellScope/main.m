@@ -2,8 +2,8 @@
 //  main.m
 //  CellScope
 //
-//  Created by Matthew Bakalar on 8/19/12.
-//  Copyright (c) 2012 Matthew Bakalar. All rights reserved.
+//  Created by UC Berkeley Fletcher Lab on 8/19/12.
+//  Copyright (c) 2012 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

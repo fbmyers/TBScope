@@ -48,7 +48,10 @@
     if (ble.peripherals)
         ble.peripherals = nil;
     
-    //now reconnect
+    
+    [TBScopeData CSLog:@"Searching for Bluetooth CellScope" inCategory:@"HARDWARE"];
+    
+    //now connect
     [ble findBLEPeripherals:2];
     [NSTimer scheduledTimerWithTimeInterval:(float)1.0 target:self selector:@selector(connectionTimer:) userInfo:nil repeats:NO];
 }
@@ -60,8 +63,9 @@
     [ble findBLEPeripherals:2];
     [NSTimer scheduledTimerWithTimeInterval:(float)1.0 target:self selector:@selector(connectionTimer:) userInfo:nil repeats:NO];
     
-    NSLog(@"->Disconnected");
-    //fire this off as a notification
+    [TBScopeData CSLog:@"Bluetooth Disconnected" inCategory:@"HARDWARE"];
+    
+    //fire this off as a notification, messagebox?
 }
 
 // When RSSI is changed, this will be called
@@ -71,10 +75,11 @@
     
 }
 
-// When disconnected, this will be called
+// When connected, this will be called
 -(void) bleDidConnect
 {
-    NSLog(@"->Connected");
+    [TBScopeData CSLog:@"Bluetooth Connected" inCategory:@"HARDWARE"];
+    
     //fire this off as a notification
 }
 
@@ -109,13 +114,18 @@
     {
         for (CBPeripheral* p in ble.peripherals)
         {
-            NSLog(p.identifier.UUIDString);
+            [TBScopeData CSLog:[NSString stringWithFormat:@"CellScope detected w/ UUID: %@",p.identifier.UUIDString]
+                    inCategory:@"HARDWARE"];
+            
             if ([p.identifier.UUIDString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeBTUUID"]])
             {
                 [ble connectPeripheral:p];
                 return;
             }
         }
+        
+        [TBScopeData CSLog:@"Currently paired CellScope was not detected." inCategory:@"HARDWARE"];
+        
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Bluetooth Connection", nil)
                                                          message:NSLocalizedString(@"A new CellScope has been detected. Pair this iPad with this CellScope?",nil)
                                                         delegate:self
@@ -154,7 +164,9 @@
         
         [ble connectPeripheral:[ble.peripherals objectAtIndex:0]];
         
-        NSLog(@"now paired with %@",newUUID);
+        [TBScopeData CSLog:[NSString stringWithFormat:@"This iPad is now paired with CellScope Bluetooth UUID: %@",newUUID]
+                inCategory:@"HARDWARE"];
+        
     }
     
 }

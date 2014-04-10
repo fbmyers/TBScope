@@ -26,6 +26,8 @@
     
     loggedInAs.text = [NSString stringWithFormat:NSLocalizedString(@"Logged in as: %@",nil),[[[TBScopeData sharedData] currentUser] username]];
     [self.navigationItem setTitle:NSLocalizedString(@"Main Menu",nil)];
+
+    [TBScopeData CSLog:@"Main menu screen presented" inCategory:@"USER"];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

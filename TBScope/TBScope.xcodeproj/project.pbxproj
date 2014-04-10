@@ -128,6 +128,7 @@
 		A5C341941835A4CD00DBBD37 /* scalearrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341931835A4CD00DBBD37 /* scalearrow.png */; };
 		A5C341A41835A4D200DBBD37 /* scalearrow2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341A31835A4D200DBBD37 /* scalearrow2x.png */; };
 		A5C5079E1866304D00187BBC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5079D1866304D00187BBC /* CoreBluetooth.framework */; };
+		A5CB970018EF4E90009CD561 /* CoreDataJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */; };
 		A5CF19FA187A39DF00C2C2E1 /* CameraScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CF19F9187A39DF00C2C2E1 /* CameraScrollView.m */; };
 		A5CF1A08187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A04187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif */; };
 		A5CF1A09187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A05187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif */; };
@@ -547,6 +548,8 @@
 		A5C341931835A4CD00DBBD37 /* scalearrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow.png; sourceTree = "<group>"; };
 		A5C341A31835A4D200DBBD37 /* scalearrow2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow2x.png; sourceTree = "<group>"; };
 		A5C5079D1866304D00187BBC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		A5CB96FE18EF4E90009CD561 /* CoreDataJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataJSONHelper.h; sourceTree = "<group>"; };
+		A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataJSONHelper.m; sourceTree = "<group>"; };
 		A5CF19F8187A39DF00C2C2E1 /* CameraScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraScrollView.h; sourceTree = "<group>"; };
 		A5CF19F9187A39DF00C2C2E1 /* CameraScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraScrollView.m; sourceTree = "<group>"; };
 		A5CF1A04187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif; sourceTree = "<group>"; };
@@ -699,6 +702,8 @@
 				A57014AE18A6F0BE00881F95 /* TBScopeHardware.m */,
 				A500C0B018AC0DF300D8C569 /* GoogleDriveSync.h */,
 				A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */,
+				A5CB96FE18EF4E90009CD561 /* CoreDataJSONHelper.h */,
+				A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */,
 				A563C8B618CACC0700146930 /* Reachability.h */,
 				A563C8B718CACC0700146930 /* Reachability.m */,
 				9B6BF0B715E19ACD002834C5 /* Frameworks */,
@@ -1543,6 +1548,7 @@
 				A52D7E70183DEBB000A487EA /* GTLQueryDrive.m in Sources */,
 				A52D7E67183DEBB000A487EA /* GTLDriveParentReference.m in Sources */,
 				A52D7FAF183DEBB000A487EA /* GTLUtilities.m in Sources */,
+				A5CB970018EF4E90009CD561 /* CoreDataJSONHelper.m in Sources */,
 				A52D7E6C183DEBB000A487EA /* GTLDrivePropertyList.m in Sources */,
 				A52D7D4C183DEBB000A487EA /* GTMHTTPFetcherLogViewController.m in Sources */,
 				A52D7E5A183DEBB000A487EA /* GTLDriveChange.m in Sources */,

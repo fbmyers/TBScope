@@ -41,13 +41,14 @@ void exit_with_help()
 	);
 	exit(1);
 }
-/**
+
+//this had been commented out previously, and i re-enabled it because the program wouldn't compile. not sure what happened, or why this was originally commented out - FBM 2014-04-03
 void exit_input_error(int line_num)
 {
 	fprintf(stderr,"Wrong input format at line %d\n", line_num);
 	exit(1);
 }
-*/
+
 void parse_command_line(int argc, char **argv, char *input_file_name, char *model_file_name);
 void read_problem(const char *filename);
 void do_cross_validation();

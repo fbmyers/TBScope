@@ -13,6 +13,8 @@
 #import "EditSlideViewController.h"
 #import "MapViewController.h"
 
+#import "GoogleDriveSync.h"
+
 @interface EditExamViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong,nonatomic) Exams* currentExam;

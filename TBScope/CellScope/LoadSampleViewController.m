@@ -3,7 +3,7 @@
 //  TBScope
 //
 //  Created by Frankie Myers on 11/10/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
+//  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import "LoadSampleViewController.h"
@@ -18,6 +18,8 @@
     self.navigationItem.title = NSLocalizedString(@"Load Sample Slide", nil);
     self.promptLabel.text = NSLocalizedString(@"Load the slide as shown below:", nil);
     [self.directionsLabel setText:NSLocalizedString(@"Wait for loading tray to come to a stop before inserting slide. Insert slide with sputum side up and gently push into machine. Click next. Slide will automatically load into position for image capture.", nil)];
+    
+    [TBScopeData CSLog:@"Load slide screen presented" inCategory:@"USER"];
 }
 
 - (void) viewDidAppear:(BOOL)animated

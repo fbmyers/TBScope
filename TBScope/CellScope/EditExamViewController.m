@@ -38,6 +38,9 @@
     //if this is a new exam, set up the entry in core data
     if (self.currentExam==nil)
     {
+        //we don't want to sync this new exam until its details have been entered
+        [[GoogleDriveSync sharedGDS] setSyncEnabled:NO];
+        
         Exams* newExam = (Exams*)[NSEntityDescription insertNewObjectForEntityForName:@"Exams" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
         
         newExam.userName = [[[TBScopeData sharedData] currentUser] username];
@@ -92,7 +95,7 @@
     //bring up keyboard and set focus on patient name field
     [self.examIDTextField becomeFirstResponder];
     
-
+    [TBScopeData CSLog:@"Edit exam screen presented" inCategory:@"USER"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -122,6 +125,8 @@
         [TBScopeData touchExam:self.currentExam];
         [[TBScopeData sharedData] saveCoreData];
     }
+    
+    [[GoogleDriveSync sharedGDS] setSyncEnabled:YES];
 }
 
 - (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender

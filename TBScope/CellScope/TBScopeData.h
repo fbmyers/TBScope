@@ -22,7 +22,10 @@
 
 @interface TBScopeData : NSObject
 
-@property (nonatomic, retain) NSManagedObjectContext* managedObjectContext;
+//TODO: might want to create a third MOC for sync (so that while exams are being edited, other exams can still be synced)
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectContext *logMOC; //this is just used for logging
+
 @property (nonatomic, retain) CLLocationManager* locationManager;
 
 @property (nonatomic, retain) Users* currentUser;
@@ -30,11 +33,14 @@
 
 + (id)sharedData;
 
+//TODO: make these class methods
 - (void) startGPS;
 
 - (void) saveCoreData;
 
 - (void) resetCoreData;
+
++ (void)CSLog:(NSString*)entry inCategory:(NSString*)cat;
 
 + (BOOL)validateString:(NSString *)string withPattern:(NSString *)pattern;;
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Users.h"
+#import "TBScopeData.h"
 
 @interface SettingsViewController : UITableViewController
 

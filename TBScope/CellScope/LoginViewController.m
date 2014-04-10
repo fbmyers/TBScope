@@ -2,8 +2,8 @@
 //  LoginViewController.m
 //  CellScope
 //
-//  Created by Matthew Bakalar on 8/19/12.
-//  Copyright (c) 2012 Matthew Bakalar. All rights reserved.
+//  Created by UC Berkeley Fletcher Lab on 8/19/12.
+//  Copyright (c) 2012 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import "LoginViewController.h"
@@ -19,7 +19,6 @@
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 
     
-    NSLog(@"current language: %@" ,[[NSLocale preferredLanguages] objectAtIndex:0]);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -43,6 +42,8 @@
 {
     [super viewDidAppear:animated];
     
+
+    
     //TODO: have this populate textfields and call resignAndLogin
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"BypassLogin"])
     {
@@ -52,7 +53,11 @@
         NSMutableArray* results = [CoreDataHelper searchObjectsForEntity:@"Users" withPredicate:pred andSortKey:@"username" andSortAscending:YES andContext:[[TBScopeData sharedData] managedObjectContext]];
         [[TBScopeData sharedData] setCurrentUser:(Users*)results[0]];
         [self performSegueWithIdentifier:@"LoginSegue" sender:nil];
+        
+        [TBScopeData CSLog:@"Login bypassed" inCategory:@"USER"];
     }
+    else
+        [TBScopeData CSLog:@"Login screen presented" inCategory:@"USER"];
     
     //GoogleDriveViewController *viewController = [[GoogleDriveViewController alloc] init];
     //[self presentViewController:viewController animated:YES completion:nil];
@@ -83,12 +88,16 @@
 
             //Segue transition to next view
             [self performSegueWithIdentifier:@"LoginSegue" sender:sender];
+            [TBScopeData CSLog:[NSString stringWithFormat:@"Successful login for username: %@",usernameField.text] inCategory:@"USER"];
             
         }
         else {
+            [TBScopeData CSLog:[NSString stringWithFormat:@"Invalid uesrname/password combo, username entered: %@",usernameField.text] inCategory:@"USER"];
             //username/password invalid, start over
             passwordField.text = @"";
             invalidLogin.hidden = NO;
+            
+
         }
     }
 }

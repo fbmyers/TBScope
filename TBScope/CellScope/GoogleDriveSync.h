@@ -16,8 +16,10 @@
 #import "GTMOAuth2ViewControllerTouch.h"
 #import "GTLDrive.h"
 
-#import "CJSONSerializer.h"
-#import "CJSONDeserializer.h"
+#import "CoreDataJSONHelper.h"
+
+#define ONLY_CHECK_RECORDS_SINCE_LAST_FULL_SYNC 0
+#define GOOGLE_DRIVE_TIMEOUT 5
 
 @interface GoogleDriveSync : NSObject
 
@@ -32,17 +34,17 @@
 @property (strong, nonatomic) NSMutableArray* examUploadQueue;
 @property (strong, nonatomic) NSMutableArray* examDownloadQueue;
 
-//move these to json helper
-- (NSData*)jsonStructureFromManagedObjects:(NSArray*)managedObjects;
-- (NSArray*)managedObjectsFromJSONStructure:(NSData*)json withManagedObjectContext:(NSManagedObjectContext*)moc;
-
-- (NSDictionary*)dataStructureFromManagedObject:(NSManagedObject*)managedObject;
+@property (nonatomic) BOOL syncEnabled;
 
 - (BOOL) isLoggedIn;
 
 - (NSString*) userEmail;
 
 - (void)doSync;
+
+- (void) executeQueryWithTimeout:(GTLQuery*)query
+               completionHandler:(id)completionBlock
+                    errorHandler:(void(^)(NSError*))errorBlock;
 
 @end
 

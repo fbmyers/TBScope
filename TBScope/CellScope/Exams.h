@@ -32,6 +32,8 @@
 @property (nonatomic, retain) NSString * patientName;
 @property (nonatomic, retain) NSString * userName;
 @property (nonatomic, retain) NSOrderedSet *examSlides;
+@property (nonatomic) BOOL synced;
+
 @end
 
 @interface Exams (CoreDataGeneratedAccessors)

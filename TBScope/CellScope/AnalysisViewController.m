@@ -98,23 +98,43 @@
 {
     int numFields = self.currentSlide.slideImages.count;
     
-    NSLog(@"loading image %d of %d",fieldNumber+1,numFields);
     self.analysisLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Processing image %d of %d...",nil),fieldNumber+1,numFields];
     self.progress.progress = (float)fieldNumber/(float)numFields;
     
-    //TODO: put in a loop to handle multiple images
     Images* currentImage = (Images*)[[self.currentSlide slideImages] objectAtIndex:fieldNumber];
     
+    //TODO: remove
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"RunWithExampleTBImage"])
     {
         currentImage.path = [[NSUserDefaults standardUserDefaults] objectForKey:@"ExampleTBImageURL"];
     }
     
-    NSLog(@"analyzing image at path = %@",currentImage.path);
+    [TBScopeData CSLog:[NSString stringWithFormat:@"Analyzing image %d-%d from exam %@ with path %@",
+                        self.currentSlide.slideNumber,
+                        fieldNumber+1,
+                        self.currentSlide.exam.examID,
+                        currentImage.path]
+            inCategory:@"ANALYSIS"];
+    
     
     //TODO: spin out analysis to separate thread and add spinny thing and progress bar
     //TODO: handle back button (cancel analysis) and have it say "Cancel"
     
+    [TBScopeData getImage:currentImage resultBlock:^(UIImage* image, NSError* err){
+        
+        if (err==nil) {
+            //do analysis on this image
+            currentImage.imageAnalysisResults = [diagnoser runWithImage:(image)]; //todo: spin out as new thread
+            
+            [TBScopeData touchExam:self.currentExam];
+            [[TBScopeData sharedData] saveCoreData];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AnalysisComplete" object:nil];
+        
+    }];
+    
+    /*
     NSURL *aURL = [NSURL URLWithString:currentImage.path]; //TODO: check that this is a valid url to an image (see example code on stackoverflow)
 
     if ([[aURL scheme] isEqualToString:@"assets-library"])
@@ -170,6 +190,7 @@
         });
 
     }
+    */
     
 }
 
@@ -212,9 +233,6 @@
         }
         slideScore /= [[NSUserDefaults standardUserDefaults] integerForKey:@"NumPatchesToAverage"];
         
-        //NSLog([sortedROIs description]);
-        NSLog(@"slide score: %f",slideScore);
-        
         slideResults.dateDiagnosed = [TBScopeData stringFromDate:[NSDate date]];
         slideResults.numAFBAlgorithm = numPositive;
         slideResults.score = slideScore;
@@ -230,7 +248,8 @@
         
         currentSlide.slideAnalysisResults = slideResults;
         
-        NSLog(@"analysis complete");
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Slide-level analysis complete with score: %f",slideScore]
+                inCategory:@"ANALYSIS"];
         
         [TBScopeData touchExam:self.currentSlide.exam];
         [[TBScopeData sharedData] saveCoreData];

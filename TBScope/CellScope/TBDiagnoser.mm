@@ -56,8 +56,6 @@
     CGFloat rows = image.size.height;
     cv::Mat cvMat;
 
-    NSLog(@"width = %f", image.size.width);
-    NSLog(@"height = %f", image.size.height);
     
     if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelRGB) { // 3 channels
         cvMat = cv::Mat(rows, cols, CV_8UC3);
@@ -85,15 +83,16 @@
 
 - (ImageAnalysisResults*) runWithImage: (UIImage*) img {
 
+    [TBScopeData CSLog:@"Analysis started" inCategory:@"ANALYSIS"];
+    
     //can prob. put this in helper file
     //NSString* pListPath = [[NSBundle mainBundle] pathForResource:@"algorithm_settings" ofType:@"plist"];
     //NSDictionary* dict = [[NSDictionary alloc] initWithContentsOfFile:pListPath];
-    int numPatchesToAvg = [[NSUserDefaults standardUserDefaults] integerForKey:@"NumPatchesToAverage"]; //[[dict objectForKey:@"NumPatchesToAverage"] integerValue];
+    int numPatchesToAvg = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"NumPatchesToAverage"]; //[[dict objectForKey:@"NumPatchesToAverage"] integerValue];
     float diagnosticThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"DiagnosticThreshold"]; //[[dict objectForKey:@"DiagnosticThreshold"] floatValue];
     
-    
     NSDate *start = [NSDate date];
-    NSLog(@"Processing image");
+
     //convert image to OpenCV matrix
     
     cv::Mat converted_img = [self cvMatWithImage:[self grayScaleImage:img]];
@@ -103,15 +102,18 @@
     //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     //const char *docs_dir = [[paths objectAtIndex:0] fileSystemRepresentation];
     
-    const char *docs_dir = "";
+    [TBScopeData CSLog:@"Image converted to cv::Mat, starting classification algorithm" inCategory:@"ANALYSIS"];
     
+    const char *docs_dir = "";
     cv::vector<float> resVector = Classifier::runWithImage(converted_img, docs_dir);
+    
     
     converted_img.release();
     
     NSDate *end = [NSDate date];
     NSTimeInterval executionTime = [end timeIntervalSinceDate:start];
-    NSLog(@"Execution Time: %f", executionTime);
+    [TBScopeData CSLog:[NSString stringWithFormat:@"Classification algorithm finished, execution time: %f",executionTime]
+            inCategory:@"ANALYSIS"];
 
     //get a new ImageAnalysisResults instance from Core Data
     ImageAnalysisResults* results = (ImageAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"ImageAnalysisResults" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
@@ -161,6 +163,9 @@
     results.diagnosis = (topAverage>diagnosticThreshold);
     results.numAFBManual = 0;
     results.dateAnalyzed = [TBScopeData stringFromDate:[NSDate date]];
+    
+    [TBScopeData CSLog:[NSString stringWithFormat:@"Image analysis results generated, score: %f",topAverage]
+            inCategory:@"ANALYSIS"];
     
     return results;
 }

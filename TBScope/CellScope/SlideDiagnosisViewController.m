@@ -327,6 +327,7 @@
         self.analysisResultsLabel.backgroundColor = [UIColor lightGrayColor];
     }
     
+    [TBScopeData CSLog:@"Slide diagnosis screen presented" inCategory:@"USER"];    
 }
 
 - (void) displayScore:(SlideAnalysisResults*)results

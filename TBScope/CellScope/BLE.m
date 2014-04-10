@@ -181,8 +181,8 @@ static int rssi = 0;
 {
     if (self.CM.state != CBCentralManagerStatePoweredOn)
     {
-        NSLog(@"CoreBluetooth not correctly initialized !");
-        NSLog(@"State = %d (%s)\r\n", self.CM.state, [self centralManagerStateToString:self.CM.state]);
+        //NSLog(@"CoreBluetooth not correctly initialized !");
+        //NSLog(@"State = %d (%s)\r\n", self.CM.state, [self centralManagerStateToString:self.CM.state]);
         return -1;
     }
     

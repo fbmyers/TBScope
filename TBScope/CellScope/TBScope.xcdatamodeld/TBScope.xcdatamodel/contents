@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Exams" representedClassName="Exams" syncable="YES">
         <attribute name="bluetoothUUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="cellscopeID" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,6 +18,7 @@
         <attribute name="patientHIVStatus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="patientID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="patientName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="synced" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="examSlides" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Slides" inverseName="exam" inverseEntity="Slides" syncable="YES"/>
     </entity>
@@ -74,7 +75,7 @@
         <attribute name="username" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Exams" positionX="-344" positionY="-193" width="128" height="328"/>
+        <element name="Exams" positionX="-344" positionY="-193" width="128" height="343"/>
         <element name="ImageAnalysisResults" positionX="196" positionY="218" width="128" height="148"/>
         <element name="Images" positionX="25" positionY="99" width="128" height="133"/>
         <element name="Logs" positionX="288" positionY="-214" width="128" height="103"/>

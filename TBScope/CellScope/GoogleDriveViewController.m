@@ -2,8 +2,8 @@
 //  GoogleDriveViewController.m
 //  CellScopeLoa
 //
-//  Created by Matthew Bakalar on 10/20/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
+//  Created by UC Berkeley Fletcher Lab on 10/20/13.
+//  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import "GoogleDriveViewController.h"

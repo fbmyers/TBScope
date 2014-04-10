@@ -38,6 +38,7 @@
     return csvMat;
 }
 
+/*
 + (void) storeScores: (NSMutableArray*) scores withCentroids:(NSMutableArray*) centroids {
     CSAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
@@ -57,6 +58,7 @@
     NSError *error;
     [context save:&error];
 }
+*/
 
 + (NSString*) tknKeyHelper: (NSString*) str {
     return [[str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] objectAtIndex:0];

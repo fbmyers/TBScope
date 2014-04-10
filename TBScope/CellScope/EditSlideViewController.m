@@ -106,6 +106,7 @@
     else if ([self.currentSlide.sputumQuality isEqualToString:@"BLOOD+SALIVA"])
         [self.sputumQualityPicker selectRow:3 inComponent:0 animated:NO];
 
+    [TBScopeData CSLog:@"Edit slide screen presented" inCategory:@"USER"];    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -173,12 +174,6 @@
 // Display each row's data.
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     return [self.sputumQualityChoicesArray objectAtIndex: row];
-}
-
-// Do something with the selected row.
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    NSLog(@"You selected this: %@", [self.sputumQualityChoicesArray objectAtIndex: row]);
-    
 }
 
 @end

@@ -3,7 +3,7 @@
 //  TBScope
 //
 //  Created by Frankie Myers on 11/10/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
+//  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import "ExamListViewController.h"
@@ -43,7 +43,6 @@
 
 - (void)updateTable
 {
-    NSLog(@"updateTable");
     
     //  Grab the data
     self.examListData = [CoreDataHelper getObjectsForEntity:@"Exams" withSortKey:@"examID" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
@@ -65,6 +64,8 @@
     [self.timeFormatter setTimeStyle:NSDateFormatterShortStyle];
 
     [self updateTable];
+    
+    [TBScopeData CSLog:@"Exam list screen presented" inCategory:@"USER"];
     
 }
 
@@ -206,9 +207,10 @@
                   if (im.path==nil)
                      cell.syncIcon.backgroundColor = [UIColor purpleColor]; //some images pending download
         
-        NSDate* lastSyncDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"LastSyncDate"];
-        NSDate* examModifiedDate = [TBScopeData dateFromString:currentExam.dateModified];
-        if ([examModifiedDate timeIntervalSinceDate:lastSyncDate]>0)
+        //NSDate* lastSyncDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"LastSyncDate"];
+        //NSDate* examModifiedDate = [TBScopeData dateFromString:currentExam.dateModified];
+        //if ([examModifiedDate timeIntervalSinceDate:lastSyncDate]>0)
+        if (currentExam.synced==NO)
             cell.syncIcon.backgroundColor = [UIColor yellowColor]; //has been modified locally
     }
     else {
