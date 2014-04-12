@@ -96,7 +96,7 @@
 
 - (void)analyzeField:(int)fieldNumber
 {
-    int numFields = self.currentSlide.slideImages.count;
+    int numFields = (int)self.currentSlide.slideImages.count;
     
     self.analysisLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Processing image %d of %d...",nil),fieldNumber+1,numFields];
     self.progress.progress = (float)fieldNumber/(float)numFields;
@@ -245,8 +245,11 @@
         {
             slideResults.diagnosis = @"NEGATIVE";
         }
+        //TODO: WHAT ABOUT INDETERMINATE?
         
         currentSlide.slideAnalysisResults = slideResults;
+        
+        
         
         [TBScopeData CSLog:[NSString stringWithFormat:@"Slide-level analysis complete with score: %f",slideScore]
                 inCategory:@"ANALYSIS"];

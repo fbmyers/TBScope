@@ -17,6 +17,7 @@
 @property (nonatomic) int32_t x;
 @property (nonatomic) int32_t y;
 @property (nonatomic) BOOL userCall;
+@property (nonatomic, retain) NSData * image;
 @property (nonatomic, retain) ImageAnalysisResults *imageAnalysisResult;
 
 @end

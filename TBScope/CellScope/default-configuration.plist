@@ -33,9 +33,9 @@
 	<key>RunWithExampleTBImage</key>
 	<false/>
 	<key>RedThreshold</key>
-	<string>0.5</string>
+	<real>0.5</real>
 	<key>YellowThreshold</key>
-	<string>0.3</string>
+	<real>0.3</real>
 	<key>NumFieldsPerSlide</key>
 	<integer>5</integer>
 	<key>BypassLogin</key>

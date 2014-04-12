@@ -253,14 +253,35 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"ResultsSegue"]) {
-        NSIndexPath *indexPath = [[self tableView] indexPathForCell:sender];
-        Exams* selectedExam = [self.examListData objectAtIndex:indexPath.row];
+        //determine which exam was selected
+        Exams* selectedExam;
+        if ([sender isKindOfClass:[ExamListTableViewCell class]])
+        {
+            NSIndexPath *indexPath = [[self tableView] indexPathForCell:sender];
+            selectedExam = [self.examListData objectAtIndex:indexPath.row];
+        }
+        else if ([sender isKindOfClass:[Exams class]])
+            selectedExam = (Exams*)sender;
         
         ResultsTabBarController *rtbc = (ResultsTabBarController*)[segue destinationViewController];
         rtbc.currentExam = selectedExam;
     }
+    else if ([segue.identifier isEqualToString:@"MapSegue"]) {
+        MapViewController* mvc = (MapViewController*)[segue destinationViewController];
+        mvc.showOnlyCurrentExam = NO;
+        mvc.allowSelectingExams = YES;
+        mvc.currentExam = nil;
+        mvc.delegate = self;
+        
+    }
 }
 
+- (void)mapView:(MapViewController*)sender didSelectExam:(Exams *)exam
+{
+    [self performSegueWithIdentifier:@"ResultsSegue" sender:exam];
+    
+    NSLog(@"exam selected");
+}
 
 
 @end

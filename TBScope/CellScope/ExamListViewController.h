@@ -11,8 +11,9 @@
 #import "TBScopeData.h"
 #import "ResultsTabBarController.h"
 #import "ExamListTableViewCell.h"
+#import "MapViewController.h"
 
-@interface ExamListViewController : UITableViewController
+@interface ExamListViewController : UITableViewController <MapViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *examListData;
 
@@ -20,5 +21,6 @@
 @property (strong,nonatomic) NSDateFormatter* timeFormatter;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *syncSpinner;
+@property (weak, nonatomic) IBOutlet UIButton *mapButton;
 
 @end

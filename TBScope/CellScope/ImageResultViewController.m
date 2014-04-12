@@ -9,37 +9,78 @@
 #import "ImageResultViewController.h"
 
 
+
 @implementation ImageResultViewController
 
 @synthesize slideViewer,fieldSelector;
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    int numFields = (int)self.currentSlide.slideImages.count;
+    //clear field selector
+    while (fieldSelector.numberOfSegments>0)
+        [fieldSelector removeSegmentAtIndex:0 animated:NO];
     
-    if (numFields<2)
-        fieldSelector.hidden = YES;
-    else
-    {
-        fieldSelector.hidden = NO;
-        for (int i=2; i<fieldSelector.numberOfSegments; i++) //clear segments 3, 4, 5...
-            [fieldSelector removeSegmentAtIndex:i animated:NO];
-        
-        for (int i=2; i<numFields; i++)
-            [fieldSelector insertSegmentWithTitle:[NSString stringWithFormat:@"%d",i+1] atIndex:i animated:NO];
-        
-        [fieldSelector setSelectedSegmentIndex:0];
+    int numFields = (int)self.currentSlide.slideImages.count;
+    BOOL analysisHasBeenPerformed = (self.currentSlide.slideAnalysisResults!=nil);
+    fieldSelector.hidden = (numFields<=1);
+    
+    //populate the images
+    for (int i=0; i<numFields; i++) {
+        [fieldSelector insertSegmentWithTitle:[NSString stringWithFormat:@"%d",i+1] atIndex:i animated:NO];
     }
     
-    [self loadImage:0];
-    //TODO: the context needs to be set in the init for these tab views
+    //add the option for ROI view
+    if (analysisHasBeenPerformed) {
+        [fieldSelector insertSegmentWithTitle:@"ROI" atIndex:0 animated:NO];
+    }
+    
+    //trigger the field selector to load the first image
+    [fieldSelector setSelectedSegmentIndex:0];
+    [self didChangeFieldSelection:nil];
+    
+    //[self loadImage:0];
+    
+    //set thresholds
+    self.slideViewer.subView.redThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"RedThreshold"];
+    self.slideViewer.subView.yellowThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"YellowThreshold"];
+    self.roiGridView.redThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"RedThreshold"];
+    self.roiGridView.yellowThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"YellowThreshold"];
+    
 
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    if (self.roiGridView.hasChanges) {
+        [TBScopeData touchExam:self.currentSlide.exam];
+        [[TBScopeData sharedData] saveCoreData];
+    }
 }
 
 - (IBAction)didChangeFieldSelection:(id)sender
 {
-    [self loadImage:(int)fieldSelector.selectedSegmentIndex];
-    
+    NSString* selectedTitle = [fieldSelector titleForSegmentAtIndex:fieldSelector.selectedSegmentIndex];
+    if ([selectedTitle isEqualToString:@"ROI"])
+    {
+        self.roiGridView.hidden = NO;
+        self.slideViewer.hidden = YES;
+        
+        self.roiGridView.scoresVisible = YES;
+        self.roiGridView.boxesVisible = YES;
+        self.roiGridView.selectionVisible = YES;
+        
+        [self.roiGridView setSlide:self.currentSlide];
+        
+    }
+    else //assume it's a number indicating the field
+    {
+        self.roiGridView.hidden = YES;
+        self.slideViewer.hidden = NO; //TODO: should we delete image data?
+        
+        int fieldIndex = selectedTitle.intValue;
+        [self loadImage:fieldIndex-1];
+        
+    }
 }
 
 - (void) loadImage:(int)index

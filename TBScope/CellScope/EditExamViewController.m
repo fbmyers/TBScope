@@ -116,7 +116,8 @@
         self.currentExam.patientAddress = self.addressTextField.text;
         self.currentExam.location = self.clinicTextField.text;
         self.currentExam.intakeNotes = self.intakeNotesTextView.text;
-
+        self.currentExam.diagnosisNotes = @"";
+        
         NSDateFormatter* df = [[NSDateFormatter alloc] init];
         [df setDateStyle:NSDateFormatterShortStyle];
         [df setTimeStyle:NSDateFormatterNoStyle];
@@ -183,7 +184,11 @@
     }
     else if ([segue.identifier isEqualToString:@"MapSegue"]) {
         MapViewController* mvc = (MapViewController*)[segue destinationViewController];
-        mvc.examLocation = [TBScopeData coordinatesFromString:self.currentExam.gpsLocation];
+        
+        mvc.showOnlyCurrentExam = NO;
+        mvc.currentExam = self.currentExam;
+        mvc.allowSelectingExams = NO;
+        mvc.delegate = nil;
         
     }
 }

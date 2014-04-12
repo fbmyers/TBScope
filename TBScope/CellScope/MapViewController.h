@@ -8,17 +8,29 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "TBScopeData.h"
 
 #define DEFAULT_MAP_REGION_SPAN 2000
 
-@interface MapViewController : UIViewController
+@class MapViewController;
+@protocol MapViewControllerDelegate <NSObject>
+@optional
+- (void)mapView:(MapViewController*)sender didSelectExam:(Exams *)exam;
+@end
+
+@interface MapViewController : UIViewController <MKMapViewDelegate>
 
 @property (weak,nonatomic) IBOutlet MKMapView* mapView;
 
-@property (strong,nonatomic) UITapGestureRecognizer *recognizer;
+@property (nonatomic) BOOL showOnlyCurrentExam;
+@property (nonatomic) BOOL allowSelectingExams;
 
-@property (nonatomic) CLLocationCoordinate2D examLocation;
+@property (strong,nonatomic) Exams* currentExam;
+@property (strong,nonatomic) id <MapViewControllerDelegate> delegate;
 
-- (void)handleTapBehind:(UITapGestureRecognizer *)sender;
+- (void)refreshMap;
+
 
 @end
+
+

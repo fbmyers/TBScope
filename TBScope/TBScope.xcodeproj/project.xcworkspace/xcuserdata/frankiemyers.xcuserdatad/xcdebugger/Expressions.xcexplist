@@ -50,21 +50,30 @@
          contextName = "-[GoogleDriveSync managedObjectFromStructure:withManagedObjectContext:]:GoogleDriveSync.m">
       </ContextState>
       <ContextState
-         contextName = "__25-[GoogleDriveSync doSync]_block_invoke_2:GoogleDriveSync.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
+         contextName = "-[CJSONSerializer serializeObject:error:]:CJSONSerializer.m">
          <PersistentStrings>
             <PersistentString
-               value = "[UIColor yellowColor]">
+               value = "inObject.bytes[0]">
             </PersistentString>
             <PersistentString
-               value = "buttonPressed.tag">
+               value = "inObject.length">
             </PersistentString>
             <PersistentString
-               value = "buttonPressed.titleLabel.textColor">
+               value = "theData[0]">
+            </PersistentString>
+            <PersistentString
+               value = "[theData bytes]">
+            </PersistentString>
+            <PersistentString
+               value = "[inObject length]">
+            </PersistentString>
+            <PersistentString
+               value = "inObject[0]">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__25-[GoogleDriveSync doSync]_block_invoke_2:GoogleDriveSync.m">
       </ContextState>
       <ContextState
          contextName = "-[ResultsTabBarController viewWillAppear:]:ResultsTabBarController.m">
@@ -112,6 +121,20 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[UIColor yellowColor]">
+            </PersistentString>
+            <PersistentString
+               value = "buttonPressed.tag">
+            </PersistentString>
+            <PersistentString
+               value = "buttonPressed.titleLabel.textColor">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__63-[GoogleDriveSync downloadExam:completionHandler:errorHandler:]_block_invoke:GoogleDriveSync.m">
          <PersistentStrings>
             <PersistentString
@@ -122,6 +145,14 @@
             </PersistentString>
             <PersistentString
                value = "localMatchingImage.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ImageResultViewController viewWillDisappear:]:ImageResultViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.currentSlide.">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -137,10 +168,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__copy_helper_block_:AnalysisViewController.m">
+         contextName = "__62-[GoogleDriveSync uploadImage:completionHandler:errorHandler:]_block_invoke_2:GoogleDriveSync.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.roiData">
+               value = "self.imageUploadQueue">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -153,13 +184,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CameraScrollView grabImage]:CameraScrollView.m">
+         contextName = "__copy_helper_block_:AnalysisViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "image">
-            </PersistentString>
-            <PersistentString
-               value = "self.lastCapturedImage">
+               value = "self.roiData">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -172,10 +200,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__62-[GoogleDriveSync uploadImage:completionHandler:errorHandler:]_block_invoke_2:GoogleDriveSync.m">
+         contextName = "-[CameraScrollView grabImage]:CameraScrollView.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.imageUploadQueue">
+               value = "image">
+            </PersistentString>
+            <PersistentString
+               value = "self.lastCapturedImage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -208,10 +239,16 @@
                value = "results.diagnosis">
             </PersistentString>
             <PersistentString
-               value = "((float*)results.data)[0,0]">
+               value = "i">
             </PersistentString>
             <PersistentString
                value = "numPatchesToAvg">
+            </PersistentString>
+            <PersistentString
+               value = "roi.y">
+            </PersistentString>
+            <PersistentString
+               value = "((float*)results.data)[0,0]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -265,6 +302,14 @@
          <PersistentStrings>
             <PersistentString
                value = "self.imagePath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Classifier::runWithImage(cv::Mat, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):Classifier.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "rowMat.at&lt;float&gt;(0,0)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -72,7 +72,8 @@ namespace Classifier
                 cv::Mat patch(Features::makePatch(row, col, original));
                 cv::Mat binPatch(Features::calculateBinarizedPatch(patch));
 				MatDict data;
-
+                
+                
 				data.insert(std::make_pair("row", rowMat));
 				data.insert(std::make_pair("col", colMat));
 				data.insert(std::make_pair("patch", patch));
@@ -300,7 +301,7 @@ namespace Classifier
 
 		// Feature detection
 		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
-		
+        
         Debug::printFeatures(features, "phi");
 		Debug::printFeatures(features, "origPatch");
 		Debug::printFeatures(features, "binPatch");
@@ -309,6 +310,8 @@ namespace Classifier
         // Classify Objects
         vector<double> prob_results = classifyObjects(features);
 
+        //at this point, I don't think the problem has occurred yet - FBM
+        
         // Sort scores, keeping index
         vector<pair<double, int> > prob_results_with_index;
         vector<double>::iterator it = prob_results.begin();
@@ -322,27 +325,28 @@ namespace Classifier
         sort(prob_results_with_index.begin(), prob_results_with_index.end(), comparator);
         Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
 
-		int too_close = 0;
-		int too_low = 0;
-		index = 0;
-		//cv::Mat scores_and_centers;
-        vector<float> scores_and_centers(0);  //TODO: is this ok for instantiation?
+		//int too_close = 0;
+		//int too_low = 0;
+		//index = 0;
+
+        vector<float> scores_and_centers(0);
         
 		vector<pair<double, int> >::const_iterator pit = prob_results_with_index.begin();
-
-		float max_distance = pow(pow(normalizedImage.rows, 2.0) + pow(normalizedImage.cols, 2.0), 0.5);
+        
+		//float max_distance = pow(pow(normalizedImage.rows, 2.0) + pow(normalizedImage.cols, 2.0), 0.5);
 		for (; pit != prob_results_with_index.end(); pit++) {
 			pair<double, int> score_with_index = *pit;
 			double score = score_with_index.first;
 			int score_index = score_with_index.second;
-
+            
 			if (score > 1E-6) {
 				MatDict feature = features[score_index];
 				cv::Mat rowMat = feature.find("row")->second;
 				cv::Mat colMat = feature.find("col")->second;
-				int row = (int) rowMat.at<float>(0, 0);
+				int row = (int) rowMat.at<float>(0, 0); 
 				int col = (int) colMat.at<float>(0, 0);
 
+                /* take all this out for now...
 				float min_distance = max_distance;
 				int min_index = 0;
 				int counter = 0;
@@ -357,7 +361,7 @@ namespace Classifier
 					int other_col = (int) other_col_mat.at<float>(0, 0);
 
 					if (other_row != row || other_col != col) {
-						float distance = pow(pow(row - other_row, 2.0) + pow(col - other_col, 2.0), 0.5);
+						float distance = pow(pow(row - other_row, 2.0) + pow(col - other_col, 2.0), 0.5); //euclidian distance
 						if (distance < min_distance) {
 							min_distance = distance;
 							min_index = counter;
@@ -366,27 +370,28 @@ namespace Classifier
 					counter++;
 				}
 
+                //really don't understand what this is doing...and it seems to be setting some patches to -1944,-2592
 				float too_close = 0.75 * PATCHSZ;
 				if (min_distance <= too_close) {
 					MatDict feature = features[min_index];
 					cv::Mat close_feature_row = feature.find("row")->second;
 					cv::Mat close_feature_col = feature.find("col")->second;
-					close_feature_row.at<float>(0, 0) = -1 * normalizedImage.rows;
+					close_feature_row.at<float>(0, 0) = -1 * normalizedImage.rows; //what is this doing???
 					close_feature_col.at<float>(0, 0) = -1 * normalizedImage.cols;
 					feature.insert(std::pair<const char*, cv::Mat>("row", close_feature_row));
 					feature.insert(std::pair<const char*, cv::Mat>("col", close_feature_col));
 					features[min_index] = feature;
 					too_close++;
-				} else {
-                    scores_and_centers.push_back((float)score);
+				} else {*/
+                    scores_and_centers.push_back((float)score); //note: would be best to return a struct w/ score, row, col, and patch data
                     scores_and_centers.push_back((float)row);
                     scores_and_centers.push_back((float)col);
                     
-				}
-			} else {
-				too_low++;
-			}
-			index++;
+				//}
+			} //else {
+				//too_low++;
+			//}
+			//index++;
 		} 
         
         normalizedImage.release();

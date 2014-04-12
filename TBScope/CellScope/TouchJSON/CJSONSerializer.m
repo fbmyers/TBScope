@@ -126,8 +126,10 @@ static NSData *kTrue = NULL;
         }
     else if ([inObject isKindOfClass:[NSData class]])
         {
-        NSString *theString = [[NSString alloc] initWithData:inObject encoding:NSUTF8StringEncoding];
-        if (theString == NULL)
+            //NSData* theData = (NSData*)inObject;
+        //NSString *theString = [[NSString alloc]  initWithBytes:[theData bytes] length:[theData length] encoding: NSUTF8StringEncoding]; //FBM mod...necessary since data isn't null-terminated
+        //NSString *theString = [[NSString alloc] initWithData:inObject encoding:NSUTF8StringEncoding];
+        /*if (theString == NULL)
             {
             if (outError)
                 {
@@ -140,7 +142,8 @@ static NSData *kTrue = NULL;
         else
             {
             theResult = [self serializeString:theString error:outError];
-            }
+            }*/
+            theResult = inObject; //??? this won't work because if JSON characters appear in data, will screw up parsing
         }
     else if ([inObject respondsToSelector:@selector(JSONDataRepresentation)])
         {

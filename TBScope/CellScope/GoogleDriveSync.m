@@ -94,17 +94,13 @@ BOOL _hasAttemptedLogUpload;
 {
     [TBScopeData CSLog:@"Checking if we should sync..." inCategory:@"SYNC"];
     
-    //previousSyncHadNoChanges keeps track of whether any changes are added to the upload/download queues as a result of this doSync call.
-    //note that since the modified date comparison requires an asynchronous call to google drive, it's not possible to loop
-    //through all exams and say at the end whether all are in sync. So this will be determined the NEXT time doSync is called
-    
-    //TODO: same thread sleep trick as below? do a few retries, or make it check constantly? or put doSync in the reachability notification
+
     _hasAttemptedLogUpload = NO;
-    
+
+    //if google unreachable or sync disabled, abort this operation and call again some time later
     if (self.syncEnabled==NO || [self isOkToSync]==NO) {
         [NSTimer scheduledTimerWithTimeInterval:[[NSUserDefaults standardUserDefaults] floatForKey:@"SyncRetryInterval"] target:self selector:@selector(doSync) userInfo:nil repeats:NO];
-        [TBScopeData CSLog:@"Google Drive unreachable or sync disabled. Cannot build queue. `Will retry." inCategory:@"SYNC"];
-        
+        [TBScopeData CSLog:@"Google Drive unreachable or sync disabled. Cannot build queue. Will retry." inCategory:@"SYNC"];
         return;
     }
     
@@ -175,20 +171,23 @@ BOOL _hasAttemptedLogUpload;
                                                   [TBScopeData CSLog:@"Requested JSON file doesn't exist in Google Drive (error 404), so removing this reference."
                                                           inCategory:@"SYNC"];
                      
+                                                  //remove all google drive references
                                                   ex.googleDriveFileID = nil;
+                                                  for (Slides* sl in ex.examSlides)
+                                                      for (Images* im in sl.slideImages)
+                                                          im.googleDriveFileID = nil;
                                                   [[TBScopeData sharedData] saveCoreData];
                                               }
                                               else {
                                                   [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description]
                                                           inCategory:@"SYNC"];
-                                                  NSLog(@"an error occured: %@",[error description]);
                                                   //previousSyncHadNoChanges = NO;
                                               }
                                               
                                               
                                           }
                                              errorHandler:^(NSError* error){
-                                                 NSLog(@"Query couldn't be executed.");
+                                                 [TBScopeData CSLog:@"Query couldn't be executed." inCategory:@"SYNC"];
                                              }];
 
                         }
@@ -249,12 +248,12 @@ BOOL _hasAttemptedLogUpload;
                                           }
                                       }
                                   } else {
-                                      NSLog(@"An error occurred: %@", [error description]);
+                                      [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description] inCategory:@"SYNC"];
                                       //previousSyncHadNoChanges = NO;
                                   }
                               }
                                  errorHandler:^(NSError* error) {
-                                     NSLog(@"Query couldn't be executed");
+                                     [TBScopeData CSLog:@"Query couldn't be executed" inCategory:@"SYNC"];
                                  }];
                 
                 /////////////////////////
@@ -287,7 +286,14 @@ BOOL _hasAttemptedLogUpload;
 //uploads/downloads the next item in the upload queue
 - (void)processTransferQueues
 {
-    void (^completionBlock)() = ^{
+    
+    void (^completionBlock)(NSError*) = ^(NSError* error){
+        
+        //log the error, but continue on with queue
+        if (error!=nil) {
+            [TBScopeData CSLog:[NSString stringWithFormat:@"Error while processing queue: %@",error.description] inCategory:@"SYNC"];
+        }
+        
         //remove previous item from queue
         if (self.imageUploadQueue.count>0)
             [self.imageUploadQueue removeObjectAtIndex:0];
@@ -299,18 +305,12 @@ BOOL _hasAttemptedLogUpload;
             [self.imageDownloadQueue removeObjectAtIndex:0];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncUpdate" object:nil];
-        
-        //if (self.syncEnabled) //check syncEnabled again (in case user has transitioned into editing an exam)
+
+        //call process queue again to execute the next item in queue
         [self processTransferQueues];
     };
     
-    //TODO: maybe refactor this to be a single completion block w/ error returned as parameter
-    void (^errorBlock)(NSError*) = ^(NSError* error){
-        NSLog(@"error occured while processing queue (network error?)");
-        NSLog(@"%@",[error description]);
-        //previousSyncHadNoChanges = NO;
-        completionBlock();
-    };
+    static BOOL isPaused = NO;
     
     //if network unreachable or sync disabled, call this function again later (it will pick up where it left off)
     //this is ideal for short-term network drops, since it means we don't have to go through the whole doSync process again
@@ -318,44 +318,41 @@ BOOL _hasAttemptedLogUpload;
     if (self.syncEnabled==NO || [self isOkToSync]==NO) {
             [NSTimer scheduledTimerWithTimeInterval:[[NSUserDefaults standardUserDefaults] floatForKey:@"SyncRetryInterval"] target:self selector:@selector(processTransferQueues) userInfo:nil repeats:NO];
         [TBScopeData CSLog:@"Google Drive unreachable or sync disabled while processing queue. Will retry." inCategory:@"SYNC"];
-        
+        isPaused = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStopped" object:nil];
         return;
     }
     
+    if (isPaused) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStarted" object:nil];
+    }
     
-    NSLog(@"Checking for network connection");
-    //maybe check for syncEnabled && isSyncOk and infinite loop if not (with thread sleep of ~1 min)
-    
-    NSLog(@"Processing next item in sync queue...");
+    [TBScopeData CSLog:@"Processing next item in sync queue..." inCategory:@"SYNC"];
     if (self.imageUploadQueue.count>0 && self.syncEnabled) {
         [self uploadImage:(Images*)self.imageUploadQueue[0]
-        completionHandler:completionBlock
-             errorHandler:errorBlock];
+        completionHandler:completionBlock];
     }
     else if (self.examUploadQueue.count>0 && self.syncEnabled) {
         [self uploadExam:(Exams*)self.examUploadQueue[0]
-       completionHandler:completionBlock
-            errorHandler:errorBlock];
+       completionHandler:completionBlock];
     }
     else if (self.examDownloadQueue.count>0 && self.syncEnabled) {
         [self downloadExam:(GTLDriveFile*)self.examDownloadQueue[0]
-         completionHandler:completionBlock
-              errorHandler:errorBlock];
+         completionHandler:completionBlock];
     }
     else if (self.imageDownloadQueue.count>0 && self.syncEnabled) {
         [self downloadImage:(Images*)self.imageDownloadQueue[0]
-          completionHandler:completionBlock
-               errorHandler:errorBlock];
+          completionHandler:completionBlock];
     }
     else if (_hasAttemptedLogUpload==NO && self.syncEnabled)
     {
-        [self uploadLogWithCompletionHandler:completionBlock errorHandler:errorBlock];
+        [self uploadLogWithCompletionHandler:completionBlock];
         _hasAttemptedLogUpload = YES;
     }
     else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncUpdate" object:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStopped" object:nil];
-        NSLog(@"upload/download queues empty or sync disabled");
+        [TBScopeData CSLog:@"upload/download queues empty or sync disabled" inCategory:@"SYNC"];
         
         //if (previousSyncHadNoChanges) {
             
@@ -373,10 +370,12 @@ BOOL _hasAttemptedLogUpload;
 }
 
 // Uploads a photo to Google Drive and sets the local googleFileID to the fileID provided by google
-- (void)uploadImage:(Images*)image completionHandler:(void(^)())completionBlock errorHandler:(void(^)(NSError*))errorBlock
+- (void)uploadImage:(Images*)image completionHandler:(void(^)(NSError*))completionBlock
 {
     if (image.googleDriveFileID==nil) {
-        NSLog(@"UPLOADING IMAGE #%d FROM SLIDE #%d FROM EXAM %@",image.fieldNumber,image.slide.slideNumber,image.slide.exam.examID);
+        
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading image %d-%d for exam %@",image.slide.slideNumber,image.fieldNumber,image.slide.exam.examID]
+                inCategory:@"SYNC"];
 
         //load the image
         [TBScopeData getImage:image resultBlock:^(UIImage* im, NSError* error)
@@ -412,37 +411,34 @@ BOOL _hasAttemptedLogUpload;
                            image.googleDriveFileID = insertedFile.identifier;
                            [[TBScopeData sharedData] saveCoreData];
                            
-                           NSLog(@"Uploaded image file name: %@, ID: %@", insertedFile.title, insertedFile.identifier);
-
-                           completionBlock();
+                           [TBScopeData CSLog:[NSString stringWithFormat:@"Uploaded image file name: %@ (ID: %@)", insertedFile.title, insertedFile.identifier] inCategory:@"SYNC"];
+                           
                        }
-                       else
-                           errorBlock(error); //likely over google drive quota or network error
+                       completionBlock(error); //error likely means google drive over quota or network error
                    }
                                   errorHandler:^(NSError* error){
-                                      errorBlock(error);
+                                      completionBlock(error);
                                   }];
                  
                  
                  
              }
              else
-                 errorBlock(error); //likely local file not found
+                 completionBlock(error); //likely local file not found
         }];
     }
     else
     {
-        NSLog(@"this image has already been uploaded");
-        completionBlock();
+        [TBScopeData CSLog:@"This image has already been uploaded." inCategory:@"SYNC"];
+        
+        completionBlock(nil);
     }
     
 }
 
 //upload an exam (either new or modified) to google drive
-- (void)uploadExam:(Exams*)exam completionHandler:(void(^)())completionBlock errorHandler:(void(^)(NSError*))errorBlock
+- (void)uploadExam:(Exams*)exam completionHandler:(void(^)(NSError*))completionBlock
 {
-    NSLog(@"UPLOADING EXAM: %@",exam.examID);
-
     //first check to make sure this exam has had all images uploaded (and therefore has google file IDs associated with each)
     BOOL allImagesUploaded = YES;
     for (Slides* sl in exam.examSlides)
@@ -451,6 +447,8 @@ BOOL _hasAttemptedLogUpload;
                 allImagesUploaded = NO;
     if (allImagesUploaded)
     {
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading exam: %@",exam.examID] inCategory:@"SYNC"];
+        
         //create a google file object from this exam
         GTLDriveFile* file = [GTLDriveFile object];
         file.title = [NSString stringWithFormat:@"%@ - %@.json",
@@ -466,12 +464,12 @@ BOOL _hasAttemptedLogUpload;
         GTLUploadParameters *uploadParameters = [GTLUploadParameters uploadParametersWithData:data MIMEType:file.mimeType];
         GTLQueryDrive* query;
         if (exam.googleDriveFileID==nil) {
-            NSLog(@"this is a new file in GD...");
+            [TBScopeData CSLog:@"This is a new file in Google Drive" inCategory:@"SYNC"];
             query = [GTLQueryDrive queryForFilesInsertWithObject:file
                                                 uploadParameters:uploadParameters];
         }
         else { //this file exists in google, so we are updating
-            NSLog(@"file exists in GD, updating with new data...");
+            [TBScopeData CSLog:@"File exists in Google Drive, will update." inCategory:@"SYNC"];
             query = [GTLQueryDrive queryForFilesUpdateWithObject:file
                                                           fileId:exam.googleDriveFileID
                                                 uploadParameters:uploadParameters];
@@ -490,31 +488,27 @@ BOOL _hasAttemptedLogUpload;
                               exam.synced = YES;
                               [[TBScopeData sharedData] saveCoreData];
                               
-                              NSLog(@"Uploaded exam file name: %@, ID: %@", insertedFile.title, insertedFile.identifier);
-                              
-                              completionBlock();
+                              [TBScopeData CSLog:[NSString stringWithFormat:@"Uploaded exam with file name: %@ (ID: %@)", insertedFile.title, insertedFile.identifier] inCategory:@"SYNC"];
                           }
-                          else
-                              errorBlock(error);
-                          
+                          completionBlock(error);
                       }
                          errorHandler:^(NSError* error){
-                             errorBlock(error);
+                             completionBlock(error);
                          }];
         
     }
     else
     {
-        NSLog(@"exam does not yet have all images uploaded, so it will be skipped for now");
-        completionBlock();
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Exam %@ does not yet have all images uploaded and will be skipped.",exam.examID] inCategory:@"SYNC"];
+        completionBlock(nil);
     }
 
 }
 
 //download exam (new or modified)
-- (void)downloadExam:(GTLDriveFile*)file completionHandler:(void(^)())completionBlock errorHandler:(void(^)(NSError*))errorBlock
+- (void)downloadExam:(GTLDriveFile*)file completionHandler:(void(^)(NSError*))completionBlock
 {
-    NSLog(@"DOWNLOADING EXAM FROM JSON FILE: %@, ID: %@",file.title,file.identifier);
+    [TBScopeData CSLog:[NSString stringWithFormat:@"Downloading exam JSON file: %@ (ID: %@)",file.title,file.identifier] inCategory:@"SYNC"];
     
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:file.downloadUrl];
     
@@ -528,6 +522,8 @@ BOOL _hasAttemptedLogUpload;
             if (error2 == nil && result.count>0)
             {
                 Exams* downloadedExam = (Exams*)result[0];
+                
+                [TBScopeData CSLog:[NSString stringWithFormat:@"Downloaded exam ID: %@", downloadedExam.examID] inCategory:@"SYNC"];
                 
                 downloadedExam.dateModified = file.modifiedDate.RFC3339String; //this is necessary to avoid cases where the updating app doesn't
                 downloadedExam.googleDriveFileID = file.identifier;
@@ -561,32 +557,34 @@ BOOL _hasAttemptedLogUpload;
                 {
                     //delete old copy
                     if (downloadedExam!=localExam)
+                    {
                         [[[TBScopeData sharedData] managedObjectContext] deleteObject:localExam];
+                        [TBScopeData CSLog:@"This exam exists, so it will be replaced with the new file." inCategory:@"SYNC"];
+                    }
                 }
 
                 //save
                 [[TBScopeData sharedData] saveCoreData];
                 
-                NSLog(@"Downloaded exam ID: %@ from file ID: %@", downloadedExam.examID, file.identifier);
-                completionBlock();
+                completionBlock(nil);
             }
             else
             {
-                NSLog(@"error parsing JSON file");
-                errorBlock(error2);
+                [TBScopeData CSLog:@"Error parsing JSON file" inCategory:@"SYNC"];
+                completionBlock(error2);
             }
             
         } else
-            errorBlock(error);
+            completionBlock(error);
     }];
 }
 
-- (void)downloadImage:(Images*)image completionHandler:(void(^)())completionBlock errorHandler:(void(^)(NSError*))errorBlock
+- (void)downloadImage:(Images*)image completionHandler:(void(^)(NSError*))completionBlock
 {
     //double check to make sure it hasn't already been downloaded
     if (image.path==nil)
     {
-        NSLog(@"DOWNLOADING IMAGE #%d FROM SLIDE #%d FROM EXAM %@ FROM GOOGLE FILE ID %@",image.fieldNumber,image.slide.slideNumber,image.slide.exam.examID,image.googleDriveFileID);
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Downloading image %d-%d of exam %@ from Google file ID: %@",image.slide.slideNumber,image.fieldNumber,image.slide.exam.examID,image.googleDriveFileID] inCategory:@"SYNC"];
         
         //get the image file metadata
         GTLQuery* query = [GTLQueryDrive queryForFilesGetWithFileId:image.googleDriveFileID];
@@ -610,41 +608,44 @@ BOOL _hasAttemptedLogUpload;
                                               image.path = assetURL.absoluteString;
                                               [[TBScopeData sharedData] saveCoreData];
                                               
-                                              NSLog(@"Downloaded image to path: %@", image.path);
-                                              completionBlock();
+                                              [TBScopeData CSLog:[NSString stringWithFormat:@"Downloaded image to path: %@", image.path]
+                                                      inCategory:@"SYNC"];
+                                              
                                           }
-                                          else
-                                              errorBlock(error); //likely disk is full
+                 
+                                          completionBlock(error); //error likely means disk is full
                                        }];
                                   }
                                   else
-                                      errorBlock(error); //likely data transfer interrupted
+                                      completionBlock(error); //likely data transfer interrupted
                               }];
                           }
                           else if (error.code == 404) //file not found error
                           {
-                              NSLog(@"referenced file does not exist in google drive (it was deleted on server?). fileID will be set to nil on client.");
+                              [TBScopeData CSLog:@"referenced file does not exist in google drive (it was deleted on server?). fileID will be set to nil on client."
+                                      inCategory:@"SYNC"];
+              
                               image.googleDriveFileID = nil;
                               [[TBScopeData sharedData] saveCoreData];
-                              completionBlock();
+                              completionBlock(error);
                           }
                           else
-                              errorBlock(error); //likely data transfer interrupted
+                              completionBlock(error); //likely data transfer interrupted
                       }
                          errorHandler:^(NSError* error){
-                             errorBlock(error); //likely network connection not present
+                             completionBlock(error); //likely network connection not present
                          }];
     }
     else
     {
-        NSLog(@"this image has already been downloaded");
-        completionBlock();
+        [TBScopeData CSLog:@"this image has already been downloaded" inCategory:@"SYNC"];
+        completionBlock(nil);
     }
     
 }
 
 //uploads any recent log entries to a new text file
-- (void) uploadLogWithCompletionHandler:(void(^)())completionBlock errorHandler:(void(^)(NSError*))errorBlock
+- (void) uploadLogWithCompletionHandler:(void(^)(NSError*))completionBlock
 {
     
     NSPredicate* pred = [NSPredicate predicateWithFormat:@"(synced == NO)"];
@@ -686,23 +687,18 @@ BOOL _hasAttemptedLogUpload;
                                   logEntry.synced = YES;
                               }
                               [[TBScopeData sharedData] saveCoreData];
-                              
-                              completionBlock();
                           }
-                          else
-                          {
-                              NSLog(@"error uploading log file");
-                              errorBlock(error);
-                          }
+                        
+                        completionBlock(error);
                       }
                          errorHandler:^(NSError* error){
-                             errorBlock(error);
+                             completionBlock(error);
                          }];
 
     }
     else
     {
-        completionBlock();
+        completionBlock(nil);
     }
     
 }
@@ -720,7 +716,7 @@ BOOL _hasAttemptedLogUpload;
     //TODO: roll this into my own executeQuery function and make it universal
     //TODO: check what happens if we are uploading a big file (hopefully returns a diff status code)
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(GOOGLE_DRIVE_TIMEOUT * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"status code: %ld",(long)ticket.statusCode);
+        //NSLog(@"google returned status code: %ld",(long)ticket.statusCode);
         if (ticket.statusCode==0) { //might also handle other error codes? code of 0 means that it didn't even attempt I guess? the other HTTP codes should get handled in the errorhandler above
             [ticket cancelTicket];
             NSError* error = [NSError errorWithDomain:@"GoogleDriveSync" code:123 userInfo:[NSDictionary dictionaryWithObject:@"No response from query. Likely network failure." forKey:@"description"]];

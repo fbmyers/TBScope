@@ -12,7 +12,7 @@
 #import "TBScopeHardware.h"
 
 #import "TBSlideViewer.h"
-
+#import "ImageROIResultView.h"
 
 @interface ImageResultViewController : UIViewController
 
@@ -21,6 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet TBSlideViewer* slideViewer;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *fieldSelector;
+@property (weak, nonatomic) IBOutlet ImageROIResultView* roiGridView;
 
 - (void) loadImage:(int)index;
 

@@ -16,6 +16,7 @@
 @dynamic x;
 @dynamic y;
 @dynamic userCall;
+@dynamic image;
 @dynamic imageAnalysisResult;
 
 @end

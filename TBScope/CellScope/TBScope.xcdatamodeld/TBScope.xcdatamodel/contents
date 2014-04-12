@@ -46,6 +46,7 @@
         <attribute name="synced" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="ROIs" representedClassName="ROIs" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="score" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="userCall" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="x" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -79,7 +80,7 @@
         <element name="ImageAnalysisResults" positionX="196" positionY="218" width="128" height="148"/>
         <element name="Images" positionX="25" positionY="99" width="128" height="133"/>
         <element name="Logs" positionX="288" positionY="-214" width="128" height="103"/>
-        <element name="ROIs" positionX="369" positionY="278" width="128" height="118"/>
+        <element name="ROIs" positionX="369" positionY="278" width="128" height="133"/>
         <element name="SlideAnalysisResults" positionX="25" positionY="-70" width="128" height="133"/>
         <element name="Slides" positionX="-162" positionY="-0" width="128" height="148"/>
         <element name="Users" positionX="288" positionY="-99" width="128" height="90"/>

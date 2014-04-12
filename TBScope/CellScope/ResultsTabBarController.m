@@ -31,7 +31,6 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TBScopeStoryboard" bundle: nil];
     
-    
     if (self.currentExam.examSlides.count>0) {
         ImageResultViewController *imageResultsVC1 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
         imageResultsVC1.currentSlide = (Slides*)self.currentExam.examSlides[0];
@@ -51,6 +50,7 @@
         [tabVCs addObject:imageResultsVC3];
     }
     
+
     self.viewControllers = tabVCs;
     
 }

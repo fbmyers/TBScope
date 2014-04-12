@@ -116,7 +116,7 @@
         self.dateScannedLabel3.text = [dateFormatter stringFromDate:date];
         self.sputumQualityLabel3.text = NSLocalizedString(slide.sputumQuality, nil);
         self.imageQualityLabel3.text = NSLocalizedString(@"Not Evaluated", nil);
-        self.numFieldsLabel3.text = [[NSString alloc] initWithFormat:@"%d",slide.slideImages.count];
+        self.numFieldsLabel3.text = [[NSString alloc] initWithFormat:@"%ld",slide.slideImages.count];
         
         //display diagnosis info
         if (slide.slideAnalysisResults!=nil)
@@ -310,6 +310,7 @@
     }
 
     //overall diagnosis
+    //TODO: need to have a discussion about how this is defined, and maybe save it to the exam record itself (would make pushpining easier)
     if (examDiagnosis>=100) {
         self.analysisResultsLabel.text = NSLocalizedString(@"PATIENT IS POSITIVE FOR TUBERCULOSIS", nil);
         self.analysisResultsLabel.backgroundColor = [UIColor redColor];
@@ -406,7 +407,14 @@
     }
     else if ([segue.identifier isEqualToString:@"MapSegue"]) {
         MapViewController* mvc = (MapViewController*)[segue destinationViewController];
-        mvc.examLocation = [TBScopeData coordinatesFromString:self.currentExam.gpsLocation];
+        mvc.allowSelectingExams = NO;
+        mvc.showOnlyCurrentExam = NO;
+        mvc.currentExam = self.currentExam;
+        mvc.delegate = nil;
+        
+        //[mvc showExamLocation:self.currentExam];
+        
+        //mvc.examLocation = [TBScopeData coordinatesFromString:self.currentExam.gpsLocation];
         
     }
 }

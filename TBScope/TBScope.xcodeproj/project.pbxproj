@@ -115,6 +115,8 @@
 		A599E1111824413300B52EF2 /* ResultsTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A599E1101824413300B52EF2 /* ResultsTabBarController.m */; };
 		A599E11418247BEF00B52EF2 /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A599E11318247BEF00B52EF2 /* AnalysisViewController.m */; };
 		A59AE396182B4F3B00BD3802 /* TBScopeStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */; };
+		A5A0F3CF18F70C7300909615 /* ImageROIResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A0F3CE18F70C7300909615 /* ImageROIResultView.m */; };
+		A5A0F3E118F70E4900909615 /* ImageROIResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A0F3E018F70E4900909615 /* ImageROIResultCell.m */; };
 		A5B45F8018302D4E002F4D30 /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */; };
 		A5B45F95183039BE002F4D30 /* LoadSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F94183039BE002F4D30 /* LoadSampleViewController.m */; };
 		A5B45F9818303E51002F4D30 /* ExamListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F9718303E51002F4D30 /* ExamListViewController.m */; };
@@ -525,6 +527,10 @@
 		A599E11218247BEF00B52EF2 /* AnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalysisViewController.h; sourceTree = "<group>"; };
 		A599E11318247BEF00B52EF2 /* AnalysisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalysisViewController.m; sourceTree = "<group>"; };
 		A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TBScopeStoryboard.storyboard; sourceTree = "<group>"; };
+		A5A0F3CD18F70C7300909615 /* ImageROIResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageROIResultView.h; sourceTree = "<group>"; };
+		A5A0F3CE18F70C7300909615 /* ImageROIResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageROIResultView.m; sourceTree = "<group>"; };
+		A5A0F3DF18F70E4900909615 /* ImageROIResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageROIResultCell.h; sourceTree = "<group>"; };
+		A5A0F3E018F70E4900909615 /* ImageROIResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageROIResultCell.m; sourceTree = "<group>"; };
 		A5B45F7E18302D4E002F4D30 /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
 		A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
 		A5B45F93183039BE002F4D30 /* LoadSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadSampleViewController.h; sourceTree = "<group>"; };
@@ -1039,6 +1045,10 @@
 			isa = PBXGroup;
 			children = (
 				A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */,
+				A5A0F3DF18F70E4900909615 /* ImageROIResultCell.h */,
+				A5A0F3E018F70E4900909615 /* ImageROIResultCell.m */,
+				A5A0F3CD18F70C7300909615 /* ImageROIResultView.h */,
+				A5A0F3CE18F70C7300909615 /* ImageROIResultView.m */,
 				A5FD3798183DBE6400C67D85 /* SettingsViewController.h */,
 				A5FD3799183DBE6400C67D85 /* SettingsViewController.m */,
 				A50B06501835695100880350 /* SlideDiagnosisViewController.h */,
@@ -1473,6 +1483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B6BF0C715E19ACD002834C5 /* main.m in Sources */,
+				A5A0F3CF18F70C7300909615 /* ImageROIResultView.m in Sources */,
 				9B6BF0CB15E19ACD002834C5 /* CSAppDelegate.mm in Sources */,
 				A5FCCD3118B6F0730004B2F5 /* Logs.m in Sources */,
 				9B6BF10215E19F2A002834C5 /* LoginViewController.m in Sources */,
@@ -1516,6 +1527,7 @@
 				A5FD37A0183DDEB400C67D85 /* GoogleDriveViewController.m in Sources */,
 				A52BDEB71859236F00B4ECB2 /* TBScope.xcdatamodeld in Sources */,
 				A52D7E5D183DEBB000A487EA /* GTLDriveChildList.m in Sources */,
+				A5A0F3E118F70E4900909615 /* ImageROIResultCell.m in Sources */,
 				A52D7D49183DEBB000A487EA /* GTMGatherInputStream.m in Sources */,
 				A52D7D69183DEBB000A487EA /* GTMOAuth2WindowController.m in Sources */,
 				A52D7D75183DEBB000A487EA /* GTLUploadParameters.m in Sources */,
