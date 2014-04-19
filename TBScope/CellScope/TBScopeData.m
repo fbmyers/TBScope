@@ -117,13 +117,23 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 
 - (void) startGPS
 {
+    //TODO: come back to this. it's not updating.
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters; // 10 m
-    [self.locationManager startUpdatingLocation];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest; // 10 m
+    self.locationManager.delegate = self;
+    [self.locationManager startMonitoringSignificantLocationChanges];
 }
 
+- (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    [TBScopeData CSLog:[NSString stringWithFormat:@"Did update GPS location: (%f,%f)",self.locationManager.location.coordinate.latitude,self.locationManager.location.coordinate.longitude] inCategory:@"DATA"];
+}
 
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    [TBScopeData CSLog:[NSString stringWithFormat:@"GPS error: %@",error.description] inCategory:@"DATA"];
+}
 
 - (void) saveCoreData
 {
@@ -303,7 +313,9 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     logEntry.date = [TBScopeData stringFromDate:[NSDate date]];
     logEntry.synced = NO;
     
-    [[[TBScopeData sharedData] logMOC] save:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{ //trying this, not sure how to ensure thread safety here
+        [[[TBScopeData sharedData] logMOC] save:nil];
+    });
 }
 
 // Validate the input string with the given pattern and

@@ -20,16 +20,17 @@
 #import "Users.h"
 #import "GTLDateTime.h"
 
-@interface TBScopeData : NSObject
+@interface TBScopeData : NSObject <CLLocationManagerDelegate>
 
 //TODO: might want to create a third MOC for sync (so that while exams are being edited, other exams can still be synced)
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *logMOC; //this is just used for logging
 
-@property (nonatomic, retain) CLLocationManager* locationManager;
+@property (nonatomic, strong) CLLocationManager* locationManager;
 
-@property (nonatomic, retain) Users* currentUser;
+@property (nonatomic, strong) Users* currentUser;
 
+@property (nonatomic,strong) CLLocation* lastLocation;
 
 + (id)sharedData;
 

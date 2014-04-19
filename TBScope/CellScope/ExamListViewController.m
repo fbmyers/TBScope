@@ -13,39 +13,44 @@
 
 @implementation ExamListViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void) viewDidLoad
 {
+    [super viewDidLoad];
+    
     // react to google sync notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTable)
                                                  name:@"GoogleSyncUpdate"
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.syncSpinner
-                                             selector:@selector(startAnimating)
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setSyncIndicator)
                                                  name:@"GoogleSyncStarted"
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.syncSpinner
-                                             selector:@selector(stopAnimating)
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setSyncIndicator)
                                                  name:@"GoogleSyncStopped"
                                                object:nil];
+}
+
+- (void)setSyncIndicator
+{
+    if ([[GoogleDriveSync sharedGDS] isSyncing]) {
+        self.syncLabel.hidden = NO;
+        [self.syncSpinner startAnimating];
+    }
+    else {
+        self.syncLabel.hidden = YES;
+        [self.syncSpinner stopAnimating];
+    }
 }
 
 - (void)updateTable
 {
     
     //  Grab the data
-    self.examListData = [CoreDataHelper getObjectsForEntity:@"Exams" withSortKey:@"examID" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
+    self.examListData = [CoreDataHelper getObjectsForEntity:@"Exams" withSortKey:@"dateModified" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
@@ -65,15 +70,9 @@
 
     [self updateTable];
     
-    [TBScopeData CSLog:@"Exam list screen presented" inCategory:@"USER"];
+    [self setSyncIndicator];
     
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    //[self.syncSpinner stopAnimating];
-    //[[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
-    //[[NSNotificationCenter defaultCenter] removeObserver:self.syncSpinner];
+    [TBScopeData CSLog:@"Exam list screen presented" inCategory:@"USER"];
     
 }
 
@@ -264,6 +263,8 @@
             selectedExam = (Exams*)sender;
         
         ResultsTabBarController *rtbc = (ResultsTabBarController*)[segue destinationViewController];
+        [rtbc.navigationItem setRightBarButtonItems:nil];
+        [rtbc.navigationItem setHidesBackButton:NO];
         rtbc.currentExam = selectedExam;
     }
     else if ([segue.identifier isEqualToString:@"MapSegue"]) {
@@ -280,7 +281,6 @@
 {
     [self performSegueWithIdentifier:@"ResultsSegue" sender:exam];
     
-    NSLog(@"exam selected");
 }
 
 

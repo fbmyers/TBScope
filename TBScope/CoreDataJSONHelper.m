@@ -7,6 +7,7 @@
 //
 
 #import "CoreDataJSONHelper.h"
+#import "NSData+HexData.h"
 
 @implementation CoreDataJSONHelper
 
@@ -81,6 +82,10 @@
                 [managedObject setValue:nil forKey:key];
             else if ([dicValue isKindOfClass:[NSArray class]] || [dicValue isKindOfClass:[NSDictionary class]])
                 ;
+            else if ([key isEqualToString:@"image"]) //TODO: hack...how to make this general?
+            {
+                [managedObject setValue:nil forKey:key];
+            }
             else
                 [managedObject setValue:[structureDictionary valueForKey:key] forKey:key];
         }

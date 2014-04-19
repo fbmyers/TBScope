@@ -122,6 +122,11 @@
 		A5B45F9818303E51002F4D30 /* ExamListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F9718303E51002F4D30 /* ExamListViewController.m */; };
 		A5B72A7318988FB90013DA9F /* GoogleDriveSync.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */; };
 		A5B72A8F1899F88F0013DA9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5B72A911899F88F0013DA9F /* Localizable.strings */; };
+		A5C0156D18F8C9B7004BC143 /* PrintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0156C18F8C9B7004BC143 /* PrintViewController.m */; };
+		A5C0157D18F8CB37004BC143 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C0157C18F8CB37004BC143 /* CoreText.framework */; };
+		A5C0157F18FDD1D5004BC143 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C0157E18FDD1D5004BC143 /* MessageUI.framework */; };
+		A5C0158218FE0EB7004BC143 /* NSData_HexData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0158118FE0EB7004BC143 /* NSData_HexData.m */; };
+		A5C0158518FE1026004BC143 /* NSData+HexData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0158418FE1026004BC143 /* NSData+HexData.m */; };
 		A5C27AA1182C3AB900A8CB1D /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */; };
 		A5C27AA4182C3E8600A8CB1D /* EditExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA3182C3E8600A8CB1D /* EditExamViewController.m */; };
 		A5C27AA7182C562C00A8CB1D /* CaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA6182C562C00A8CB1D /* CaptureViewController.m */; };
@@ -541,6 +546,13 @@
 		A5B72A901899F88F0013DA9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A5B72A931899FF6C0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A5B72A95189A025F0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A5C0156B18F8C9B7004BC143 /* PrintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintViewController.h; sourceTree = "<group>"; };
+		A5C0156C18F8C9B7004BC143 /* PrintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintViewController.m; sourceTree = "<group>"; };
+		A5C0157C18F8CB37004BC143 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		A5C0157E18FDD1D5004BC143 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A5C0158118FE0EB7004BC143 /* NSData_HexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSData_HexData.m; sourceTree = SOURCE_ROOT; };
+		A5C0158318FE1026004BC143 /* NSData+HexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexData.h"; sourceTree = SOURCE_ROOT; };
+		A5C0158418FE1026004BC143 /* NSData+HexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+HexData.m"; sourceTree = SOURCE_ROOT; };
 		A5C27A9F182C3AB900A8CB1D /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
 		A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
 		A5C27AA2182C3E8600A8CB1D /* EditExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditExamViewController.h; sourceTree = "<group>"; };
@@ -652,6 +664,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5C0157F18FDD1D5004BC143 /* MessageUI.framework in Frameworks */,
+				A5C0157D18F8CB37004BC143 /* CoreText.framework in Frameworks */,
 				A5FCCD4318BC6A600004B2F5 /* MapKit.framework in Frameworks */,
 				A5FCCD3E18BC4B610004B2F5 /* CoreLocation.framework in Frameworks */,
 				A5CF1A1D187E54A200C2C2E1 /* MediaPlayer.framework in Frameworks */,
@@ -730,6 +744,8 @@
 		9B6BF0B715E19ACD002834C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A5C0157E18FDD1D5004BC143 /* MessageUI.framework */,
+				A5C0157C18F8CB37004BC143 /* CoreText.framework */,
 				A5FCCD4218BC6A600004B2F5 /* MapKit.framework */,
 				A5FCCD3D18BC4B610004B2F5 /* CoreLocation.framework */,
 				A5CF1A1C187E54A200C2C2E1 /* MediaPlayer.framework */,
@@ -1045,6 +1061,8 @@
 			isa = PBXGroup;
 			children = (
 				A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */,
+				A5C0156B18F8C9B7004BC143 /* PrintViewController.h */,
+				A5C0156C18F8C9B7004BC143 /* PrintViewController.m */,
 				A5A0F3DF18F70E4900909615 /* ImageROIResultCell.h */,
 				A5A0F3E018F70E4900909615 /* ImageROIResultCell.m */,
 				A5A0F3CD18F70C7300909615 /* ImageROIResultView.h */,
@@ -1103,6 +1121,9 @@
 				A500C0B418AC0E4100D8C569 /* CJSONSerializer.m */,
 				A500C0B518AC0E4100D8C569 /* JSONRepresentation.h */,
 				A500C0B618AC0E4100D8C569 /* NSDictionary_JSONExtensions.m */,
+				A5C0158118FE0EB7004BC143 /* NSData_HexData.m */,
+				A5C0158318FE1026004BC143 /* NSData+HexData.h */,
+				A5C0158418FE1026004BC143 /* NSData+HexData.m */,
 			);
 			name = TouchJSON;
 			path = Source;
@@ -1515,6 +1536,7 @@
 				A599E1111824413300B52EF2 /* ResultsTabBarController.m in Sources */,
 				AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */,
 				A5FCCD3018B6F0730004B2F5 /* Images.m in Sources */,
+				A5C0156D18F8C9B7004BC143 /* PrintViewController.m in Sources */,
 				AC5E74AD179F421900BDC4EB /* svm-train.c in Sources */,
 				A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */,
 				A5C27AB0182EFAF400A8CB1D /* TBSlideViewerSubview.m in Sources */,
@@ -1581,6 +1603,7 @@
 				A5FCCD2F18B6F0730004B2F5 /* ImageAnalysisResults.m in Sources */,
 				A52D7D4D183DEBB000A487EA /* GTMHTTPFetcherService.m in Sources */,
 				A5FCCD3218B6F0730004B2F5 /* ROIs.m in Sources */,
+				A5C0158218FE0EB7004BC143 /* NSData_HexData.m in Sources */,
 				A52D7E59183DEBB000A487EA /* GTLDriveAppList.m in Sources */,
 				A5FCCD3418B6F0730004B2F5 /* Slides.m in Sources */,
 				A52D7D65183DEBB000A487EA /* GTMOAuth2Authentication.m in Sources */,
@@ -1588,6 +1611,7 @@
 				A52D7D74183DEBB000A487EA /* GTLService.m in Sources */,
 				A52D7E5C183DEBB000A487EA /* GTLDriveChannel.m in Sources */,
 				A52D7E6B183DEBB000A487EA /* GTLDriveProperty.m in Sources */,
+				A5C0158518FE1026004BC143 /* NSData+HexData.m in Sources */,
 				A52D7D4A183DEBB000A487EA /* GTMHTTPFetcher.m in Sources */,
 				A52D7D71183DEBB000A487EA /* GTLObject.m in Sources */,
 				A52D7E6E183DEBB000A487EA /* GTLDriveRevisionList.m in Sources */,

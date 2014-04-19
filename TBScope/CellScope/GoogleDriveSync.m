@@ -56,6 +56,7 @@ BOOL _hasAttemptedLogUpload;
         [self.reachability startNotifier];
         
         self.syncEnabled = YES;
+        self.isSyncing = NO;
     }
 
     return self;
@@ -106,8 +107,10 @@ BOOL _hasAttemptedLogUpload;
     
                     [TBScopeData CSLog:[NSString stringWithFormat:@"Sync initiated with Google Drive account: %@",[self userEmail]]
                         inCategory:@"SYNC"];
+                self.isSyncing = YES;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStarted" object:nil];
-                
+
+    
                 NSPredicate* pred; NSMutableArray* results;
                 
                 /////////////////////////
@@ -319,13 +322,22 @@ BOOL _hasAttemptedLogUpload;
             [NSTimer scheduledTimerWithTimeInterval:[[NSUserDefaults standardUserDefaults] floatForKey:@"SyncRetryInterval"] target:self selector:@selector(processTransferQueues) userInfo:nil repeats:NO];
         [TBScopeData CSLog:@"Google Drive unreachable or sync disabled while processing queue. Will retry." inCategory:@"SYNC"];
         isPaused = YES;
+        self.isSyncing = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStopped" object:nil];
+
         return;
     }
-    
-    if (isPaused) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStarted" object:nil];
+    else
+    {
+        if (isPaused) {
+            self.isSyncing = YES;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStarted" object:nil];
+
+        }
+        isPaused = NO;
     }
+    
+
     
     [TBScopeData CSLog:@"Processing next item in sync queue..." inCategory:@"SYNC"];
     if (self.imageUploadQueue.count>0 && self.syncEnabled) {
@@ -350,6 +362,7 @@ BOOL _hasAttemptedLogUpload;
         _hasAttemptedLogUpload = YES;
     }
     else {
+        self.isSyncing = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncUpdate" object:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GoogleSyncStopped" object:nil];
         [TBScopeData CSLog:@"upload/download queues empty or sync disabled" inCategory:@"SYNC"];
@@ -372,6 +385,7 @@ BOOL _hasAttemptedLogUpload;
 // Uploads a photo to Google Drive and sets the local googleFileID to the fileID provided by google
 - (void)uploadImage:(Images*)image completionHandler:(void(^)(NSError*))completionBlock
 {
+
     if (image.googleDriveFileID==nil) {
         
         [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading image %d-%d for exam %@",image.slide.slideNumber,image.fieldNumber,image.slide.exam.examID]
@@ -400,7 +414,6 @@ BOOL _hasAttemptedLogUpload;
                  query.setModifiedDate = YES;
                  
                  //execute upload query
-                 //MAJOR PROBLEM: all my executeQuery calls depend on the completionHandler getting called, so completionBlock() can get called and queue can continue. But google doesn't call this if the operation doesn't complete (network unavailable). So...could create my own timeout thing.
                  [self executeQueryWithTimeout:query
                                completionHandler:^(GTLServiceTicket *ticket,
                                                    GTLDriveFile *insertedFile, NSError *error) {

@@ -13,14 +13,14 @@ namespace Features
 		ContourContainerType contours;
 		cv::vector<Vec4i> hierarchy;
 
-		std::cout << "Finding contours in binary patch" << std::endl;
+		//std::cout << "Finding contours in binary patch" << std::endl;
 		findContours(binPatch.clone(), contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 		if (contours.size() == 0) {
 			return cv::Mat::zeros(14, 1, CV_32F);
 		}
 
-		std::cout << "Grabbing region properties for patch" << std::endl;
+		//std::cout << "Grabbing region properties for patch" << std::endl;
 		std::map<const char*, float> regionProperties = Region::getProperties(contours, binPatch, patch);
 
         int key_count = 14;
@@ -28,7 +28,7 @@ namespace Features
             "majorAxisLength", "minorAxisLength", "maxIntensity", "minIntensity",
             "meanIntensity", "perimeter", "solidity", "eulerNumber"};
 
-		std::cout << "Dumping props into geom matrix" << std::endl;
+		//std::cout << "Dumping props into geom matrix" << std::endl;
 		for (int i = 0; i < key_count; i++) {
             const char* key = keys[i];
             float val = regionProperties.find(key)->second;
@@ -94,7 +94,7 @@ namespace Features
     cv::Mat calculateBinarizedPatch(const cv::Mat &origPatch)
     {
       // Calculate binarized patch using Otsu threshold.
-      std::cout << "Calculating binarize patch" << std::endl;
+      //std::cout << "Calculating binarize patch" << std::endl;
       int rows = origPatch.rows;
       int cols = origPatch.cols;
 
@@ -213,13 +213,13 @@ namespace Features
         vector<MatDict >::const_iterator it = blobs.begin();
         vector<MatDict > patchedBlobs;
 
-        std::cout << "calculating features... " << std::endl;
+        //std::cout << "calculating features... " << std::endl;
         for (; it != blobs.end(); it++)
         {
             MatDict p = *it;
             Mat patch = p.find("patch")->second;
 
-			std::cout << "Calculating moments..." << std::endl;
+			//std::cout << "Calculating moments..." << std::endl;
 			// Calculate the hu moments
 			Moments m = cv::moments(patch);
             double huMomentsArr[7];
@@ -244,20 +244,20 @@ namespace Features
 
 			double last_moment = nu40 - 2 * nu22 + nu04;
             huMoments.at<double>(7, 0) = last_moment;
-            std::cout << "Done calculating moments" << std::endl;
+            //std::cout << "Done calculating moments" << std::endl;
 
 			// Grab the geometric features and return
-			std::cout << "Grabbing binpatch" << std::endl;
+			//std::cout << "Grabbing binpatch" << std::endl;
             Mat binPatch = p.find("binPatch")->second;
-			std::cout << "Calculating geometric features..." << std::endl;
+			//std::cout << "Calculating geometric features..." << std::endl;
             Mat geom = geometricFeatures(binPatch.clone(), patch.clone());
-			std::cout << "Done calculating geometric features" << std::endl;
+			//std::cout << "Done calculating geometric features" << std::endl;
             p.insert(std::make_pair("geom", geom));
             p.insert(std::make_pair("phi", huMoments));
 			patchedBlobs.push_back(p);
 
         }
-		std::cout << "Done calculating features" << std::endl;
+		//std::cout << "Done calculating features" << std::endl;
 
 		return patchedBlobs;
     }

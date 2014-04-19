@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel* locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel* userLabel;
 @property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lastModifiedLabel;
 
 //patient info
 @property (weak, nonatomic) IBOutlet UILabel* patientNameLabel;
@@ -50,6 +51,8 @@
 @property (weak, nonatomic) IBOutlet UILabel* numFieldsLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *numAFBAlgorithmLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *numAFBConfirmedLabel1;
+@property (weak, nonatomic) IBOutlet UIButton *rescanButton1;
+@property (weak, nonatomic) IBOutlet UIButton *reanalyzeButton1;
 
 //slide 2
 @property (weak, nonatomic) IBOutlet UIView* scoreView2;
@@ -62,6 +65,8 @@
 @property (weak, nonatomic) IBOutlet UILabel* numFieldsLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *numAFBAlgorithmLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *numAFBConfirmedLabel2;
+@property (weak, nonatomic) IBOutlet UIButton *rescanButton2;
+@property (weak, nonatomic) IBOutlet UIButton *reanalyzeButton2;
 
 //slide 3
 @property (weak, nonatomic) IBOutlet UIView* scoreView3;
@@ -74,6 +79,9 @@
 @property (weak, nonatomic) IBOutlet UILabel* numFieldsLabel3;
 @property (weak, nonatomic) IBOutlet UILabel *numAFBAlgorithmLabel3;
 @property (weak, nonatomic) IBOutlet UILabel *numAFBConfirmedLabel3;
+@property (weak, nonatomic) IBOutlet UIButton *rescanButton3;
+@property (weak, nonatomic) IBOutlet UIButton *reanalyzeButton3;
+
 
 
 //labels for localization
@@ -91,6 +99,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *patientGenderPromptLabel;
 @property (weak, nonatomic) IBOutlet UILabel *patientDOBPromptLabel;
 @property (weak, nonatomic) IBOutlet UILabel *patientHIVStatusPromptLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lastModifiedPromptLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *intakeNotesPromptLabel;
 @property (weak, nonatomic) IBOutlet UILabel *diagnosisNotesPromptLabel;
@@ -120,7 +129,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *numAFBConfirmedPromptLabel3;
 
 
-@property (weak, nonatomic) IBOutlet UIButton *rerunAnalysisButton;
 @property (weak, nonatomic) IBOutlet UIButton *addSlideButton;
 @property (weak, nonatomic) IBOutlet UIButton *gpsMapButton;
 

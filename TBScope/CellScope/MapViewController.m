@@ -23,7 +23,7 @@
     
     //basics
     epa.exam = ex;
-    epa.isCurrent = current;
+    epa.isCurrent = current; //may not need this anymore
     epa.title = ex.examID;
     epa.coordinate = [TBScopeData coordinatesFromString:ex.gpsLocation];
     
@@ -58,9 +58,6 @@ MKCoordinateRegion lastRegion;
     
     [self refreshMap];
     
-    //TODO: color pushpins based on assay results
-    //TODO: clicking on pushpin brings up that exam (only in review mode)
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -73,6 +70,9 @@ MKCoordinateRegion lastRegion;
     [recognizer setNumberOfTapsRequired:1];
     recognizer.cancelsTouchesInView = NO; //So the user can still interact with controls in the modal view
     [self.view.window addGestureRecognizer:recognizer];
+    
+    
+    [TBScopeData CSLog:@"Map screen presented" inCategory:@"USER"];
 }
 
 - (void)handleTapBehind:(UITapGestureRecognizer *)sender
@@ -131,6 +131,9 @@ MKCoordinateRegion lastRegion;
     
     [self.mapView addAnnotations:pushpins];
     
+    if (self.currentExam!=nil) {
+        [self.mapView selectAnnotation:pushpins[0] animated:YES];
+    }
 }
 
 - (void) dismissMap
@@ -209,43 +212,38 @@ MKCoordinateRegion lastRegion;
         pinView.canShowCallout = YES;
         //pinView.calloutOffset = CGPointMake(0, 32);
 
-        if (pushpin.isCurrent) {
-            pinView.pinColor = MKPinAnnotationColorPurple;
-        }
-        else
+
+        //color = diagnosis
+        //determine overall exam-level diagnosis (discuss this and see if we should put it in exam CD object)
+        int examDiagnosis = 0;
+        for (Slides* slide in pushpin.exam.examSlides)
         {
-            //color = diagnosis
-            //determine overall exam-level diagnosis (discuss this and see if we should put it in exam CD object)
-            int examDiagnosis = 0;
-            for (Slides* slide in pushpin.exam.examSlides)
-            {
-                if (slide.slideAnalysisResults!=nil) {
-                    if ([slide.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
-                        examDiagnosis += 100;
-                    else if ([slide.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
-                        examDiagnosis += 10;
-                    else if ([slide.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
-                        examDiagnosis += 1;
-                }
-            }
-            if (examDiagnosis>=100) {
-                pinView.pinColor = MKPinAnnotationColorRed;
-                pinView.alpha = 1.0;
-            }
-            else if (examDiagnosis>=20 || examDiagnosis==11 || examDiagnosis==10) {
-                pinView.pinColor = MKPinAnnotationColorGreen;
-                pinView.alpha = 1.0;
-            }
-            else if (examDiagnosis==12 || examDiagnosis>=1) {
-                pinView.pinColor = MKPinAnnotationColorGreen;
-                pinView.alpha = 1.0;
-            }
-            else {
-                pinView.pinColor = MKPinAnnotationColorPurple;
-                pinView.alpha = 0.4;
+            if (slide.slideAnalysisResults!=nil) {
+                if ([slide.slideAnalysisResults.diagnosis isEqualToString:@"POSITIVE"])
+                    examDiagnosis += 100;
+                else if ([slide.slideAnalysisResults.diagnosis isEqualToString:@"INDETERMINATE"])
+                    examDiagnosis += 10;
+                else if ([slide.slideAnalysisResults.diagnosis isEqualToString:@"NEGATIVE"])
+                    examDiagnosis += 1;
             }
         }
-        
+        if (examDiagnosis>=100) {
+            pinView.pinColor = MKPinAnnotationColorRed;
+            pinView.alpha = 1.0;
+        }
+        else if (examDiagnosis>=20 || examDiagnosis==11 || examDiagnosis==10) {
+            pinView.pinColor = MKPinAnnotationColorGreen;
+            pinView.alpha = 1.0;
+        }
+        else if (examDiagnosis==12 || examDiagnosis>=1) {
+            pinView.pinColor = MKPinAnnotationColorGreen;
+            pinView.alpha = 1.0;
+        }
+        else {
+            pinView.pinColor = MKPinAnnotationColorPurple;
+            pinView.alpha = 1.0;
+        }
+
         if (self.allowSelectingExams)
         {
             UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];

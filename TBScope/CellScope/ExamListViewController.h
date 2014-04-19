@@ -20,6 +20,7 @@
 @property (strong,nonatomic) NSDateFormatter* dateFormatter;
 @property (strong,nonatomic) NSDateFormatter* timeFormatter;
 
+@property (weak, nonatomic) IBOutlet UILabel *syncLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *syncSpinner;
 @property (weak, nonatomic) IBOutlet UIButton *mapButton;
 

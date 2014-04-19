@@ -59,6 +59,8 @@
 
 - (IBAction)didChangeFieldSelection:(id)sender
 {
+    UIAlertView* av = [self showWaitIndicator];
+
     NSString* selectedTitle = [fieldSelector titleForSegmentAtIndex:fieldSelector.selectedSegmentIndex];
     if ([selectedTitle isEqualToString:@"ROI"])
     {
@@ -69,7 +71,13 @@
         self.roiGridView.boxesVisible = YES;
         self.roiGridView.selectionVisible = YES;
         
-        [self.roiGridView setSlide:self.currentSlide];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self.roiGridView setSlide:self.currentSlide];
+        });
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [av dismissWithClickedButtonIndex:0 animated:YES];
+        });
         
     }
     else //assume it's a number indicating the field
@@ -78,12 +86,33 @@
         self.slideViewer.hidden = NO; //TODO: should we delete image data?
         
         int fieldIndex = selectedTitle.intValue;
-        [self loadImage:fieldIndex-1];
+        [self loadImage:fieldIndex-1 completionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [av dismissWithClickedButtonIndex:0 animated:YES];
+            });
+        }];
         
     }
+
+
 }
 
-- (void) loadImage:(int)index
+-(UIAlertView*)showWaitIndicator{
+    UIAlertView* altpleasewait = [[UIAlertView alloc] initWithTitle:@"Please Wait..." message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    
+    [altpleasewait show];
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    indicator.center = CGPointMake(altpleasewait.bounds.size.width / 2, altpleasewait.bounds.size.height - 50);
+    [indicator startAnimating];
+    [altpleasewait addSubview:indicator];
+    
+    return altpleasewait;
+}
+
+
+- (void) loadImage:(int)index completionHandler:(void(^)())completionBlock
 {
     //load the image at index currentImageIndex and display w/ ROIs
     
@@ -106,6 +135,7 @@
             [slideViewer setShowsVerticalScrollIndicator:YES];
             [slideViewer setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
             [slideViewer setNeedsDisplay];
+            completionBlock();
         }
     }];
     

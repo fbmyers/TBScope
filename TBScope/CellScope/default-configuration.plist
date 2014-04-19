@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>DefaultEmailRecipient</key>
+	<string>fbmyers@gmail.com</string>
 	<key>SyncRetryInterval</key>
 	<integer>10</integer>
 	<key>WifiSyncOnly</key>
@@ -14,8 +16,6 @@
 	<string>.*</string>
 	<key>CellScopeBTUUID</key>
 	<string>0000</string>
-	<key>New item</key>
-	<string></string>
 	<key>PatientIDFormat</key>
 	<string>.*</string>
 	<key>DoAnalysisByDefault</key>

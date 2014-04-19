@@ -10,24 +10,53 @@
 
 @implementation MainMenuViewController
 
-@synthesize loggedInAs;
-
 - (void)viewDidLoad
 {
     //make the navigation bar pretty
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setSyncIndicator)
+                                                 name:@"GoogleSyncStarted"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setSyncIndicator)
+                                                 name:@"GoogleSyncStopped"
+                                               object:nil];
+    
+}
+
+
+- (void)setSyncIndicator
+{
+    if ([[GoogleDriveSync sharedGDS] isSyncing]) {
+        self.syncLabel.hidden = NO;
+        [self.syncSpinner startAnimating];
+    }
+    else {
+        self.syncLabel.hidden = YES;
+        [self.syncSpinner stopAnimating];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    loggedInAs.text = [NSString stringWithFormat:NSLocalizedString(@"Logged in as: %@",nil),[[[TBScopeData sharedData] currentUser] username]];
+    self.loggedInAs.text = [NSString stringWithFormat:NSLocalizedString(@"Current user: %@",nil),[[[TBScopeData sharedData] currentUser] username]];
+    self.cellscopeIDLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeID"];
+    self.locationLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"];
+    
     [self.navigationItem setTitle:NSLocalizedString(@"Main Menu",nil)];
 
+    
+    
     [TBScopeData CSLog:@"Main menu screen presented" inCategory:@"USER"];
+    
+    [self setSyncIndicator];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

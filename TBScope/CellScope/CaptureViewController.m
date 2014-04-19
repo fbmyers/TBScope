@@ -55,6 +55,14 @@
     //TODO: i'd rather do this as a delegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveImageCallback) name:@"ImageCaptured" object:nil];
 
+    //if this slide is being rescanned, delete old images/results
+    for (Images* im in self.currentSlide.slideImages) {
+        [[[TBScopeData sharedData] managedObjectContext] deleteObject:im];
+    }
+    if (self.currentSlide.slideAnalysisResults!=nil)
+        [[[TBScopeData sharedData] managedObjectContext] deleteObject:self.currentSlide.slideAnalysisResults];
+    [[TBScopeData sharedData] saveCoreData];
+    
     [TBScopeData CSLog:@"Capture screen presented" inCategory:@"USER"];
 
     

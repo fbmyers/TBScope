@@ -20,7 +20,7 @@
     self.navigationItem.title = NSLocalizedString(@"Review Exam", nil);
     self.examInfoLabel.text = NSLocalizedString(@"Exam Info", nil);
     self.examIDPromptLabel.text = NSLocalizedString(@"Exam ID", nil);
-    self.locationPromptLabel.text = NSLocalizedString(@"Location", nil);
+    self.locationPromptLabel.text = NSLocalizedString(@"Clinic", nil);
     self.userPromptLabel.text = NSLocalizedString(@"User", nil);
     self.cellscopeIDPromptLabel.text = NSLocalizedString(@"CellScope ID", nil);
     
@@ -32,7 +32,9 @@
     self.patientHIVStatusPromptLabel.text = NSLocalizedString(@"HIV Status", nil);
     self.intakeNotesPromptLabel.text = NSLocalizedString(@"Intake Notes", nil);
     self.diagnosisNotesPromptLabel.text = NSLocalizedString(@"Diagnosis Notes", nil);
-
+    [self.rescanButton1 setTitle:NSLocalizedString(@"Re-scan", nil) forState:UIControlStateNormal];
+    [self.reanalyzeButton1 setTitle:NSLocalizedString(@"Re-analyze", nil) forState:UIControlStateNormal];
+    
     self.dateCollectedPromptLabel1.text = NSLocalizedString(@"Collection Date", nil);
     self.dateScannedPromptLabel1.text = NSLocalizedString(@"Scan Date", nil);
     self.sputumQualityPromptLabel1.text = NSLocalizedString(@"Sputum Quality", nil);
@@ -48,6 +50,8 @@
     self.fieldsPromptLabel2.text = NSLocalizedString(@"Fields", nil);
     self.numAFBAlgorithmPromptLabel2.text = NSLocalizedString(@"# AFB (Algorithm)", nil);
     self.numAFBConfirmedPromptLabel2.text = NSLocalizedString(@"# AFB (Confirmed)", nil);
+    [self.rescanButton2 setTitle:NSLocalizedString(@"Re-scan", nil) forState:UIControlStateNormal];
+    [self.reanalyzeButton2 setTitle:NSLocalizedString(@"Re-analyze", nil) forState:UIControlStateNormal];
     
     self.dateCollectedPromptLabel3.text = NSLocalizedString(@"Collection Date", nil);
     self.dateScannedPromptLabel3.text = NSLocalizedString(@"Scan Date", nil);
@@ -56,21 +60,19 @@
     self.fieldsPromptLabel3.text = NSLocalizedString(@"Fields", nil);
     self.numAFBAlgorithmPromptLabel3.text = NSLocalizedString(@"# AFB (Algorithm)", nil);
     self.numAFBConfirmedPromptLabel3.text = NSLocalizedString(@"# AFB (Confirmed)", nil);
+    [self.rescanButton3 setTitle:NSLocalizedString(@"Re-scan", nil) forState:UIControlStateNormal];
+    [self.reanalyzeButton3 setTitle:NSLocalizedString(@"Re-analyze", nil) forState:UIControlStateNormal];
     
-    [self.rerunAnalysisButton setTitle:NSLocalizedString(@"Re-run Analysis", nil) forState:UIControlStateNormal];
-    [self.gpsMapButton setTitle:NSLocalizedString(@"View GPS Map", nil) forState:UIControlStateNormal];
+    [self.gpsMapButton setTitle:NSLocalizedString(@"Map", nil) forState:UIControlStateNormal];
     [self.addSlideButton setTitle:NSLocalizedString(@"Add Slide", nil) forState:UIControlStateNormal];
-    
-    
-
-
     
     //date formatter
     NSDate* date;
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
     [df setDateStyle:NSDateFormatterShortStyle];
-    [df setTimeStyle:NSDateFormatterNoStyle];
+    [df setTimeStyle:NSDateFormatterShortStyle];
+    
+    self.lastModifiedLabel.text = [df stringFromDate:[TBScopeData dateFromString:self.currentExam.dateModified]];
     
     /////////////////////////////
     //exam & patient info
@@ -83,7 +85,9 @@
     self.patientAddressLabel.text = self.currentExam.patientAddress;
     self.patientHIVStatusLabel.text = self.currentExam.patientHIVStatus;
     self.patientGenderLabel.text = self.currentExam.patientGender;
-    self.patientDOBLabel.text = [dateFormatter stringFromDate:[TBScopeData dateFromString:self.currentExam.patientDOB]];
+    
+    [df setTimeStyle:NSDateFormatterNoStyle];
+    self.patientDOBLabel.text = [df stringFromDate:[TBScopeData dateFromString:self.currentExam.patientDOB]];
     
     if ([self.currentExam.intakeNotes isEqualToString:@""])
         self.intakeNotesTextView.text = NSLocalizedString(@"NONE",nil);
@@ -111,12 +115,12 @@
         Slides* slide = (Slides*)self.currentExam.examSlides[2];
         
         date = [TBScopeData dateFromString:slide.dateCollected];
-        self.dateCollectedLabel3.text = [dateFormatter stringFromDate:date];
+        self.dateCollectedLabel3.text = [df stringFromDate:date];
         date = [TBScopeData dateFromString:slide.dateScanned];
-        self.dateScannedLabel3.text = [dateFormatter stringFromDate:date];
+        self.dateScannedLabel3.text = [df stringFromDate:date];
         self.sputumQualityLabel3.text = NSLocalizedString(slide.sputumQuality, nil);
         self.imageQualityLabel3.text = NSLocalizedString(@"Not Evaluated", nil);
-        self.numFieldsLabel3.text = [[NSString alloc] initWithFormat:@"%ld",slide.slideImages.count];
+        self.numFieldsLabel3.text = [[NSString alloc] initWithFormat:@"%d",(int)slide.slideImages.count];
         
         //display diagnosis info
         if (slide.slideAnalysisResults!=nil)
@@ -148,6 +152,7 @@
             self.numAFBAlgorithmPromptLabel3.hidden = YES;
             self.numAFBConfirmedLabel3.hidden = YES;
             self.numAFBConfirmedPromptLabel3.hidden = YES;
+
         }
     }
     else
@@ -169,6 +174,8 @@
         self.numAFBAlgorithmPromptLabel3.hidden = YES;
         self.numAFBConfirmedLabel3.hidden = YES;
         self.numAFBConfirmedPromptLabel3.hidden = YES;
+        self.rescanButton3.hidden = YES;
+        self.reanalyzeButton3.hidden = YES;
         
         //move the add slide button under this slide marker
         [self.addSlideButton setCenter:CGPointMake(self.scoreView3.center.x,self.addSlideButton.center.y)];
@@ -179,12 +186,12 @@
         Slides* slide = (Slides*)self.currentExam.examSlides[1];
         
         date = [TBScopeData dateFromString:slide.dateCollected];
-        self.dateCollectedLabel2.text = [dateFormatter stringFromDate:date];
+        self.dateCollectedLabel2.text = [df stringFromDate:date];
         date = [TBScopeData dateFromString:slide.dateScanned];
-        self.dateScannedLabel2.text = [dateFormatter stringFromDate:date];
+        self.dateScannedLabel2.text = [df stringFromDate:date];
         self.sputumQualityLabel2.text = NSLocalizedString(slide.sputumQuality, nil);
         self.imageQualityLabel2.text = NSLocalizedString(@"Not Evaluated", nil);
-        self.numFieldsLabel2.text = [[NSString alloc] initWithFormat:@"%d",slide.slideImages.count];
+        self.numFieldsLabel2.text = [[NSString alloc] initWithFormat:@"%d",(int)slide.slideImages.count];
         
         //display diagnosis info
         if (slide.slideAnalysisResults!=nil)
@@ -215,6 +222,7 @@
             self.numAFBAlgorithmPromptLabel2.hidden = YES;
             self.numAFBConfirmedLabel2.hidden = YES;
             self.numAFBConfirmedPromptLabel2.hidden = YES;
+
         }
     }
     else
@@ -236,6 +244,8 @@
         self.numAFBAlgorithmPromptLabel2.hidden = YES;
         self.numAFBConfirmedLabel2.hidden = YES;
         self.numAFBConfirmedPromptLabel2.hidden = YES;
+        self.rescanButton2.hidden = YES;
+        self.reanalyzeButton2.hidden = YES;
         
         //move the add slide button under this slide marker
         [self.addSlideButton setCenter:CGPointMake(self.scoreView2.center.x,self.addSlideButton.center.y)];
@@ -246,12 +256,12 @@
         Slides* slide = (Slides*)self.currentExam.examSlides[0];
         
         date = [TBScopeData dateFromString:slide.dateCollected];
-        self.dateCollectedLabel1.text = [dateFormatter stringFromDate:date];
+        self.dateCollectedLabel1.text = [df stringFromDate:date];
         date = [TBScopeData dateFromString:slide.dateScanned];
-        self.dateScannedLabel1.text = [dateFormatter stringFromDate:date];
+        self.dateScannedLabel1.text = [df stringFromDate:date];
         self.sputumQualityLabel1.text = NSLocalizedString(slide.sputumQuality, nil);
         self.imageQualityLabel1.text = NSLocalizedString(@"Not Evaluated", nil);
-        self.numFieldsLabel1.text = [[NSString alloc] initWithFormat:@"%d",slide.slideImages.count];
+        self.numFieldsLabel1.text = [[NSString alloc] initWithFormat:@"%d",(int)slide.slideImages.count];
         
         //display diagnosis info
         if (slide.slideAnalysisResults!=nil)
@@ -283,6 +293,7 @@
             self.numAFBAlgorithmPromptLabel1.hidden = YES;
             self.numAFBConfirmedLabel1.hidden = YES;
             self.numAFBConfirmedPromptLabel1.hidden = YES;
+
         }
     }
     else
@@ -304,6 +315,8 @@
         self.numAFBAlgorithmPromptLabel1.hidden = YES;
         self.numAFBConfirmedLabel1.hidden = YES;
         self.numAFBConfirmedPromptLabel1.hidden = YES;
+        self.rescanButton1.hidden = YES;
+        self.reanalyzeButton1.hidden = YES;
         
         //move the add slide button under this slide marker
         [self.addSlideButton setCenter:CGPointMake(self.scoreView1.center.x,self.addSlideButton.center.y)];
@@ -394,11 +407,28 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"AnalysisSegue"])
+    if ([segue.identifier isEqualToString:@"ReAnalyzeSegue"])
     {
         UIViewController <TBScopeViewControllerContext> *avc = [segue destinationViewController];
-        avc.currentSlide = (Slides*)self.currentExam.examSlides[0]; //TODO: other slides
+        avc.currentExam = self.currentExam;
+        if (sender==self.reanalyzeButton1)
+            avc.currentSlide = (Slides*)self.currentExam.examSlides[0];
+        else if (sender==self.reanalyzeButton2)
+            avc.currentSlide = (Slides*)self.currentExam.examSlides[1];
+        else if (sender==self.reanalyzeButton3)
+            avc.currentSlide = (Slides*)self.currentExam.examSlides[2];
        
+    }
+    else if ([segue.identifier isEqualToString:@"ReScanSegue"])
+    {
+        UIViewController <TBScopeViewControllerContext> *esvc = [segue destinationViewController];
+        esvc.currentExam = self.currentExam;
+        if (sender==self.rescanButton1)
+            esvc.currentSlide = (Slides*)self.currentExam.examSlides[0];
+        else if (sender==self.rescanButton1)
+            esvc.currentSlide = (Slides*)self.currentExam.examSlides[1];
+        else if (sender==self.rescanButton1)
+            esvc.currentSlide = (Slides*)self.currentExam.examSlides[2];
     }
     else if ([segue.identifier isEqualToString:@"AddSlideSegue"])
     {

@@ -53,7 +53,7 @@ namespace BlobClass
         //Q: use gaussianBlur instead?
 		cv::morphologyEx(image, imageOpening, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(9,9)));
 		
-        std::cout << "opened\n";
+        //std::cout << "opened\n";
         if (debugPath!="")
             imwrite(debugPath + "/opened2-1.tif",imageOpening*255);
         
@@ -63,7 +63,7 @@ namespace BlobClass
         if (debugPath!="")
             imwrite(debugPath + "/subtracted2-2.tif",imageDifference*255);
         
-        std::cout << "subtracted\n";
+        //std::cout << "subtracted\n";
         
         imageOpening.release(); //FBM
         
@@ -102,7 +102,7 @@ namespace BlobClass
         if (debugPath!="")
             imwrite(debugPath + "/thresholded2-4.tif",imageThreshold*255);
         
-        std::cout << "thresholded\n";
+        //std::cout << "thresholded\n";
         imageDifference.release(); //FBM
 
         
@@ -111,7 +111,7 @@ namespace BlobClass
 		cv::Mat grayscaleCrossCorrelation = crossCorrelateWithGaussian(image);
 		cv::bitwise_and(imageThreshold, grayscaleCrossCorrelation, grayscaleImage);
 
-        std::cout << "cross correlated\n";
+        //std::cout << "cross correlated\n";
         image.release(); //FBM
         imageThreshold.release(); //FBM
         grayscaleCrossCorrelation.release(); //FBM

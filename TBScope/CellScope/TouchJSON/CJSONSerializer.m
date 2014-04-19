@@ -28,8 +28,9 @@
 //
 
 #import "CJSONSerializer.h"
-
 #import "JSONRepresentation.h"
+
+#import "NSData+HexData.h"
 
 NSString *const kJSONSerializerErrorDomain = @"CJSONSerializerErrorDomain";
 
@@ -126,24 +127,28 @@ static NSData *kTrue = NULL;
         }
     else if ([inObject isKindOfClass:[NSData class]])
         {
-            //NSData* theData = (NSData*)inObject;
-        //NSString *theString = [[NSString alloc]  initWithBytes:[theData bytes] length:[theData length] encoding: NSUTF8StringEncoding]; //FBM mod...necessary since data isn't null-terminated
-        //NSString *theString = [[NSString alloc] initWithData:inObject encoding:NSUTF8StringEncoding];
-        /*if (theString == NULL)
+            theResult = [self serializeString:@"" error:outError];
+            
+            //this works, but it causes app to crash with LOTS of ROIs
+            /*
+            NSData* theData = (NSData*)inObject;
+            NSString* theString = [theData hexStringRepresentation];
+            
+            if (theString == NULL)
             {
-            if (outError)
+                if (outError)
                 {
-                NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                    [NSString stringWithFormat:@"Cannot serialize data of type '%@'", NSStringFromClass([inObject class])], NSLocalizedDescriptionKey,
-                    NULL];
-                *outError = [NSError errorWithDomain:kJSONSerializerErrorDomain code:CJSONSerializerErrorCouldNotSerializeDataType userInfo:theUserInfo];
+                    NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                        [NSString stringWithFormat:@"Cannot serialize data of type '%@'", NSStringFromClass([inObject class])], NSLocalizedDescriptionKey,
+                        NULL];
+                    *outError = [NSError errorWithDomain:kJSONSerializerErrorDomain code:CJSONSerializerErrorCouldNotSerializeDataType userInfo:theUserInfo];
                 }
             }
-        else
+            else
             {
-            theResult = [self serializeString:theString error:outError];
-            }*/
-            theResult = inObject; //??? this won't work because if JSON characters appear in data, will screw up parsing
+                theResult = [self serializeString:theString error:outError];
+            }
+            */
         }
     else if ([inObject respondsToSelector:@selector(JSONDataRepresentation)])
         {

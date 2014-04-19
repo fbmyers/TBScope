@@ -20,6 +20,11 @@
 @property (weak, nonatomic) IBOutlet UILabel* invalidLogin;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *syncLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *syncSpinner;
+@property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+
 - (IBAction)resignAndLogin:(id)sender;
 
 @end

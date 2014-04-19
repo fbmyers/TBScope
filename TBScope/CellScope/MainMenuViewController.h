@@ -17,6 +17,10 @@
 @interface MainMenuViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel* loggedInAs;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *syncSpinner;
+@property (weak, nonatomic) IBOutlet UILabel *syncLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
 - (IBAction)didPressLogout:(id)sender;
 

@@ -32,6 +32,8 @@
 
 @property (nonatomic) int currentField;
 
+@property (nonatomic) BOOL hasAborted;
+
 - (void)analyzeField:(int)fieldNumber;
 - (void) analysisCompleteCallback;
 

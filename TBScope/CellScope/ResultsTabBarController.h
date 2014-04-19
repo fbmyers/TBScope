@@ -19,6 +19,7 @@
 @interface ResultsTabBarController : UITabBarController
 
 @property (strong,nonatomic) Exams* currentExam;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 
 
 

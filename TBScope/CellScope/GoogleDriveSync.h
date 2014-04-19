@@ -35,6 +35,7 @@
 @property (strong, nonatomic) NSMutableArray* examDownloadQueue;
 
 @property (nonatomic) BOOL syncEnabled;
+@property (nonatomic) BOOL isSyncing;
 
 - (BOOL) isLoggedIn;
 

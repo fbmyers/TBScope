@@ -52,7 +52,7 @@ namespace Classifier
 		int patchCount = 0;
 		
 		// Remove partial patches
-        cout << "Removing partial patches..." << endl;
+        //cout << "Removing partial patches..." << endl;
 		vector<MatDict > stats;
         
         vector<cv::Point2d>::iterator it = centroids.begin();
@@ -256,7 +256,7 @@ namespace Classifier
         }
         delete []node;
         
-        cout << "Finished classifying features" << endl;
+        //cout << "Finished classifying features" << endl;
 		    Debug::printVector(prob_results, "dvtest.txt");
       } catch (const std::exception &ex) {
       	svm_free_and_destroy_model(&model);
@@ -274,7 +274,7 @@ namespace Classifier
 	//cv::Mat runWithImage(const cv::Mat image)
     cv::vector<float> runWithImage(const cv::Mat image, const std::string debugPath)
 	{
-        cout << "Running with image\n";
+        //cout << "Running with image\n";
 		if(!image.data) {
             cout << "Image has no data! Returning.\n";
 			return cv::vector<float>(0); //cv::Mat::zeros(1,1,CV_8UC1);

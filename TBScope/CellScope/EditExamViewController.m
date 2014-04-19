@@ -50,9 +50,10 @@
         newExam.ipadName = [[UIDevice currentDevice] name];
         newExam.location = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"];
         
+        //[[[TBScopeData sharedData] locationManager] startUpdatingLocation];
         CLLocationCoordinate2D location = [[[[TBScopeData sharedData] locationManager] location] coordinate];
         newExam.gpsLocation = [TBScopeData stringFromCoordinates:location];
-        
+
         self.currentExam = newExam;
     }
     
@@ -184,11 +185,11 @@
     }
     else if ([segue.identifier isEqualToString:@"MapSegue"]) {
         MapViewController* mvc = (MapViewController*)[segue destinationViewController];
-        
+        mvc.allowSelectingExams = NO;
         mvc.showOnlyCurrentExam = NO;
         mvc.currentExam = self.currentExam;
-        mvc.allowSelectingExams = NO;
         mvc.delegate = nil;
+        
         
     }
 }

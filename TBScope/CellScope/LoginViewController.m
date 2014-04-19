@@ -13,12 +13,33 @@
 
 @synthesize usernameField,passwordField,invalidLogin;
 
-- (void)viewDidLoad
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
-    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setSyncIndicator)
+                                                 name:@"GoogleSyncStarted"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setSyncIndicator)
+                                                 name:@"GoogleSyncStopped"
+                                               object:nil];
+}
+
+- (void)setSyncIndicator
+{
+    if ([[GoogleDriveSync sharedGDS] isSyncing]) {
+        self.syncLabel.hidden = NO;
+        [self.syncSpinner startAnimating];
+    }
+    else {
+        self.syncLabel.hidden = YES;
+        [self.syncSpinner stopAnimating];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -34,8 +55,12 @@
     passwordField.placeholder = NSLocalizedString(@"password", nil);
     invalidLogin.text = NSLocalizedString(@"Invalid username or password", nil);
     
+    self.cellscopeIDLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeID"];
+    self.locationLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"];
+    
     [usernameField becomeFirstResponder];
     
+    [self setSyncIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
