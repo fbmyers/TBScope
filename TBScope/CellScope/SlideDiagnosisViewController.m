@@ -17,9 +17,8 @@
     
     ///////////////////////////////////
     //localization
-    self.navigationItem.title = NSLocalizedString(@"Review Exam", nil);
     self.examInfoLabel.text = NSLocalizedString(@"Exam Info", nil);
-    self.examIDPromptLabel.text = NSLocalizedString(@"Exam ID", nil);
+    //self.examIDPromptLabel.text = NSLocalizedString(@"Exam ID", nil);
     self.locationPromptLabel.text = NSLocalizedString(@"Clinic", nil);
     self.userPromptLabel.text = NSLocalizedString(@"User", nil);
     self.cellscopeIDPromptLabel.text = NSLocalizedString(@"CellScope ID", nil);
@@ -76,7 +75,9 @@
     
     /////////////////////////////
     //exam & patient info
-    self.examIDLabel.text = self.currentExam.examID;
+    self.tabBarController.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Exam %@", nil),self.currentExam.examID];
+    
+    //self.examIDLabel.text = self.currentExam.examID;
     self.locationLabel.text = self.currentExam.location;
     self.userLabel.text = self.currentExam.userName;
     self.cellscopeIDLabel.text = self.currentExam.cellscopeID;
@@ -425,9 +426,9 @@
         esvc.currentExam = self.currentExam;
         if (sender==self.rescanButton1)
             esvc.currentSlide = (Slides*)self.currentExam.examSlides[0];
-        else if (sender==self.rescanButton1)
+        else if (sender==self.rescanButton2)
             esvc.currentSlide = (Slides*)self.currentExam.examSlides[1];
-        else if (sender==self.rescanButton1)
+        else if (sender==self.rescanButton3)
             esvc.currentSlide = (Slides*)self.currentExam.examSlides[2];
     }
     else if ([segue.identifier isEqualToString:@"AddSlideSegue"])

@@ -47,15 +47,7 @@
     return grayScaleImage;
 }
 
-- (UIImage*)getPatchFromImage:(UIImage*)image X:(float)x Y:(float)y
-{
-    //TODO: utility method, where are 24s stored?
-    CGRect roiRect = CGRectMake(x - PATCHSZ/2, y - PATCHSZ/2, PATCHSZ, PATCHSZ);
-    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], roiRect);
-    UIImage* retImg = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    return retImg;
-}
+
 
 //convert iOS image to OpenCV image.
 //TODO: look into what this is doing with color images
@@ -139,7 +131,7 @@
         roi.x = (int)resVector.at(i+2);
         
         //TODO: might be faster to do this in CPP, since we are already are generating image patches there
-        roi.image = UIImagePNGRepresentation([self getPatchFromImage:img X:roi.x Y:roi.y]);
+        roi.image = UIImagePNGRepresentation([TBScopeData getPatchFromImage:img X:roi.x Y:roi.y]);
         
         [results addImageROIsObject:roi];
         

@@ -22,6 +22,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *scanSlideButton;
+@property (weak, nonatomic) IBOutlet UIButton *reviewResultsButton;
+@property (weak, nonatomic) IBOutlet UIButton *configurationButton;
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+
+@property (weak, nonatomic) IBOutlet UILabel* bluetoothIndicator;
+
+
 - (IBAction)didPressLogout:(id)sender;
 
 @end

@@ -33,7 +33,7 @@ namespace BlobClass
 	{
         //this is a hack, but it handles the different thresholds between this scope and Neil's scope
         bool neilscope = true;
-        int thresholdMultiplier = 6;
+        int thresholdMultiplier = 9;
         if (image.rows==1944) {
             neilscope = false;
             thresholdMultiplier = 3;

@@ -48,6 +48,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *autoScanButton;
 @property (weak, nonatomic) IBOutlet UILabel *scanStatusLabel;
 
+@property (weak, nonatomic) IBOutlet UISlider *intensitySlider;
+
 @property (nonatomic) int currentField;
 
 //TODO: this should all go in microscope automation model class

@@ -59,8 +59,7 @@ UITapGestureRecognizer* recognizer;
 
 - (void) dismissPrintViewController
 {
-    for (UITapGestureRecognizer* recognizer in self.view.window.gestureRecognizers)
-        [self.view.window removeGestureRecognizer:recognizer];
+    [self.view.window removeGestureRecognizer:recognizer];
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -85,10 +84,14 @@ UITapGestureRecognizer* recognizer;
             if (!completed && error) {
                 NSLog(@"Printing could not complete because of error: %@", error);
             }
-            
-            [TBScopeData CSLog:@"Printing registry." inCategory:@"USER"];
+            else {
+                [TBScopeData CSLog:@"Printing registry." inCategory:@"USER"];    
+            }
+            [pic dismissAnimated:YES];
+            [self.view.window addGestureRecognizer:recognizer];
         };
         
+        [self.view.window removeGestureRecognizer:recognizer];
         [pic presentFromRect:self.printButton.bounds inView:self.printButton animated:YES completionHandler:completionHandler];
          
     }
@@ -118,6 +121,11 @@ UITapGestureRecognizer* recognizer;
     NSArray *toRecipients = [NSArray arrayWithObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultEmailRecipient"]];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+    
+    if (mc==nil) { //the user hasn't yet set up a mail account on this iPad, so return to avoid crash
+        return;
+    }
+    
     mc.mailComposeDelegate = self;
     [mc setSubject:emailSubject];
     [mc setMessageBody:emailBody isHTML:NO];
@@ -134,6 +142,7 @@ UITapGestureRecognizer* recognizer;
     
     // Present mail view controller on screen
     [self presentViewController:mc animated:YES completion:NULL];
+    [self.view.window removeGestureRecognizer:recognizer];
 }
 
 
@@ -159,6 +168,7 @@ UITapGestureRecognizer* recognizer;
     
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
+    [self.view.window addGestureRecognizer:recognizer];
 }
 
 - (void)createPDFRegistry
@@ -223,7 +233,7 @@ UITapGestureRecognizer* recognizer;
     NSString* dateString = [df stringFromDate:[NSDate date]];
     NSString* currentUser = [[[TBScopeData sharedData] currentUser] username];
     [[NSString stringWithFormat:@"Printed on %@ by %@",dateString,currentUser] drawInRect:CGRectMake(col,lineNum,PDF_PAGE_WIDTH,PDF_LINE_SPACING) withFont:font];
-    lineNum = lineNum + PDF_LINE_SPACING;
+    lineNum = lineNum + PDF_LINE_SPACING*2;
     
 
     width = PDF_EXAMID_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
@@ -242,7 +252,7 @@ UITapGestureRecognizer* recognizer;
     [@"Clinic" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
-    width = (PDF_SLIDERESULT_WIDTH*3+PDF_SLIDERESULT_MARGIN*2)*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
+    width = (PDF_SLIDERESULT_WIDTH*3+PDF_SLIDERESULT_MARGIN*3)*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
     [@"Results" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
@@ -286,10 +296,10 @@ UITapGestureRecognizer* recognizer;
     [self drawSlideScore:0 fromExam:ex atLine:lineNum column:col width:width font:font];
     
     col = col + width + PDF_SLIDERESULT_MARGIN*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [self drawSlideScore:0 fromExam:ex atLine:lineNum column:col width:width font:font];
+    [self drawSlideScore:1 fromExam:ex atLine:lineNum column:col width:width font:font];
     
     col = col + width + PDF_SLIDERESULT_MARGIN*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [self drawSlideScore:0 fromExam:ex atLine:lineNum column:col width:width font:font];
+    [self drawSlideScore:2 fromExam:ex atLine:lineNum column:col width:width font:font];
     
     
     // collection date
@@ -300,7 +310,7 @@ UITapGestureRecognizer* recognizer;
     if (ex.examSlides.count>0)
         dateString = [df stringFromDate:[TBScopeData dateFromString:((Slides*)ex.examSlides[0]).dateCollected]];
     
-    col = col + width;
+    col = col + width + PDF_SLIDERESULT_MARGIN*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
     width = PDF_DATE_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
     [dateString drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
@@ -326,9 +336,16 @@ UITapGestureRecognizer* recognizer;
     }
     
     if (score>[[NSUserDefaults standardUserDefaults] floatForKey:@"DiagnosticThreshold"])
-        CGContextStrokeRect(UIGraphicsGetCurrentContext(),CGRectMake(col,lineNum,width,PDF_LINE_SPACING));
+        CGContextStrokeRect(UIGraphicsGetCurrentContext(),CGRectMake(col,lineNum,width,PDF_LINE_SPACING*0.8));
+
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [paragraphStyle setAlignment:NSTextAlignmentCenter];
     
-    [scoreString drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    NSDictionary *attr = @{ NSFontAttributeName: font,
+                                  NSParagraphStyleAttributeName: paragraphStyle,
+                                  NSForegroundColorAttributeName: [UIColor blackColor]};
+    
+    [scoreString drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withAttributes:attr];
     
 }
 

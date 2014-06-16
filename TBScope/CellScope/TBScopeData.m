@@ -135,6 +135,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     [TBScopeData CSLog:[NSString stringWithFormat:@"GPS error: %@",error.description] inCategory:@"DATA"];
 }
 
+
 - (void) saveCoreData
 {
     NSError *error;
@@ -185,6 +186,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     [exam setPatientGender:@"M"];
     [exam setPatientHIVStatus:@"+"];
     [exam setDateModified:@"2013-10-11T12:35:02.000Z"];
+    [exam setGpsLocation:@"21.034527,105.852292"];
     
     slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:_managedObjectContext];
     [slide setSlideNumber:1];
@@ -231,6 +233,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     [exam setPatientGender:@"M"];
     [exam setPatientHIVStatus:@"-"];
     [exam setDateModified:@"2013-10-11T12:35:02.000Z"];
+    [exam setGpsLocation:@"21.034762,105.824333"];
     
     slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:_managedObjectContext];
     [slide setSlideNumber:1];
@@ -272,6 +275,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     [exam setPatientGender:@"F"];
     [exam setPatientHIVStatus:@""];
     [exam setDateModified:@"2013-10-11T12:35:02.000Z"];
+    [exam setGpsLocation:@"21.040467,105.812361"];
     
     slide = (Slides*)[NSEntityDescription insertNewObjectForEntityForName:@"Slides" inManagedObjectContext:_managedObjectContext];
     [slide setSlideNumber:1];
@@ -358,6 +362,16 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 + (NSString*)stringFromCoordinates:(CLLocationCoordinate2D)location
 {
     return [NSString stringWithFormat:@"%f,%f",location.latitude,location.longitude];
+}
+
++ (UIImage*)getPatchFromImage:(UIImage*)image X:(float)x Y:(float)y
+{
+    //TODO: utility method, where are 24s stored?
+    CGRect roiRect = CGRectMake(x - PATCHSZ/2, y - PATCHSZ/2, PATCHSZ, PATCHSZ);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], roiRect);
+    UIImage* retImg = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    return retImg;
 }
 
 + (void)getImage:(Images*)currentImage resultBlock:(void (^)(UIImage* image, NSError* err))resultBlock

@@ -289,7 +289,7 @@ namespace Classifier
         if (debugPath!="")
             imwrite(debugPath + "/normalized2.tif",normalizedImage*255);
         
-        cout << "Image initialized\n";
+        //cout << "Image initialized\n";
 		//cv::Mat imageBw = objectIdentification(normalizedImage);
         cv::Mat imageBw = BlobClass::blobIdentification(normalizedImage,debugPath);
         

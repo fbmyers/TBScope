@@ -22,9 +22,15 @@
 @property (weak, nonatomic) IBOutlet TBSlideViewer* slideViewer;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *fieldSelector;
 @property (weak, nonatomic) IBOutlet ImageROIResultView* roiGridView;
+@property (weak, nonatomic) IBOutlet UIButton *rightArrow;
+@property (weak, nonatomic) IBOutlet UIButton *leftArrow;
+
+@property (strong,nonatomic) UIButton* imageViewModeButton;
 
 - (void) loadImage:(int)index;
 
 - (IBAction)didChangeFieldSelection:(id)sender;
+
+- (IBAction)didPressArrow:(id)sender;
 
 @end

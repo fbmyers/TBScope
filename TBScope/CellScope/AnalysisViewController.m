@@ -56,7 +56,7 @@
 - (IBAction)didPressAbort:(id)sender
 {
     //the user pressed abort
-    [[[TBScopeData sharedData] managedObjectContext] rollback];
+    //[[[TBScopeData sharedData] managedObjectContext] rollback];
     [TBScopeData CSLog:@"Analysis aborted by user." inCategory:@"USER"];
     self.hasAborted = YES;
     [self.navigationController popToRootViewControllerAnimated:YES];

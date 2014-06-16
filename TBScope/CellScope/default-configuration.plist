@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>DefaultFLIntensity</key>
+	<integer>150</integer>
+	<key>DefaultBFIntensity</key>
+	<integer>255</integer>
+	<key>AllowScanWithoutCellScope</key>
+	<true/>
 	<key>DefaultEmailRecipient</key>
 	<string>fbmyers@gmail.com</string>
 	<key>SyncRetryInterval</key>

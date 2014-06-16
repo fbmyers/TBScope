@@ -14,4 +14,5 @@
 
 - (ImageAnalysisResults*) runWithImage: (UIImage*)img;
 
+
 @end

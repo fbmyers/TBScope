@@ -11,8 +11,6 @@
 
 @implementation SettingsViewController
 
-@synthesize currentUser;
-@synthesize defaultLocation,language,dateFormat,cellscopeID,numFieldsPerSlide,patientIDFormat,maxNameLocationAddressLength,redThreshold,yellowThreshold,diagnosticThreshold,numPatchesToAverage,doAnalysisByDefault,bypassLogin,substituteTBImage,tbImagePath,resetCoreData;
 
 - (void)viewDidLoad
 {
@@ -63,12 +61,12 @@
     self.redThreshold.text = [[NSString alloc] initWithFormat:@"%f",[prefs floatForKey:@"RedThreshold"]];
     self.yellowThreshold.text = [[NSString alloc] initWithFormat:@"%f",[prefs floatForKey:@"YellowThreshold"]];
     self.diagnosticThreshold.text = [[NSString alloc] initWithFormat:@"%f",[prefs floatForKey:@"DiagnosticThreshold"]];
-    self.tbImagePath.text = [prefs stringForKey:@"ExampleTBImageURL"];
     self.doAnalysisByDefault.on = [prefs boolForKey:@"DoAnalysisByDefault"];
     self.bypassLogin.on = [prefs boolForKey:@"BypassLogin"];
-    self.substituteTBImage.on = [prefs boolForKey:@"RunWithExampleTBImage"];
     self.resetCoreData.on = [prefs boolForKey:@"ResetCoreDataOnStartup"];
     
+    self.syncInterval.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"SyncInterval"]];
+    self.wifiOnlyButton.on = [prefs boolForKey:@"WifiSyncOnly"];
 }
 
 - (void)saveValuesToPreferences
@@ -89,18 +87,19 @@
         [prefs setValue:self.patientIDFormat.text forKey:@"PatientIDFormat"];
     
     [prefs setValue:self.dateFormat.text forKey:@"DateFormat"];
-    [prefs setValue:self.tbImagePath.text forKey:@"ExampleTBImageURL"];
     [prefs setValue:self.defaultLocation.text forKey:@"DefaultLocation"];
     
     [prefs setInteger:self.maxNameLocationAddressLength.text.integerValue forKey:@"MaxNameLocationAddressLength"];
     [prefs setInteger:self.numFieldsPerSlide.text.integerValue forKey:@"NumFieldsPerSlide"];
     [prefs setInteger:self.numPatchesToAverage.text.integerValue forKey:@"NumPatchesToAverage"];
+    [prefs setInteger:self.syncInterval.text.integerValue forKey:@"SyncInterval"];
+    
     [prefs setFloat:self.diagnosticThreshold.text.floatValue forKey:@"DiagnosticThreshold"];
     
     [prefs setBool:self.doAnalysisByDefault.on forKey:@"DoAnalysisByDefault"];
     [prefs setBool:self.bypassLogin.on forKey:@"BypassLogin"];
-    [prefs setBool:self.substituteTBImage.on forKey:@"RunWithExampleTBImage"];
     [prefs setBool:self.resetCoreData.on forKey:@"ResetCoreDataOnStartup"];
+    [prefs setBool:self.wifiOnlyButton.on forKey:@"WifiSyncOnly"];
     
     
     if ([alertString isEqualToString:@""])

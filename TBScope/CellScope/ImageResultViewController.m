@@ -17,28 +17,21 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     //clear field selector
+    /*
     while (fieldSelector.numberOfSegments>0)
         [fieldSelector removeSegmentAtIndex:0 animated:NO];
     
     int numFields = (int)self.currentSlide.slideImages.count;
-    BOOL analysisHasBeenPerformed = (self.currentSlide.slideAnalysisResults!=nil);
+
     fieldSelector.hidden = (numFields<=1);
     
     //populate the images
     for (int i=0; i<numFields; i++) {
         [fieldSelector insertSegmentWithTitle:[NSString stringWithFormat:@"%d",i+1] atIndex:i animated:NO];
     }
+    */
     
-    //add the option for ROI view
-    if (analysisHasBeenPerformed) {
-        [fieldSelector insertSegmentWithTitle:@"ROI" atIndex:0 animated:NO];
-    }
     
-    //trigger the field selector to load the first image
-    [fieldSelector setSelectedSegmentIndex:0];
-    [self didChangeFieldSelection:nil];
-    
-    //[self loadImage:0];
     
     //set thresholds
     self.slideViewer.subView.redThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"RedThreshold"];
@@ -46,7 +39,115 @@
     self.roiGridView.redThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"RedThreshold"];
     self.roiGridView.yellowThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"YellowThreshold"];
     
+    self.currentImageIndex = 0;
+    
+    //this could prob go in storyboard (but it's over top of tab bar)
+    self.imageViewModeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.imageViewModeButton.frame = CGRectMake(0.0, 0.0, 150.0, 40.0);
+    self.imageViewModeButton.center = CGPointMake(900.0,743.0);
+    self.imageViewModeButton.backgroundColor = [UIColor blueColor];
+    [self.imageViewModeButton addTarget:self action:@selector(switchImageViewMode) forControlEvents:UIControlEventTouchUpInside];
+    [self.tabBarController.view addSubview:self.imageViewModeButton];
+    [self.view bringSubviewToFront:self.imageViewModeButton];
+    
+    BOOL analysisHasBeenPerformed = (self.currentSlide.slideAnalysisResults!=nil);
+    if (analysisHasBeenPerformed) {
 
+       self.imageViewModeButton.tag = 2;
+        self.imageViewModeButton.hidden = NO;
+
+    }
+    else {
+        self.imageViewModeButton.tag = 1;
+        self.imageViewModeButton.hidden = YES;
+    }
+    
+    [self switchImageViewMode];
+        
+}
+
+- (void) switchImageViewMode
+{
+    UIAlertView* av = [self showWaitIndicator];
+    
+    if (self.imageViewModeButton.tag==1) {
+        [self.imageViewModeButton setTitle:NSLocalizedString(@"Show Patches",nil) forState:UIControlStateNormal];
+        self.imageViewModeButton.tag = 2;
+        
+        //show image view
+        self.roiGridView.hidden = YES;
+        self.slideViewer.hidden = NO; //TODO: should we delete image data?
+        self.leftArrow.hidden = NO;
+        self.rightArrow.hidden = NO;
+        
+        //int fieldIndex = selectedTitle.intValue;
+        [self loadImage:self.currentImageIndex completionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [av dismissWithClickedButtonIndex:0 animated:YES];
+            });
+        }];
+        
+        self.tabBarController.navigationItem.title = [NSString stringWithFormat:@"Exam %@, Slide %d, Image %d of %ld",
+                                                        self.currentSlide.exam.examID,
+                                                        self.currentSlide.slideNumber,
+                                                        self.currentImageIndex+1,
+                                                        self.currentSlide.slideImages.count];
+        
+        
+        [TBScopeData CSLog:@"Image view presented" inCategory:@"USER"];
+    }
+    else {
+        [self.imageViewModeButton setTitle:NSLocalizedString(@"Show Images",nil) forState:UIControlStateNormal];
+        self.imageViewModeButton.tag = 1;
+        
+        //show ROIs
+        self.roiGridView.hidden = NO;
+        self.slideViewer.hidden = YES;
+        self.leftArrow.hidden = YES;
+        self.rightArrow.hidden = YES;
+        
+        self.roiGridView.scoresVisible = YES;
+        self.roiGridView.boxesVisible = YES;
+        self.roiGridView.selectionVisible = YES;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.roiGridView setSlide:self.currentSlide];
+        });
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [av dismissWithClickedButtonIndex:0 animated:YES];
+        });
+        
+        self.tabBarController.navigationItem.title = [NSString stringWithFormat:@"Exam %@, Slide %d, Analyzed Patches",
+                                     self.currentSlide.exam.examID,
+                                     self.currentSlide.slideNumber];
+        
+        
+        [TBScopeData CSLog:@"ROI view presented" inCategory:@"USER"];
+    }
+}
+
+
+- (IBAction)didPressArrow:(id)sender
+{
+    UIAlertView* av = [self showWaitIndicator];
+    
+    if (sender==self.rightArrow && (self.currentImageIndex<self.currentSlide.slideImages.count-1))
+        self.currentImageIndex++;
+    else if (sender==self.leftArrow && self.currentImageIndex>0)
+        self.currentImageIndex--;
+    
+    [self loadImage:self.currentImageIndex completionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [av dismissWithClickedButtonIndex:0 animated:YES];
+            
+            self.tabBarController.navigationItem.title = [NSString stringWithFormat:@"Exam %@, Slide %d, Image %d of %ld",
+                                                          self.currentSlide.exam.examID,
+                                                          self.currentSlide.slideNumber,
+                                                          self.currentImageIndex+1,
+                                                          self.currentSlide.slideImages.count];
+        });
+    }];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -55,47 +156,11 @@
         [TBScopeData touchExam:self.currentSlide.exam];
         [[TBScopeData sharedData] saveCoreData];
     }
+    
+    [self.imageViewModeButton removeFromSuperview];
+    
 }
 
-- (IBAction)didChangeFieldSelection:(id)sender
-{
-    UIAlertView* av = [self showWaitIndicator];
-
-    NSString* selectedTitle = [fieldSelector titleForSegmentAtIndex:fieldSelector.selectedSegmentIndex];
-    if ([selectedTitle isEqualToString:@"ROI"])
-    {
-        self.roiGridView.hidden = NO;
-        self.slideViewer.hidden = YES;
-        
-        self.roiGridView.scoresVisible = YES;
-        self.roiGridView.boxesVisible = YES;
-        self.roiGridView.selectionVisible = YES;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-                [self.roiGridView setSlide:self.currentSlide];
-        });
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [av dismissWithClickedButtonIndex:0 animated:YES];
-        });
-        
-    }
-    else //assume it's a number indicating the field
-    {
-        self.roiGridView.hidden = YES;
-        self.slideViewer.hidden = NO; //TODO: should we delete image data?
-        
-        int fieldIndex = selectedTitle.intValue;
-        [self loadImage:fieldIndex-1 completionHandler:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [av dismissWithClickedButtonIndex:0 animated:YES];
-            });
-        }];
-        
-    }
-
-
-}
 
 -(UIAlertView*)showWaitIndicator{
     UIAlertView* altpleasewait = [[UIAlertView alloc] initWithTitle:@"Please Wait..." message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
@@ -135,8 +200,9 @@
             [slideViewer setShowsVerticalScrollIndicator:YES];
             [slideViewer setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
             [slideViewer setNeedsDisplay];
-            completionBlock();
+
         }
+        completionBlock();
     }];
     
     [TBScopeData CSLog:[NSString stringWithFormat:@"Image viewer screen presented, field #%d",currentImage.fieldNumber] inCategory:@"USER"];

@@ -26,10 +26,11 @@
 @property (weak, nonatomic) IBOutlet UITextField* yellowThreshold;
 @property (weak, nonatomic) IBOutlet UITextField* diagnosticThreshold;
 @property (weak, nonatomic) IBOutlet UITextField* numPatchesToAverage;
+@property (weak, nonatomic) IBOutlet UITextField *syncInterval;
+@property (weak, nonatomic) IBOutlet UISwitch *wifiOnlyButton;
+
 @property (weak, nonatomic) IBOutlet UISwitch* doAnalysisByDefault;
 @property (weak, nonatomic) IBOutlet UISwitch* bypassLogin;
-@property (weak, nonatomic) IBOutlet UISwitch* substituteTBImage;
-@property (weak, nonatomic) IBOutlet UITextField* tbImagePath;
 @property (weak, nonatomic) IBOutlet UISwitch* resetCoreData;
 
 - (IBAction)didPressResetSettings;

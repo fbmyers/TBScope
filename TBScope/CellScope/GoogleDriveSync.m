@@ -358,8 +358,8 @@ BOOL _hasAttemptedLogUpload;
     }
     else if (_hasAttemptedLogUpload==NO && self.syncEnabled)
     {
-        [self uploadLogWithCompletionHandler:completionBlock];
         _hasAttemptedLogUpload = YES;
+        [self uploadLogWithCompletionHandler:completionBlock];
     }
     else {
         self.isSyncing = NO;
@@ -370,7 +370,7 @@ BOOL _hasAttemptedLogUpload;
         //if (previousSyncHadNoChanges) {
             
             //schedule the next sync iteration some time in the future (note: might want to make this some kind of service which runs based on OS notifications)
-            [NSTimer scheduledTimerWithTimeInterval:[[NSUserDefaults standardUserDefaults] floatForKey:@"SyncInterval"] target:self selector:@selector(doSync) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:[[NSUserDefaults standardUserDefaults] floatForKey:@"SyncInterval"]*60 target:self selector:@selector(doSync) userInfo:nil repeats:NO];
         //}
         //else //previous iteration resulted in changes, so run another sync to make sure there are no remaining updates
         //{
@@ -607,27 +607,48 @@ BOOL _hasAttemptedLogUpload;
                           if (error==nil) {
                               GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:file.downloadUrl];
                               fetcher.authorizer = self.driveService.authorizer;
-                              //TODO: verify w/o network connection
                               [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
                                   if (error==nil)
                                   {
-                                      //save this image to asset library as jpg
-                                      UIImage* im = [UIImage imageWithData:data];
-                                      ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                                      [library writeImageToSavedPhotosAlbum:im.CGImage
-                                                                orientation:(ALAssetOrientation)[im imageOrientation]
-                                                            completionBlock:^(NSURL *assetURL, NSError *error){
-                                          if (error==nil) {
-                                              image.path = assetURL.absoluteString;
-                                              [[TBScopeData sharedData] saveCoreData];
-                                              
-                                              [TBScopeData CSLog:[NSString stringWithFormat:@"Downloaded image to path: %@", image.path]
-                                                      inCategory:@"SYNC"];
+     
+                                      //TODO: this blocks UI. prob need GDS to have its own MOC, and put it in background thread.
+                                      //there's one other issue with this: if the analysis is rerun on the same image, this won't ever update
+                                      //populate the ROI images in CD
+                                      //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                          //save this image to asset library as jpg
+                                          UIImage* im = [UIImage imageWithData:data];
+                                      
+                                          /*
+                                          if (image.imageAnalysisResults!=nil) {
+                                              for (ROIs* roi in image.imageAnalysisResults.imageROIs)
+                                              {
+                                                  NSData* pngData = UIImagePNGRepresentation([TBScopeData getPatchFromImage:im X:roi.x Y:roi.y]);
+                                                  //dispatch_async(dispatch_get_main_queue(), ^{
+                                                      roi.image = pngData;
+                                                  //});
+                                              }
                                               
                                           }
-                 
-                                          completionBlock(error); //error likely means disk is full
-                                       }];
+                                          */
+                                          //dispatch_async(dispatch_get_main_queue(), ^{
+                                              ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                                              [library writeImageToSavedPhotosAlbum:im.CGImage
+                                                                        orientation:(ALAssetOrientation)[im imageOrientation]
+                                                                    completionBlock:^(NSURL *assetURL, NSError *error){
+                                                  if (error==nil) {
+                                                      image.path = assetURL.absoluteString;
+                                                      [[TBScopeData sharedData] saveCoreData];
+                                                      
+                                                      [TBScopeData CSLog:[NSString stringWithFormat:@"Downloaded image to path: %@", image.path]
+                                                              inCategory:@"SYNC"];
+                                                      
+                                                  }
+                                                  
+                                                  completionBlock(error); //error likely means disk is full
+                                                  
+                                               }];
+                                          //});
+                                      //});
                                   }
                                   else
                                       completionBlock(error); //likely data transfer interrupted

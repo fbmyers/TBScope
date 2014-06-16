@@ -27,6 +27,15 @@
                                                  name:@"GoogleSyncStopped"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setBTIndicator)
+                                                 name:@"BluetoothConnected"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setBTIndicator)
+                                                 name:@"BluetoothDisconnected"
+                                               object:nil];
 }
 
 
@@ -57,6 +66,48 @@
     [TBScopeData CSLog:@"Main menu screen presented" inCategory:@"USER"];
     
     [self setSyncIndicator];
+    [self setBTIndicator];
+    [self setMenuPermissions];
+}
+
+- (void)setMenuPermissions
+{
+    NSString* accessLevel = [[[TBScopeData sharedData] currentUser] accessLevel];
+    if ([accessLevel isEqualToString:@"ADMIN"]) {
+        self.configurationButton.enabled = YES;
+        self.scanSlideButton.enabled = YES;
+    }
+    else if ([accessLevel isEqualToString:@"USER"]) {
+        self.configurationButton.enabled = NO;
+        self.scanSlideButton.enabled = YES;
+    }
+    
+
+}
+
+- (void)setBTIndicator
+{
+    self.bluetoothIndicator.hidden = ![[[TBScopeHardware sharedHardware] ble] isConnected];
+}
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+   
+    if([identifier isEqualToString:@"ScanSlideSegue"]) {
+        if (![[[TBScopeHardware sharedHardware] ble] isConnected] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"AllowScanWithoutCellScope"]) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CellScope Not Connected", nil)
+                                                             message:NSLocalizedString(@"Please ensure Bluetooth is enabled and CellScope is powered on.",nil)
+                                                            delegate:self
+                                                   cancelButtonTitle:NSLocalizedString(@"OK",nil)
+                                                   otherButtonTitles:nil];
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            alert.tag = 1;
+            [alert show];
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

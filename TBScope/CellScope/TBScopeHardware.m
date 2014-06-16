@@ -65,13 +65,13 @@
     
     [TBScopeData CSLog:@"Bluetooth Disconnected" inCategory:@"HARDWARE"];
     
-    //fire this off as a notification, messagebox?
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BluetoothDisconnected" object:nil];
+    
 }
 
 // When RSSI is changed, this will be called
 -(void) bleDidUpdateRSSI:(NSNumber *) rssi
 {
-    //lblRSSI.text = rssi.stringValue;
     
 }
 
@@ -80,7 +80,7 @@
 {
     [TBScopeData CSLog:@"Bluetooth Connected" inCategory:@"HARDWARE"];
     
-    //fire this off as a notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BluetoothConnected" object:nil];
 }
 
 // When data is comming, this will be called

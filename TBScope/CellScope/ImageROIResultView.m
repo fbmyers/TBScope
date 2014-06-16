@@ -34,6 +34,7 @@ float threshold_score = 1;
     
     self.currentSlide = slide;
     
+    
     NSMutableSet* allROIs = [[NSMutableSet alloc] init];
     
     for (Images* im in self.currentSlide.slideImages)
@@ -79,6 +80,7 @@ float threshold_score = 1;
     
     cell.currentROI = (ROIs*)self.ROIList[indexPath.item];
     
+
     cell.imageView.image = [UIImage imageWithData:cell.currentROI.image];
     
     if (self.boxesVisible)
@@ -113,7 +115,11 @@ float threshold_score = 1;
     
     
     cell.currentROI.userCall = cell.currentROI.userCall?NO:YES;
-    
+    if (cell.currentROI.userCall)
+        cell.currentROI.imageAnalysisResult.image.slide.slideAnalysisResults.numAFBManual++;
+    else
+        cell.currentROI.imageAnalysisResult.image.slide.slideAnalysisResults.numAFBManual--;
+        
     cell.tintView.hidden = !cell.currentROI.userCall;
  
     self.hasChanges = YES;

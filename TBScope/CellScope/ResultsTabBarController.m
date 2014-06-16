@@ -17,7 +17,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = self.currentExam.examID;
+
     [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Results", nil)];
     
     //TODO: only show image view if user has permission.  also tailor slide diagnosis view accordingly

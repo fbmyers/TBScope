@@ -8,6 +8,9 @@
 
 #import "CaptureViewController.h"
 
+BOOL _FLOn=NO;
+BOOL _BFOn=NO;
+
 @implementation CaptureViewController
 
 @synthesize currentSlide,snapButton,analyzeButton,bleConnectionLabel,holdTimer;
@@ -27,7 +30,7 @@
     self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Next", nil);    
     [self.bfButton setTitle:NSLocalizedString(@"BF Off",nil) forState:UIControlStateNormal];
     [self.flButton setTitle:NSLocalizedString(@"FL Off",nil) forState:UIControlStateNormal];
-    [self.aeButton setTitle:NSLocalizedString(@"AE On",nil) forState:UIControlStateNormal];
+    //[self.aeButton setTitle:NSLocalizedString(@"AE On",nil) forState:UIControlStateNormal];
     [self.afButton setTitle:NSLocalizedString(@"AF On",nil) forState:UIControlStateNormal];
     self.bleConnectionLabel.text = NSLocalizedString(@"Not Connected", nil);
     self.analyzeButton.title = NSLocalizedString(@"Analyze",nil);
@@ -49,7 +52,9 @@
     
     [previewView setAutoresizesSubviews:NO];  //TODO: necessary?
     
-
+    [previewView setFocusLock:YES];
+    [previewView setExposureLock:YES];
+    
     self.analyzeButton.enabled = NO;
     
     //TODO: i'd rather do this as a delegate
@@ -118,6 +123,7 @@
 }
 
 
+
 - (void)saveImageCallback
 {
     UIImage* image = previewView.lastCapturedImage; //[self convertImageToGrayScale:previewView.lastCapturedImage];
@@ -175,66 +181,123 @@
     
     UIButton* buttonPressed = (UIButton*)sender;
     
+    self.currentSpeed = CSStageSpeedFast;
+    
     if (buttonPressed.tag==1) //up
-        self.currentDirection = CSStageDirectionUp;
-    else if (buttonPressed.tag==2) //down
         self.currentDirection = CSStageDirectionDown;
+    else if (buttonPressed.tag==2) //down
+        self.currentDirection = CSStageDirectionUp;
     else if (buttonPressed.tag==3) //left
         self.currentDirection = CSStageDirectionLeft;
     else if (buttonPressed.tag==4) //right
         self.currentDirection = CSStageDirectionRight;
     else if (buttonPressed.tag==5) //z+
+    {
         self.currentDirection = CSStageDirectionFocusUp;
+        self.currentSpeed = CSStageSpeedSlow;
+    }
     else if (buttonPressed.tag==6) //z-
+    {
         self.currentDirection = CSStageDirectionFocusDown;
+        self.currentSpeed = CSStageSpeedSlow;
+    }
     
-    self.currentSpeed = CSStageSpeedFast;
     
     holdTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(moveStage:) userInfo:nil repeats:YES];
     
 }
 
+- (void) toggleBF
+{
+    if (_BFOn)
+    {
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
+        [self.bfButton setTitle:NSLocalizedString(@"BF Off",nil) forState:UIControlStateNormal];
+        [self.bfButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        self.intensitySlider.hidden = YES;
+        
+    }
+    else
+    {
+        int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultBFIntensity"];
+        self.intensitySlider.hidden = NO;
+        [self.intensitySlider setValue:intensity/255];
+        self.intensitySlider.tintColor = [UIColor greenColor];
+        
+        [previewView setExposureLock:NO];
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
+        [NSThread sleepForTimeInterval:2.0];
+        [previewView setExposureLock:YES];
+        
+        [self.bfButton setTitle:NSLocalizedString(@"BF On",nil) forState:UIControlStateNormal];
+        [self.bfButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
+    }
+    _BFOn = !_BFOn;
+}
+
+- (void) toggleFL
+{
+    if (_FLOn)
+    {
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
+        [self.flButton setTitle:NSLocalizedString(@"FL Off",nil) forState:UIControlStateNormal];
+        [self.flButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        self.intensitySlider.hidden = YES;
+    }
+    else
+    {
+        int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultFLIntensity"];
+        self.intensitySlider.hidden = NO;
+        [self.intensitySlider setValue:(float)intensity/255];
+        self.intensitySlider.tintColor = [UIColor blueColor];
+        
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
+        [self.flButton setTitle:NSLocalizedString(@"FL On",nil) forState:UIControlStateNormal];
+        [self.flButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
+    }
+    _FLOn = !_FLOn;
+}
+
+- (IBAction)intensitySliderDidChange:(id)sender
+{
+    if (_BFOn)
+    {
+        int intensity = self.intensitySlider.value*255;
+        [[NSUserDefaults standardUserDefaults] setInteger:intensity forKey:@"DefaultBFIntensity"];
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
+    }
+    else if (_FLOn)
+    {
+        int intensity = self.intensitySlider.value*255;
+        [[NSUserDefaults standardUserDefaults] setInteger:intensity forKey:@"DefaultFLIntensity"];
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
+    }
+}
+
+
 - (IBAction)didTouchUpStageButton:(id)sender
 {
     UIButton* buttonPressed = (UIButton*)sender;
 
-    static BOOL BFOn=NO;
-    static BOOL FLOn=NO;
     static BOOL AEOn=YES;
     static BOOL AFOn=YES;
     
     if (buttonPressed.tag==7) //BF
     {
-        if (BFOn)
-        {
-            [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
-            [buttonPressed setTitle:NSLocalizedString(@"BF Off",nil) forState:UIControlStateNormal];
-            [buttonPressed setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:70];
-            [buttonPressed setTitle:NSLocalizedString(@"BF On",nil) forState:UIControlStateNormal];
-            [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
-        }
-        BFOn = !BFOn;
+        if (_FLOn)
+            [self toggleFL];
+
+        [self toggleBF];
         
     }
     else if (buttonPressed.tag==8) //FL
     {
-        if (FLOn)
-        {
-            [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
-            [buttonPressed setTitle:NSLocalizedString(@"FL Off",nil) forState:UIControlStateNormal];
-            [buttonPressed setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:255];
-            [buttonPressed setTitle:NSLocalizedString(@"FL On",nil) forState:UIControlStateNormal];
-            [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
-        }
-        FLOn = !FLOn;
+        if (_BFOn)
+            [self toggleBF];
+        
+        [self toggleFL];
     }
     else if (buttonPressed.tag==9) //AE
     {
@@ -242,7 +305,7 @@
         {
             [previewView setExposureLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AE Off",nil) forState:UIControlStateNormal];
-            [buttonPressed setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [buttonPressed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
         else
         {
@@ -258,7 +321,7 @@
         {
             [previewView setFocusLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AF Off",nil) forState:UIControlStateNormal];
-            [buttonPressed setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [buttonPressed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
         else
         {
@@ -283,7 +346,7 @@
 -(void) moveStage:(NSTimer *)timer
 {
     if (self.currentSpeed==CSStageSpeedSlow)
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:20 DisableAfter:NO];
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:50 DisableAfter:NO];
     else if (self.currentSpeed==CSStageSpeedFast)
         [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:100 DisableAfter:NO];
 }
@@ -401,14 +464,15 @@
     self.rightButton.hidden = YES;
     self.downButton.hidden = YES;
     self.upButton.hidden = YES;
+    self.intensitySlider.hidden = YES;
     self.autoFocusButton.hidden = YES;
     self.autoScanButton.hidden = YES;
     self.scanStatusLabel.hidden = NO;
     });
     
     //starting conditions
-    [previewView setExposureLock:NO];
-    [previewView setFocusLock:NO];
+    //[previewView setExposureLock:NO];
+    //[previewView setFocusLock:NO];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
     [NSThread sleepForTimeInterval:0.1];
@@ -428,27 +492,29 @@
     
     //turn on BF and wait for exposure to settle
     NSLog(@"BF on");
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:70];
-    [NSThread sleepForTimeInterval:2.0];
+    //[[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultBFIntensity"]];
+    //[NSThread sleepForTimeInterval:2.0];
     
     //set exposure lock and focus lock
     NSLog(@"exposure/focus lock");
-    [previewView setExposureLock:YES];
-    [previewView setFocusLock:YES];
-    [NSThread sleepForTimeInterval:1.0];
+    //[previewView setExposureLock:YES];
+    //[previewView setFocusLock:YES];
+    //[NSThread sleepForTimeInterval:1.0];
     
     //do autofocus
     NSLog(@"autofocus");
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        self.scanStatusLabel.text = NSLocalizedString(@"Focusing...", nil);});
-    [self autofocus];
+    //dispatch_async(dispatch_get_main_queue(), ^(void){
+    //   self.scanStatusLabel.text = NSLocalizedString(@"Focusing...", nil);});
+    //[self autofocus];
     
     //turn off BF and turn on FL
-    NSLog(@"BF on");
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:255];
+    NSLog(@"FL on");
+    int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultFLIntensity"];
     
-    [NSThread sleepForTimeInterval:0.2];
+    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
+    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
+    
+    //[NSThread sleepForTimeInterval:0.2];
     
     //acquire 5 fields
     for (int fieldNumber=0; fieldNumber<[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]; fieldNumber++)
@@ -458,15 +524,24 @@
             self.scanStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Acquiring image %d of %d...", nil),fieldNumber+1,[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]];});
         
         [self didPressCapture:nil];
-        [NSThread sleepForTimeInterval:3.0];
+        [NSThread sleepForTimeInterval:0.5];
         
         //move
+        CSStageDirection dir = CSStageDirectionDown;
+        if (fieldNumber<10)
+            dir = CSStageDirectionDown;
+        else if (fieldNumber==10)
+            dir = CSStageDirectionLeft;
+        else if (fieldNumber<20)
+            dir = CSStageDirectionUp;
+
+        
         dispatch_async(dispatch_get_main_queue(), ^(void){
             self.scanStatusLabel.text = NSLocalizedString(@"Next field...", nil);});
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionDown
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:dir
                                                          Steps:200
                                                   DisableAfter:YES];
-        [NSThread sleepForTimeInterval:1.0];
+        [NSThread sleepForTimeInterval:0.5];
     
     }
     

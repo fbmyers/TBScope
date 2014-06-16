@@ -61,10 +61,6 @@ void setup()
 
 void loop()
 {
-  Serial.print(digitalRead(X_LIMIT_PIN));
-  Serial.print(" ");
-  Serial.println(digitalRead(Y_LIMIT_PIN));
-  
   static boolean analog_enabled = false;
   static byte old_state = LOW;
   

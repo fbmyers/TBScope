@@ -50,7 +50,7 @@
     passwordField.text = @"";
     invalidLogin.hidden = YES;
     
-    self.titleLabel.text = NSLocalizedString(@"Automated Tuberculosis Diagnostic System",nil);
+    self.titleLabel.text = NSLocalizedString(@"Automatic Tuberculosis Diagnostic System",nil);
     usernameField.placeholder = NSLocalizedString(@"username", nil);
     passwordField.placeholder = NSLocalizedString(@"password", nil);
     invalidLogin.text = NSLocalizedString(@"Invalid username or password", nil);
