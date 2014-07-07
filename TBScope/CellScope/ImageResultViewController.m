@@ -66,6 +66,11 @@
         
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [TBScopeData CSLog:@"ImageResultViewController received memory warning" inCategory:@"MEMORY"];
+}
+
 - (void) switchImageViewMode
 {
     UIAlertView* av = [self showWaitIndicator];
@@ -132,7 +137,7 @@
 {
     UIAlertView* av = [self showWaitIndicator];
     
-    if (sender==self.rightArrow && (self.currentImageIndex<self.currentSlide.slideImages.count-1))
+    if (sender==self.rightArrow && (self.currentImageIndex<(self.currentSlide.slideImages.count-1)))
         self.currentImageIndex++;
     else if (sender==self.leftArrow && self.currentImageIndex>0)
         self.currentImageIndex--;
@@ -182,6 +187,7 @@
     //load the image at index currentImageIndex and display w/ ROIs
     
     if (self.currentSlide.slideImages.count<=index) {
+        completionBlock();
         return;
     }
     

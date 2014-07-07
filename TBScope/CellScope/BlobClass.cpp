@@ -32,10 +32,10 @@ namespace BlobClass
 	cv::Mat blobIdentification(cv::Mat image, std::string debugPath)
 	{
         //this is a hack, but it handles the different thresholds between this scope and Neil's scope
-        bool neilscope = true;
-        int thresholdMultiplier = 9;
+        bool neilscope = false;
+        int thresholdMultiplier = 10;
         if (image.rows==1944) {
-            neilscope = false;
+            neilscope = true;
             thresholdMultiplier = 3;
             std::cout << "running as Neilscope image\n";
         }
@@ -94,7 +94,7 @@ namespace BlobClass
 		double mean = meanImageDifference.at<double>(0, 0);
 		double stdev = stdDevImageDifference.at<double>(0, 0);
 		double threshold_value = mean + (thresholdMultiplier * stdev);
-        std::cout << "mean: " << mean << " std: " << stdev << " thresh: " << threshold_value << "\n";
+        std::cout << "\nmean: " << mean << " std: " << stdev << " thresh: " << threshold_value << "\n";
 
         //get binary (thresholded) image
 		imageThreshold = MatrixOperations::greaterThanValue((float)threshold_value, imageDifference);

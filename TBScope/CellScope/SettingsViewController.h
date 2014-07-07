@@ -33,6 +33,20 @@
 @property (weak, nonatomic) IBOutlet UISwitch* bypassLogin;
 @property (weak, nonatomic) IBOutlet UISwitch* resetCoreData;
 
+@property (weak, nonatomic) IBOutlet UISwitch *autoLoadSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *autoScanSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *autoFocusSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *scanRows;
+@property (weak, nonatomic) IBOutlet UITextField *scanColumns;
+@property (weak, nonatomic) IBOutlet UITextField *fieldSpacing;
+@property (weak, nonatomic) IBOutlet UITextField *refocusInterval;
+@property (weak, nonatomic) IBOutlet UITextField *bfIntensity;
+@property (weak, nonatomic) IBOutlet UITextField *fluorIntensity;
+@property (weak, nonatomic) IBOutlet UISwitch *bypassDataEntrySwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *initialBFFocus;
+
+
+
 - (IBAction)didPressResetSettings;
 
 - (void)fetchValuesFromPreferences;

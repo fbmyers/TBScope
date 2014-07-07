@@ -406,6 +406,11 @@
 
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [TBScopeData CSLog:@"SlideDiagnosisViewController received memory warning" inCategory:@"MEMORY"];
+}
+
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"ReAnalyzeSegue"])
@@ -446,6 +451,12 @@
         //[mvc showExamLocation:self.currentExam];
         
         //mvc.examLocation = [TBScopeData coordinatesFromString:self.currentExam.gpsLocation];
+        
+    }
+    else if ([segue.identifier isEqualToString:@"EditExamSegue"]) {
+        UIViewController <TBScopeViewControllerContext> *eevc = [segue destinationViewController];
+        eevc.currentExam = self.currentExam;
+
         
     }
 }

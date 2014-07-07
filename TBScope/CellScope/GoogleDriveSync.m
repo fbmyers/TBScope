@@ -398,15 +398,15 @@ BOOL _hasAttemptedLogUpload;
              {
                  //create a google file object from this image
                  GTLDriveFile *file = [GTLDriveFile object];
-                 file.title = [NSString stringWithFormat:@"%@ - %@ - %d-%d.png",
+                 file.title = [NSString stringWithFormat:@"%@ - %@ - %d-%d.jpg",
                                image.slide.exam.cellscopeID,
                                image.slide.exam.examID,
                                image.slide.slideNumber,
                                image.fieldNumber];
                  file.descriptionProperty = @"Uploaded from CellScope";
-                 file.mimeType = @"image/png";
+                 file.mimeType = @"image/jpeg";
                  file.modifiedDate = [GTLDateTime dateTimeWithRFC3339String:image.slide.exam.dateModified];
-                 NSData *data = UIImagePNGRepresentation((UIImage *)im);
+                 NSData *data = UIImageJPEGRepresentation((UIImage *)im,1.0);
                  GTLUploadParameters *uploadParameters = [GTLUploadParameters uploadParametersWithData:data
                                                                                               MIMEType:file.mimeType];
                  GTLQueryDrive *query = [GTLQueryDrive queryForFilesInsertWithObject:file

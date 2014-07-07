@@ -10,7 +10,11 @@
 #import "TBScopeData.h"
 #import "ImageROIResultCell.h"
 
+#define NEIGHBORHOOD_SIZE 200
+
 @interface ImageROIResultView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
+@property (strong,nonatomic) UIImageView* roiNeighborhoodView;
 
 @property (strong,nonatomic) Slides* currentSlide;
 @property (strong,nonatomic) NSArray* ROIList;

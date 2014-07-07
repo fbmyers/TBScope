@@ -67,6 +67,19 @@
     
     self.syncInterval.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"SyncInterval"]];
     self.wifiOnlyButton.on = [prefs boolForKey:@"WifiSyncOnly"];
+    
+    self.autoFocusSwitch.on = [prefs boolForKey:@"DoAutoFocus"];
+    self.autoLoadSwitch.on = [prefs boolForKey:@"DoAutoLoadSlide"];
+    self.autoScanSwitch.on = [prefs boolForKey:@"DoAutoScan"];
+    self.scanColumns.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanCols"]];
+    self.scanRows.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanRows"]];
+    self.fieldSpacing.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanStepsBetweenFields"]];
+    self.refocusInterval.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanFocusInterval"]];
+    self.bfIntensity.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanBFIntensity"]];
+    self.fluorIntensity.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanFluorescentIntensity"]];
+    
+    self.bypassDataEntrySwitch.on = [prefs boolForKey:@"BypassDataEntry"];
+    self.initialBFFocus.on = [prefs boolForKey:@"AutoScanInitialFocus"];
 }
 
 - (void)saveValuesToPreferences
@@ -100,6 +113,28 @@
     [prefs setBool:self.bypassLogin.on forKey:@"BypassLogin"];
     [prefs setBool:self.resetCoreData.on forKey:@"ResetCoreDataOnStartup"];
     [prefs setBool:self.wifiOnlyButton.on forKey:@"WifiSyncOnly"];
+    
+    [prefs setBool:self.autoScanSwitch.on forKey:@"DoAutoScan"];
+    [prefs setBool:self.autoFocusSwitch.on forKey:@"DoAutoFocus"];
+    [prefs setBool:self.autoLoadSwitch.on forKey:@"DoAutoLoadSlide"];
+    [prefs setBool:self.initialBFFocus.on forKey:@"AutoScanInitialFocus"];
+    [prefs setBool:self.bypassDataEntrySwitch.on forKey:@"BypassDataEntry"];
+    
+    /*
+    self.scanColumns.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanCols"]];
+    self.scanRows.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanRows"]];
+    self.fieldSpacing.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanStepsBetweenFields"]];
+    self.refocusInterval.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanFocusInterval"]];
+    self.bfIntensity.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanBFIntensity"]];
+    self.fluorIntensity.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanFluorescentIntensity"]];
+    */
+    
+    [prefs setInteger:self.scanColumns.text.integerValue forKey:@"AutoScanCols"];
+    [prefs setInteger:self.scanRows.text.integerValue forKey:@"AutoScanRows"];
+    [prefs setInteger:self.fieldSpacing.text.integerValue forKey:@"AutoScanStepsBetweenFields"];
+    [prefs setInteger:self.refocusInterval.text.integerValue forKey:@"AutoScanFocusInterval"];
+    [prefs setInteger:self.bfIntensity.text.integerValue forKey:@"AutoScanBFIntensity"];
+    [prefs setInteger:self.fluorIntensity.text.integerValue forKey:@"AutoScanFluorescentIntensity"];
     
     
     if ([alertString isEqualToString:@""])

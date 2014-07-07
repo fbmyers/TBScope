@@ -19,6 +19,8 @@
 
 @property (strong,nonatomic) Exams* currentExam;
 
+@property (nonatomic) BOOL isNewExam;
+
 //exam fields
 @property (weak, nonatomic) IBOutlet UITextField* examIDTextField;
 @property (weak, nonatomic) IBOutlet UITextField* patientIDTextField;

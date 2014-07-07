@@ -2,6 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AddBFWhenManualFocusing</key>
+	<false/>
+	<key>AutoScanInitialFocus</key>
+	<false/>
+	<key>BypassDataEntry</key>
+	<true/>
+	<key>DoAutoLoadSlide</key>
+	<true/>
+	<key>AutoScanFluorescentIntensity</key>
+	<integer>255</integer>
+	<key>AutoScanBFIntensity</key>
+	<integer>2</integer>
+	<key>AutoScanFocusInterval</key>
+	<integer>3</integer>
+	<key>AutoScanStepsBetweenFields</key>
+	<integer>100</integer>
+	<key>AutoScanCols</key>
+	<integer>20</integer>
+	<key>AutoScanRows</key>
+	<integer>10</integer>
+	<key>DoAutoFocus</key>
+	<true/>
+	<key>DoAutoScan</key>
+	<true/>
 	<key>DefaultFLIntensity</key>
 	<integer>150</integer>
 	<key>DefaultBFIntensity</key>

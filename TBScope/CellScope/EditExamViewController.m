@@ -57,6 +57,13 @@
         self.currentExam = newExam;
     }
     
+    //if the form is being shown for editing an existing exam (and not for initial scanning, then don't show next button)
+    if (self.isNewExam==NO)
+    {
+        self.navigationItem.title = NSLocalizedString(@"Edit Exam", nil);
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    
     //populate the form with data from currentExam
     self.examIDTextField.text = self.currentExam.examID;
     self.patientIDTextField.text = self.currentExam.patientID;
@@ -97,11 +104,25 @@
     [self.examIDTextField becomeFirstResponder];
     
     [TBScopeData CSLog:@"Edit exam screen presented" inCategory:@"USER"];
+    
+
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"BypassDataEntry"]) {
+        self.examIDTextField.text = @"1234";
+        self.patientIDTextField.text = @"1234";
+        self.nameTextField.text = @"Test Slide";
+        
+        [self performSegueWithIdentifier:@"NewSlideSegue" sender:self];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if ([self isMovingFromParentViewController])
+    if ([self isMovingFromParentViewController] && self.isNewExam==YES)
     {
         //user pressed back, so don't save this exam
         [[[TBScopeData sharedData] managedObjectContext] rollback];

@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 //#import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
+#import "ImageQualityAnalyzer.h"
 #include "cv.h"
 
 @interface CameraScrollView : UIScrollView <UIScrollViewDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
@@ -27,6 +28,8 @@
 @property (strong,atomic) UIImage* lastCapturedImage;
 @property (strong,atomic) NSString* lastImageMetadata;
 
+@property (strong,nonatomic) UILabel* imageQualityLabel;
+
 @property (nonatomic) float imageRotation;
 
 @property (nonatomic) BOOL previewRunning;
@@ -34,7 +37,7 @@
 @property (nonatomic) BOOL isFocusLocked;
 @property (nonatomic) BOOL isExposureLocked;
 
-@property (nonatomic) short currentFocusValue;
+@property (nonatomic) ImageQuality currentImageQuality;
 
 - (void) setupCamera;
 - (void) takeDownCamera;

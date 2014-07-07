@@ -61,6 +61,7 @@
     
     }
     
+    
     //display slide settings
     self.examIDLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Exam ID: %@", nil),self.currentExam.examID];
     self.patientIDLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Patient ID: %@", nil),self.currentExam.patientID];
@@ -96,7 +97,6 @@
     [self.dateCollectedPicker setDate:[TBScopeData dateFromString:self.currentSlide.dateCollected]];
     [self.dateCollectedPicker setDatePickerMode:UIDatePickerModeDate];
     
-    //self.sputumQualityPicker = ;
     if ([self.currentSlide.sputumQuality isEqualToString:@"GOOD"])
         [self.sputumQualityPicker selectRow:0 inComponent:0 animated:NO];
     else if ([self.currentSlide.sputumQuality isEqualToString:@"BLOOD"])
@@ -109,9 +109,17 @@
     [TBScopeData CSLog:@"Edit slide screen presented" inCategory:@"USER"];    
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"BypassDataEntry"]) {
+        
+        [self performSegueWithIdentifier:@"LoadSampleSegue" sender:self];
+    }
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if ([self isMovingFromParentViewController]) 
+    if ([self isMovingFromParentViewController])
     {
         //self.currentSlide = nil;
     }

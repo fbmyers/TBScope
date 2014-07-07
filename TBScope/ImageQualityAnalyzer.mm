@@ -1,0 +1,461 @@
+//
+//  ImageQualityAnalyzer.m
+//  TBScope
+//
+//  Created by Frankie Myers on 6/18/14.
+//  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
+//
+
+#import "ImageQualityAnalyzer.h"
+
+@implementation ImageQualityAnalyzer
+
+using namespace cv;
+
+#define CROP_WINDOW_SIZE 700
+
++(IplImage *)createIplImageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    IplImage *iplimage = 0;
+    IplImage *cropped = 0;
+    
+    if (sampleBuffer) {
+        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        CVPixelBufferLockBaseAddress(imageBuffer, 0);
+        
+        // get information of the image in the buffer
+        uint8_t *bufferBaseAddress = (uint8_t *)CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0);
+        size_t bufferWidth = CVPixelBufferGetWidth(imageBuffer);
+        size_t bufferHeight = CVPixelBufferGetHeight(imageBuffer);
+        
+        // create IplImage
+        if (bufferBaseAddress) {
+            iplimage = cvCreateImage(cvSize(bufferWidth, bufferHeight), IPL_DEPTH_8U, 1);
+            iplimage->imageData = (char*)bufferBaseAddress;
+            
+            //crop it
+            cvSetImageROI(iplimage, cvRect(iplimage->width/2-(CROP_WINDOW_SIZE/2), iplimage->height/2-(CROP_WINDOW_SIZE/2), CROP_WINDOW_SIZE, CROP_WINDOW_SIZE));
+            cropped = cvCreateImage(cvGetSize(iplimage),
+                                    iplimage->depth,
+                                    iplimage->nChannels);
+            
+            cvCopy(iplimage, cropped, NULL);
+            cvResetImageROI(iplimage);
+            
+            //memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
+        }
+        
+        // release memory
+        CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+    }
+    else
+        NSLog(@"No sampleBuffer!!");
+    
+    cvReleaseImage(&iplimage);
+    
+    return cropped;
+}
+
+//convert iOS image to OpenCV image.
+//TODO: look into what this is doing with color images
++ (cv::Mat)cvMatWithImage:(UIImage *)image
+{
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+    CGFloat cols = image.size.width;
+    CGFloat rows = image.size.height;
+    cv::Mat cvMat;
+    
+    
+    if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelRGB) { // 3 channels
+        cvMat = cv::Mat(rows, cols, CV_8UC3);
+    } else if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelMonochrome) { // 1 channel
+        cvMat = cv::Mat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
+    }
+    
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to data
+                                                    cols,                       // Width of bitmap
+                                                    rows,                       // Height of bitmap
+                                                    8,                          // Bits per component
+                                                    cvMat.step[0],              // Bytes per row
+                                                    colorSpace,                 // Colorspace
+                                                    kCGImageAlphaNone |
+                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
+    
+    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
+    CGContextRelease(contextRef);
+    //CGColorSpaceRelease(colorSpace); //intermitted crashes can result when you release CG objects NOT created with functions that have Create or Copy in the name (as with this one)
+    
+    
+    return cvMat;
+}
+
++ (UIImage *) imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer
+
+{
+    
+    // Get a CMSampleBuffer's Core Video image buffer for the media data
+    
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    
+    // Lock the base address of the pixel buffer
+    
+    CVPixelBufferLockBaseAddress(imageBuffer, 0);
+    
+    
+    
+    // Get the number of bytes per row for the pixel buffer
+    
+    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
+    
+    
+    
+    // Get the number of bytes per row for the pixel buffer
+    
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+    
+    // Get the pixel buffer width and height
+    
+    size_t width = CVPixelBufferGetWidth(imageBuffer);
+    
+    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    
+    
+    
+    // Create a device-dependent RGB color space
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    
+    
+    // Create a bitmap graphics context with the sample buffer data
+    
+    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8,
+                                                 
+                                                 bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    
+    // Create a Quartz image from the pixel data in the bitmap graphics context
+    
+    CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+    
+    // Unlock the pixel buffer
+    
+    CVPixelBufferUnlockBaseAddress(imageBuffer,0);
+    
+    
+    
+    // Free up the context and color space
+    
+    CGContextRelease(context);
+    
+    CGColorSpaceRelease(colorSpace);
+    
+    
+    
+    // Create an image object from the Quartz image
+    
+    UIImage *image = [UIImage imageWithCGImage:quartzImage];
+    
+    
+    
+    // Release the Quartz image
+    
+    CGImageRelease(quartzImage);
+    
+    
+    
+    return (image);
+    
+}
+
+double entropy(Mat *img)
+{
+    int numBins = 256, nPixels;
+    float range[] = {0, 255};
+    double imgEntropy = 0 , prob;
+    const float* histRange = { range };
+    Mat histValues;
+    
+    //calculating the histogram
+    calcHist(img, 1, 0, Mat(), histValues, 1, &numBins, &histRange, true, true );
+    
+    nPixels = sum(histValues)[0];
+    
+    
+    for(int i = 1; i < numBins; i++)
+    {
+        prob = histValues.at<double>(i)/nPixels;
+        if(prob < FLT_EPSILON)
+            continue;
+        imgEntropy += prob*(log(prob)/log(2));
+        
+    }
+    
+    return (0-imgEntropy);
+}
+// OpenCV port of 'LAPM' algorithm (Nayar89)
+double modifiedLaplacian(const cv::Mat& src)
+{
+    cv::Mat M = (Mat_<double>(3, 1) << -1, 2, -1);
+    cv::Mat G = cv::getGaussianKernel(3, -1, CV_64F);
+    
+    cv::Mat Lx;
+    cv::sepFilter2D(src, Lx, CV_64F, M, G);
+    
+    cv::Mat Ly;
+    cv::sepFilter2D(src, Ly, CV_64F, G, M);
+    
+    cv::Mat FM = cv::abs(Lx) + cv::abs(Ly);
+    
+    double focusMeasure = cv::mean(FM).val[0];
+    
+    M.release();
+    G.release();
+    Lx.release();
+    Ly.release();
+    FM.release();
+    
+    return focusMeasure;
+}
+
+// OpenCV port of 'LAPV' algorithm (Pech2000)
+double varianceOfLaplacian(const cv::Mat& src)
+{
+    cv::Mat lap;
+    cv::Laplacian(src, lap, CV_64F);
+    
+    cv::Scalar mu, sigma;
+    cv::meanStdDev(lap, mu, sigma);
+    
+    double focusMeasure = sigma.val[0]*sigma.val[0];
+    
+    lap.release();
+    
+    return focusMeasure;
+}
+
+// OpenCV port of 'TENG' algorithm (Krotkov86)
+double tenengrad(const cv::Mat& src, int ksize)
+{
+    cv::Mat Gx, Gy;
+    cv::Sobel(src, Gx, CV_64F, 1, 0, ksize);
+    cv::Sobel(src, Gy, CV_64F, 0, 1, ksize);
+    
+    cv::Mat FM = Gx.mul(Gx) + Gy.mul(Gy);
+    
+    double focusMeasure = cv::mean(FM).val[0];
+    
+    Gx.release();
+    Gy.release();
+    
+    return focusMeasure;
+}
+
+// OpenCV port of 'GLVN' algorithm (Santos97)
+double normalizedGraylevelVariance(const cv::Mat& src)
+{
+    cv::Scalar mu, sigma;
+    cv::meanStdDev(src, mu, sigma);
+    
+    double focusMeasure = (sigma.val[0]*sigma.val[0]) / mu.val[0];
+    
+    return focusMeasure;
+}
+
+float getHistogramBinValue(Mat hist, int binNum)
+{
+    return hist.at<float>(binNum);
+}
+float getFrequencyOfBin(Mat channel)
+{
+    float frequency = 0.0;
+    for( int i = 1; i < 255; i++ )
+    {
+        float Hc = abs(getHistogramBinValue(channel,i));
+        frequency += Hc;
+    }
+    return frequency;
+}
+float computeShannonEntropy(Mat src)
+{
+    float entropy = 0.0;
+    float frequency = getFrequencyOfBin(src);
+    for( int i = 1; i < 255; i++ )
+    {
+        float Hc = abs(getHistogramBinValue(src,i));
+        entropy += -(Hc/frequency) * log10((Hc/frequency));
+    }
+    std::cout << entropy << '\n';
+    return entropy;
+}
+
++ (ImageQuality) calculateFocusMetric:(CMSampleBufferRef)sampleBuffer
+{
+    
+    /*
+    //generate a cv::mat from sampleBuffer
+    CVImageBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    CVPixelBufferLockBaseAddress( pixelBuffer, 0 );
+    int bufferWidth = CVPixelBufferGetWidth(pixelBuffer);
+    int bufferHeight = CVPixelBufferGetHeight(pixelBuffer);
+    unsigned char *pixel = (unsigned char *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    cv::Mat src = cv::Mat(bufferHeight,bufferWidth,CV_8UC4,pixel);
+    CVPixelBufferUnlockBaseAddress( pixelBuffer, 0 );
+     */
+    
+    ImageQuality iq;
+    
+    //TODO: this isn't taking green channel...how do we do that?
+    IplImage* iplimg = [ImageQualityAnalyzer createIplImageFromSampleBuffer:sampleBuffer];
+
+    
+    Mat src = Mat(iplimg);
+    
+    /*
+    Mat lap;
+    //cv::Mat greenChannel;
+    //cv::extractChannel(src, greenChannel, 1);
+    
+    Laplacian(src, lap, CV_64F);
+
+    Scalar mean, stDev;
+    double minVal;
+    double maxVal;
+    
+    
+    meanStdDev(lap, mean, stDev);
+    minMaxIdx(src, &minVal, &maxVal);
+    */
+    
+    iq.normalizedGraylevelVariance = normalizedGraylevelVariance(src);
+    iq.varianceOfLaplacian = varianceOfLaplacian(src);
+    iq.modifiedLaplacian = modifiedLaplacian(src);
+    iq.tenengrad1 = tenengrad(src, 1);
+    iq.tenengrad3 = tenengrad(src, 3);
+    iq.tenengrad9 = tenengrad(src, 9);
+    
+    
+    //iq.contrast = maxVal/mean.val[0];
+    iq.entropy = computeShannonEntropy(src);
+    
+
+    src.release();
+    //lap.release();
+    cvReleaseImage(&iplimg);
+    
+    
+    
+    return iq;
+    
+    
+    
+    /*
+    IplImage* img = [ImageQualityAnalyzer createIplImageFromSampleBuffer:sampleBuffer];
+    
+    // assumes that your image is already in planner yuv or 8 bit greyscale
+    //IplImage* in = cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,1);
+    IplImage* out = cvCreateImage(cvSize(img->width,img->height),IPL_DEPTH_16S,1);
+    //memcpy(in->imageData,data,width*height);
+    
+    
+    // aperture size of 1 corresponds to the correct matrix
+    cvLaplace(img, out, 1);
+    
+    short maxLap = -32767;
+    short* imgData = (short*)out->imageData;
+    for(int i =0;i<(out->imageSize/2);i++)
+    {
+        if(imgData[i] > maxLap) maxLap = imgData[i];
+    }
+    
+    cvReleaseImage(&img);
+    cvReleaseImage(&out);
+    
+    return maxLap;
+     */
+}
+
+//TODO: remove the unnecessary conversion functions in this file
+/*
++ (UIImage*) maskCircleFromImage:(UIImage*)inputImage
+{
+    CGImageRef maskRef = [UIImage imageNamed:@"circlemask.png"].CGImage;
+
+    CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
+                                        CGImageGetHeight(maskRef),
+                                        CGImageGetBitsPerComponent(maskRef),
+                                        CGImageGetBitsPerPixel(maskRef),
+                                        CGImageGetBytesPerRow(maskRef),
+                                        CGImageGetDataProvider(maskRef), NULL, false);
+
+    CGImageRef masked = CGImageCreateWithMask([inputImage CGImage], mask);
+    CGImageRelease(mask);
+
+    UIImage *maskedImage = [UIImage imageWithCGImage:masked];
+
+    CGImageRelease(masked);
+    
+    return maskedImage;
+}
+*/
+
++ (UIImage*)maskCircleFromImage:(UIImage *)image {
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    UIImage *maskImage = [UIImage imageNamed:@"circlemask.png"];
+    CGImageRef maskImageRef = [maskImage CGImage];
+    
+    // create a bitmap graphics context the size of the image
+    CGContextRef mainViewContentContext = CGBitmapContextCreate (NULL, maskImage.size.width, maskImage.size.height, 8, 0, colorSpace, kCGImageAlphaPremultipliedLast);
+    
+    
+    if (mainViewContentContext==NULL)
+        return NULL;
+    
+    CGFloat ratio = 0;
+    
+    ratio = maskImage.size.width/ image.size.width;
+    
+    if(ratio * image.size.height < maskImage.size.height) {
+        ratio = maskImage.size.height/ image.size.height;
+    }
+    
+    CGRect rect1  = {{0, 0}, {maskImage.size.width, maskImage.size.height}};
+    CGRect rect2  = {{-((image.size.width*ratio)-maskImage.size.width)/2 , -((image.size.height*ratio)-maskImage.size.height)/2}, {image.size.width*ratio, image.size.height*ratio}};
+    
+    CGContextSetRGBFillColor(mainViewContentContext, 0.0, 0.0, 0.0, 1.0);
+    CGContextFillRect(mainViewContentContext, rect1); //???
+    CGContextClipToMask(mainViewContentContext, rect1, maskImageRef);
+
+    CGContextDrawImage(mainViewContentContext, rect2, image.CGImage);
+    
+    
+    // Create CGImageRef of the main view bitmap content, and then
+    // release that bitmap context
+    CGImageRef newImage = CGBitmapContextCreateImage(mainViewContentContext);
+    CGContextRelease(mainViewContentContext);
+    
+    UIImage *theImage = [UIImage imageWithCGImage:newImage];
+    
+    CGImageRelease(newImage);
+    
+    // return the image
+    return theImage;
+}
+
+//TODO: rename this class to "image tools" or something
+
++ (UIImage *)cropImage:(UIImage*)image withBounds:(CGRect)rect {
+    if (image.scale > 1.0f) {
+        rect = CGRectMake(rect.origin.x * image.scale,
+                          rect.origin.y * image.scale,
+                          rect.size.width * image.scale,
+                          rect.size.height * image.scale);
+    }
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
+    UIImage *result = [UIImage imageWithCGImage:imageRef scale:image.scale orientation:image.imageOrientation];
+    CGImageRelease(imageRef);
+    return result;
+}
+
+@end

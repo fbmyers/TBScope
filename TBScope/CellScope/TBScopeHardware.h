@@ -10,6 +10,12 @@
 #import "BLE.h"
 #import "TBScopeData.h"
 
+@protocol TBScopeHardwareDelegate
+@optional
+-(void) tbScopeStageMoveDidCompleteWithXLimit:(BOOL)xLimit YLimit:(BOOL)yLimit ZLimit:(BOOL)zLimit;
+@required
+@end
+
 @interface TBScopeHardware : NSObject <BLEDelegate, UIAlertViewDelegate>
 
 typedef NS_ENUM(int, CSStageDirection)
@@ -35,8 +41,18 @@ typedef NS_ENUM(int, CSLED)
     CSLEDBrightfield
 };
 
+typedef NS_ENUM(int, CSStagePosition)
+{
+    CSStagePositionLoading,
+    CSStagePositionHome,
+    CSStagePositionTestTarget,
+    CSStagePositionSlideCenter
+};
 
 @property (strong, nonatomic) BLE *ble;
+
+@property (nonatomic,assign) id <TBScopeHardwareDelegate> delegate;
+
 
 + (id)sharedHardware;
 
@@ -48,8 +64,14 @@ typedef NS_ENUM(int, CSLED)
 
 
 - (void) moveStageWithDirection:(CSStageDirection) dir
-                          Steps:(int)steps
+                          StepInterval:(UInt16)stepInterval
+                          Steps:(UInt16)steps
+                    StopOnLimit:(BOOL)stopOnLimit
                    DisableAfter:(BOOL)disableAfter;
+
+- (void) moveToPosition:(CSStagePosition)position;
+
+- (void) waitForStage;
 
 - (void) setMicroscopeLED:(CSLED) led
                     Level:(Byte) level;

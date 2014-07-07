@@ -24,32 +24,31 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    NSString *url   =   [[NSBundle mainBundle] pathForResource:@"slideloading" ofType:@"mp4"];
-    
-    moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:url]];
-    
-    moviePlayer.fullscreen = NO;
-    moviePlayer.allowsAirPlay = NO;
-    moviePlayer.controlStyle = MPMovieControlStyleNone;
-    moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
-    moviePlayer.repeatMode = MPMovieRepeatModeOne;
-    
-    [moviePlayer.view setFrame:videoView.bounds];
-    [videoView addSubview:moviePlayer.view];
-
-    [moviePlayer play];
-    
-    
-    //eject the tray
-    
-    for (int i=0;i<20;i++)
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DoAutoLoadSlide"])
     {
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionUp
-                                                         Steps:100
-                                                  DisableAfter:NO];
-        [NSThread sleepForTimeInterval:0.1];
+        NSString *url   =   [[NSBundle mainBundle] pathForResource:@"slideloading" ofType:@"mp4"];
+        
+        moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:url]];
+        
+        moviePlayer.fullscreen = NO;
+        moviePlayer.allowsAirPlay = NO;
+        moviePlayer.controlStyle = MPMovieControlStyleNone;
+        moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
+        moviePlayer.repeatMode = MPMovieRepeatModeOne;
+        
+        [moviePlayer.view setFrame:videoView.bounds];
+        [videoView addSubview:moviePlayer.view];
+        
+        [moviePlayer play];
+        
+        //extend the tray
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionLoading];
+        
+        //draw tray in
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionHome];
     }
-    [[TBScopeHardware sharedHardware] disableMotors];
+    else
+        [self performSegueWithIdentifier:@"ScanSlideSegue" sender:self];
 
 }
 

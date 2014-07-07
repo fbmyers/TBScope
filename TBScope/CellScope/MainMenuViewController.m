@@ -116,6 +116,7 @@
     {
         EditExamViewController* eevc = (EditExamViewController*)[segue destinationViewController];
         eevc.currentExam = nil;
+        eevc.isNewExam = YES;
     }
     else if ([segue.identifier isEqualToString:@"ReviewResultsSegue"])
     {

@@ -225,6 +225,11 @@
     return cell;
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [TBScopeData CSLog:@"ExamListViewController received memory warning" inCategory:@"MEMORY"];
+}
+
 //TODO: should throw up a confirmation dialog box when user deletes a slide
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {

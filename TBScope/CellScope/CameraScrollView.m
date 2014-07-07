@@ -37,6 +37,7 @@
     return self;
 }
 
+
 - (void) setupCamera
 {
     
@@ -69,8 +70,15 @@
     [self setDelegate:self];
     [self zoomExtents];
     
-    //this is still giving weird behavoir with the boundaries
-    
+    //if we're debugging, add a label to display image quality metrics
+    self.imageQualityLabel = [[UILabel alloc] init];
+    [self addSubview:self.imageQualityLabel];
+    [self.imageQualityLabel setBounds:CGRectMake(0,0,400,400)];
+    [self.imageQualityLabel setCenter:CGPointMake(1000, 100)];
+    self.imageQualityLabel.textColor = [UIColor whiteColor];
+    [self bringSubviewToFront:self.imageQualityLabel];
+    self.imageQualityLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.imageQualityLabel.numberOfLines = 0;
     
     // Setup still image output
     
@@ -128,82 +136,42 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
 {
+    static double averagingArray[] = {0,0,0};
     
-    IplImage* img = [self createIplImageFromSampleBuffer:sampleBuffer];
-    
-    // assumes that your image is already in planner yuv or 8 bit greyscale
-    //IplImage* in = cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,1);
-    IplImage* out = cvCreateImage(cvSize(img->width,img->height),IPL_DEPTH_16S,1);
-    //memcpy(in->imageData,data,width*height);
+
+    ImageQuality iq = [ImageQualityAnalyzer calculateFocusMetric:sampleBuffer];
     
     
-    // aperture size of 1 corresponds to the correct matrix
-    cvLaplace(img, out, 1);
+    //NSLog(@"%lf",iq.contrast);
+    /*
+    NSMutableString* strBar = [NSMutableString stringWithString:@""];
+    for(int i=0;i<iq.movingAverageSharpness;i+=10)
+        [strBar appendString:@"-"];
     
-    short maxLap = -32767;
-    short* imgData = (short*)out->imageData;
-    for(int i =0;i<(out->imageSize/2);i++)
-    {
-        if(imgData[i] > maxLap) maxLap = imgData[i];
-    }
-    
-    cvReleaseImage(&img);
-    cvReleaseImage(&out);
-    
-    //NSMutableString* strBar = [NSMutableString stringWithString:@""];
-    //for(int i=0;i<maxLap;i+=5)
-    //    [strBar appendString:@"-"];
-    
-    //NSLog(strBar);
+    NSLog(strBar);
+    */
     
     //why is this crashing w/ back?
-    self.currentFocusValue = maxLap;
+    averagingArray[2] = averagingArray[1];
+    averagingArray[1] = averagingArray[0];
+    averagingArray[0] = iq.tenengrad3;
     
+    iq.movingAverageSharpness = (averagingArray[0] + averagingArray[1] + averagingArray[2])/3.0;
+    
+    self.currentImageQuality = iq;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.imageQualityLabel setText:[NSString stringWithFormat:@"entropy: %3.3lf\nmod lap: %3.3lf\nnorm gray var: %3.3lf\nvar lap: %3.3lf\ntgrad1: %3.3lf\ntgrad3: %3.3lf\ntgrad9: %3.3lf\navg sharpness: %3.3lf",
+                                        iq.entropy,
+                                        iq.modifiedLaplacian,
+                                        iq.normalizedGraylevelVariance,
+                                        iq.varianceOfLaplacian,
+                                        iq.tenengrad1,
+                                        iq.tenengrad3,
+                                        iq.tenengrad9,
+                                         iq.movingAverageSharpness]];
+    });
 }
-
-//TODO: move this to image proc helper lib
--(IplImage *)createIplImageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-    IplImage *iplimage = 0;
-    IplImage *cropped = 0;
-    
-    if (sampleBuffer) {
-        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-        CVPixelBufferLockBaseAddress(imageBuffer, 0);
-        
-        // get information of the image in the buffer
-        uint8_t *bufferBaseAddress = (uint8_t *)CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0);
-        size_t bufferWidth = CVPixelBufferGetWidth(imageBuffer);
-        size_t bufferHeight = CVPixelBufferGetHeight(imageBuffer);
-        
-        // create IplImage
-        if (bufferBaseAddress) {
-            iplimage = cvCreateImage(cvSize(bufferWidth, bufferHeight), IPL_DEPTH_8U, 1);
-            iplimage->imageData = (char*)bufferBaseAddress;
-            
-            //crop it
-            cvSetImageROI(iplimage, cvRect(iplimage->width/2-250, iplimage->height/2-250, 500, 500));
-            cropped = cvCreateImage(cvGetSize(iplimage),
-                                          iplimage->depth,
-                                          iplimage->nChannels);
-            
-            cvCopy(iplimage, cropped, NULL);
-            cvResetImageROI(iplimage);
-            
-            //memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
-        }
-        
-        // release memory
-        CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-    }
-    else
-        NSLog(@"No sampleBuffer!!");
-    
-    cvReleaseImage(&iplimage);
-    
-    return cropped;
-}
-
-
 
 
 - (void) zoomExtents
@@ -307,6 +275,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
          }
          else
          {
+             //extract green channel only
+             
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
              self.lastCapturedImage = [[UIImage alloc] initWithData:imageData];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"ImageCaptured" object:nil];

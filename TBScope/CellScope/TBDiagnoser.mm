@@ -117,6 +117,7 @@
     [TBScopeData CSLog:[NSString stringWithFormat:@"Classification algorithm finished, execution time: %f",executionTime]
             inCategory:@"ANALYSIS"];
 
+    
     //get a new ImageAnalysisResults instance from Core Data
     ImageAnalysisResults* results = (ImageAnalysisResults*)[NSEntityDescription insertNewObjectForEntityForName:@"ImageAnalysisResults" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
     
@@ -168,6 +169,7 @@
     results.diagnosis = (topAverage>diagnosticThreshold);
     results.numAFBManual = 0;
     results.dateAnalyzed = [TBScopeData stringFromDate:[NSDate date]];
+    
     
     [TBScopeData CSLog:[NSString stringWithFormat:@"Image analysis results generated, score: %f",topAverage]
             inCategory:@"ANALYSIS"];

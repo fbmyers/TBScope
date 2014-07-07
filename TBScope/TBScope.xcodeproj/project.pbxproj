@@ -36,6 +36,7 @@
 		A50B061B1831D75500880350 /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B061A1831D75500880350 /* train_min.csv */; };
 		A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06511835695100880350 /* SlideDiagnosisViewController.m */; };
 		A50B06551835697700880350 /* ImageResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06541835697700880350 /* ImageResultViewController.m */; };
+		A5176664195C817400EBCEF0 /* circlemask.png in Resources */ = {isa = PBXBuildFile; fileRef = A5176663195C817400EBCEF0 /* circlemask.png */; };
 		A52BDEB71859236F00B4ECB2 /* TBScope.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A52BDEB51859236F00B4ECB2 /* TBScope.xcdatamodeld */; };
 		A52D7D49183DEBB000A487EA /* GTMGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D7863183DEBAA00A487EA /* GTMGatherInputStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A52D7D4A183DEBB000A487EA /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D7865183DEBAA00A487EA /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -135,6 +136,7 @@
 		A5C341941835A4CD00DBBD37 /* scalearrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341931835A4CD00DBBD37 /* scalearrow.png */; };
 		A5C341A41835A4D200DBBD37 /* scalearrow2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341A31835A4D200DBBD37 /* scalearrow2x.png */; };
 		A5C5079E1866304D00187BBC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5079D1866304D00187BBC /* CoreBluetooth.framework */; };
+		A5CAEA771952732400416E4B /* ImageQualityAnalyzer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5CAEA761952732400416E4B /* ImageQualityAnalyzer.mm */; };
 		A5CB970018EF4E90009CD561 /* CoreDataJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */; };
 		A5CF19FA187A39DF00C2C2E1 /* CameraScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CF19F9187A39DF00C2C2E1 /* CameraScrollView.m */; };
 		A5CF1A08187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A04187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif */; };
@@ -392,6 +394,7 @@
 		A50B06511835695100880350 /* SlideDiagnosisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideDiagnosisViewController.m; sourceTree = "<group>"; };
 		A50B06531835697700880350 /* ImageResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResultViewController.h; sourceTree = "<group>"; };
 		A50B06541835697700880350 /* ImageResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResultViewController.m; sourceTree = "<group>"; };
+		A5176663195C817400EBCEF0 /* circlemask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circlemask.png; sourceTree = "<group>"; };
 		A52BDEB61859236F00B4ECB2 /* TBScope.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TBScope.xcdatamodel; sourceTree = "<group>"; };
 		A52D785F183DEBAA00A487EA /* GTLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLDefines.h; sourceTree = "<group>"; };
 		A52D7862183DEBAA00A487EA /* GTMGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGatherInputStream.h; sourceTree = "<group>"; };
@@ -566,6 +569,8 @@
 		A5C341931835A4CD00DBBD37 /* scalearrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow.png; sourceTree = "<group>"; };
 		A5C341A31835A4D200DBBD37 /* scalearrow2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow2x.png; sourceTree = "<group>"; };
 		A5C5079D1866304D00187BBC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		A5CAEA751952732400416E4B /* ImageQualityAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageQualityAnalyzer.h; sourceTree = "<group>"; };
+		A5CAEA761952732400416E4B /* ImageQualityAnalyzer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageQualityAnalyzer.mm; sourceTree = "<group>"; };
 		A5CB96FE18EF4E90009CD561 /* CoreDataJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataJSONHelper.h; sourceTree = "<group>"; };
 		A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataJSONHelper.m; sourceTree = "<group>"; };
 		A5CF19F8187A39DF00C2C2E1 /* CameraScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraScrollView.h; sourceTree = "<group>"; };
@@ -706,6 +711,8 @@
 		9B6BF0A915E19ACD002834C5 = {
 			isa = PBXGroup;
 			children = (
+				A5CAEA751952732400416E4B /* ImageQualityAnalyzer.h */,
+				A5CAEA761952732400416E4B /* ImageQualityAnalyzer.mm */,
 				A57014B318A7091D00881F95 /* Images.xcassets */,
 				A5C5079C18662AF500187BBC /* BLE */,
 				9B6BF0C115E19ACD002834C5 /* Supporting Files */,
@@ -775,6 +782,7 @@
 				ACC23A21176241C000C6BF9D /* default-configuration.plist */,
 				9B6BF0C215E19ACD002834C5 /* CellScope-Info.plist */,
 				A50B06161831D6C800880350 /* model_out.txt */,
+				A5176663195C817400EBCEF0 /* circlemask.png */,
 				A50B06181831D74600880350 /* train_max.csv */,
 				A50B061A1831D75500880350 /* train_min.csv */,
 				A5B72A911899F88F0013DA9F /* Localizable.strings */,
@@ -1442,6 +1450,7 @@
 				A5CF1A0A187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I3_Fluor_Y_F.tif in Resources */,
 				A5FCCD1C18B6DC830004B2F5 /* reviewresults.png in Resources */,
 				A570149018A5BE5500881F95 /* usericon.png in Resources */,
+				A5176664195C817400EBCEF0 /* circlemask.png in Resources */,
 				A50B06171831D6C800880350 /* model_out.txt in Resources */,
 				A5CF1A2F187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif in Resources */,
 				A5CF1A13187E4B8A00C2C2E1 /* left.png in Resources */,
@@ -1556,6 +1565,7 @@
 				A52D7D72183DEBB000A487EA /* GTLQuery.m in Sources */,
 				A52D7E5F183DEBB000A487EA /* GTLDriveComment.m in Sources */,
 				A52D7E71183DEBB000A487EA /* GTLServiceDrive.m in Sources */,
+				A5CAEA771952732400416E4B /* ImageQualityAnalyzer.mm in Sources */,
 				A52D7E61183DEBB000A487EA /* GTLDriveCommentReply.m in Sources */,
 				A52D7D6B183DEBB000A487EA /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				A52D7E58183DEBB000A487EA /* GTLDriveApp.m in Sources */,

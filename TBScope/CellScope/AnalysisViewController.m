@@ -111,8 +111,11 @@
         self.progress.progress = (float)fieldNumber/(float)numFields;
     });
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    
+    //(try main queue for now)
+    
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
         Images* currentImage = (Images*)[[self.currentSlide slideImages] objectAtIndex:fieldNumber];
         
         [TBScopeData CSLog:[NSString stringWithFormat:@"Analyzing image %d-%d from exam %@ with path %@",
@@ -127,6 +130,7 @@
             
             if (err==nil) {
                 //do analysis on this image
+                
                 currentImage.imageAnalysisResults = [diagnoser runWithImage:(image)]; //todo: spin out as new thread
 
                 [TBScopeData touchExam:self.currentExam];
@@ -139,6 +143,11 @@
         
     });
     
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [TBScopeData CSLog:@"AnalysisViewController received memory warning" inCategory:@"MEMORY"];
 }
 
 - (void)analysisCompleteCallback

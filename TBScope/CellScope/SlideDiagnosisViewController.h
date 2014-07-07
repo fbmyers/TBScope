@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UILabel* userLabel;
 @property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lastModifiedLabel;
+@property (weak, nonatomic) IBOutlet UIButton *editExamButton;
 
 //patient info
 @property (weak, nonatomic) IBOutlet UILabel* patientNameLabel;

@@ -7,7 +7,7 @@
 //
 
 #import "ImageROIResultView.h"
-
+#import "ImageQualityAnalyzer.h"
 
 @interface ImageROIResultView ()
 
@@ -29,8 +29,13 @@ float threshold_score = 1;
     self.allowsSelection = self.selectionVisible;
     self.allowsMultipleSelection = NO;
     
-    UIPinchGestureRecognizer *gesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(didReceivePinchGesture:)];
-    [self addGestureRecognizer:gesture];
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(didReceivePinchGesture:)];
+    [self addGestureRecognizer:pinch];
+    
+    // attach long press gesture to collectionView
+    UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didReceiveLongPressGesture:)];
+    longpress.minimumPressDuration = .5; //seconds
+    [self addGestureRecognizer:longpress];
     
     self.currentSlide = slide;
     
@@ -56,6 +61,65 @@ float threshold_score = 1;
     {
         self.scale = scaleStart * gesture.scale;
         [self.collectionViewLayout invalidateLayout];
+    }
+}
+
+-(void)didReceiveLongPressGesture:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGPoint p = [gestureRecognizer locationInView:self];
+        float neighborhoodX = 300;
+        float neighborhoodY = 300;
+        if (p.x<512)
+            neighborhoodX = 750;
+        
+        NSIndexPath *indexPath = [self indexPathForItemAtPoint:p];
+        if (indexPath == nil){
+            NSLog(@"couldn't find index path following long press gesture");
+        } else {
+            // get the cell at indexPath (the one you long pressed)
+            ImageROIResultCell* cell = [self cellForItemAtIndexPath:indexPath];
+            // do stuff with the cell
+            //cell.currentROI.x;
+            
+            Images* roiImage = (Images*)cell.currentROI.imageAnalysisResult.image;
+            int x = cell.currentROI.x;
+            int y = cell.currentROI.y;
+            
+            [TBScopeData getImage:roiImage resultBlock:^(UIImage* image, NSError* err){
+                if (err==nil)
+                {
+                    CGRect bounds = CGRectMake(x-NEIGHBORHOOD_SIZE/2,y-NEIGHBORHOOD_SIZE/2,NEIGHBORHOOD_SIZE,NEIGHBORHOOD_SIZE);
+                    
+                    //get a cropped version of the vicinity around this ROI
+                    UIImage* roiNeighborhood = [ImageQualityAnalyzer cropImage:image withBounds:bounds];
+                    
+                    //display image
+                    //place image view on left/right side if gesture is on the right/left side
+                    //image view should be 2x scaled
+                    if (self.roiNeighborhoodView!=nil)
+                    {
+                        [self.roiNeighborhoodView removeFromSuperview];
+                        self.roiNeighborhoodView = nil;
+                    }
+                    
+                    self.roiNeighborhoodView = [[UIImageView alloc] initWithImage:roiNeighborhood];
+                    [self.roiNeighborhoodView setTransform:CGAffineTransformScale(CGAffineTransformIdentity, 2.0, 2.0)];
+                    [self.roiNeighborhoodView setCenter:CGPointMake(neighborhoodX,neighborhoodY)];
+                    
+                    [self.superview addSubview:self.roiNeighborhoodView];
+                    
+                }
+            }];
+            
+            
+        }
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled || gestureRecognizer.state == UIGestureRecognizerStateFailed)//gesture ended
+    {
+        self.roiNeighborhoodView.hidden = YES;
+        self.roiNeighborhoodView = nil;
     }
 }
 

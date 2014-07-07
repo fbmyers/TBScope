@@ -10,6 +10,8 @@
 
 BOOL _FLOn=NO;
 BOOL _BFOn=NO;
+BOOL _isAborting=NO;
+BOOL _isWaitingForFocusConfirmation=NO;
 
 @implementation CaptureViewController
 
@@ -34,6 +36,7 @@ BOOL _BFOn=NO;
     [self.afButton setTitle:NSLocalizedString(@"AF On",nil) forState:UIControlStateNormal];
     self.bleConnectionLabel.text = NSLocalizedString(@"Not Connected", nil);
     self.analyzeButton.title = NSLocalizedString(@"Analyze",nil);
+    [self.fastSlowButton setTitle:NSLocalizedString(@"Fast",nil) forState:UIControlStateNormal];
     
     //setup the camera view
     [previewView setupCamera];
@@ -68,11 +71,38 @@ BOOL _BFOn=NO;
         [[[TBScopeData sharedData] managedObjectContext] deleteObject:self.currentSlide.slideAnalysisResults];
     [[TBScopeData sharedData] saveCoreData];
     
+    [[TBScopeHardware sharedHardware] setDelegate:self];
+    
+    self.currentSpeed = CSStageSpeedFast;
+    
+    _isAborting = NO;
+    
+    self.controlPanelView.hidden = NO;
+    self.leftButton.hidden = NO;
+    self.rightButton.hidden = NO;
+    self.downButton.hidden = NO;
+    self.upButton.hidden = NO;
+    self.autoFocusButton.hidden = NO;
+    self.autoScanButton.hidden = NO;
+    self.scanStatusLabel.hidden = YES;
+    self.abortButton.hidden = YES;
+    
     [TBScopeData CSLog:@"Capture screen presented" inCategory:@"USER"];
 
-    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DoAutoScan"]) {
+        [NSThread sleepForTimeInterval:1];
+        [self didPressAutoScan:nil];
+    }
+    else
+    {
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionSlideCenter];
+    }
 }
 
+- (void)didPressAbort:(id)sender
+{
+    _isAborting = YES;
+}
 
 - (void)updatePrompt
 {
@@ -89,12 +119,21 @@ BOOL _BFOn=NO;
     if([segue.identifier isEqualToString:@"AnalysisSegue"]) {
         AnalysisViewController *avc = (AnalysisViewController*)[segue destinationViewController];
         avc.currentSlide = self.currentSlide;
+        
+        //eject slide
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionLoading];
+        
+        //draw it back in (after user removes slide)
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionHome];
+    
+        
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
    
+    [[self navigationController] setNavigationBarHidden:NO animated:YES];
     
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
@@ -107,6 +146,12 @@ BOOL _BFOn=NO;
     
 }
 
+- (void)abortCapture
+{
+    
+    [[self navigationController] popViewControllerAnimated:YES];
+    _isAborting = NO;
+}
 
 - (void)didPressCapture:(id)sender
 {
@@ -126,9 +171,14 @@ BOOL _BFOn=NO;
 
 - (void)saveImageCallback
 {
-    UIImage* image = previewView.lastCapturedImage; //[self convertImageToGrayScale:previewView.lastCapturedImage];
     
     [TBScopeData CSLog:@"Snapped an image" inCategory:@"CAPTURE"];
+    
+    UIImage* image = previewView.lastCapturedImage; //[self convertImageToGrayScale:previewView.lastCapturedImage];
+    
+    
+    //Crop the circle out of it
+    image = [ImageQualityAnalyzer maskCircleFromImage:image];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
@@ -171,6 +221,11 @@ BOOL _BFOn=NO;
 
 }
 
+- (IBAction)didPressSlideCenter:(id)sender
+{
+    [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionSlideCenter];
+}
+
 - (IBAction)didTouchDownStageButton:(id)sender
 {
     if (holdTimer)
@@ -181,49 +236,62 @@ BOOL _BFOn=NO;
     
     UIButton* buttonPressed = (UIButton*)sender;
     
-    self.currentSpeed = CSStageSpeedFast;
-    
+    //TODO: refactor this to use sender, rather than tags
     if (buttonPressed.tag==1) //up
-        self.currentDirection = CSStageDirectionDown;
-    else if (buttonPressed.tag==2) //down
-        self.currentDirection = CSStageDirectionUp;
-    else if (buttonPressed.tag==3) //left
         self.currentDirection = CSStageDirectionLeft;
-    else if (buttonPressed.tag==4) //right
+    else if (buttonPressed.tag==2) //down
         self.currentDirection = CSStageDirectionRight;
+    else if (buttonPressed.tag==3) //left
+        self.currentDirection = CSStageDirectionUp;
+    else if (buttonPressed.tag==4) //right
+        self.currentDirection = CSStageDirectionDown;
     else if (buttonPressed.tag==5) //z+
-    {
         self.currentDirection = CSStageDirectionFocusUp;
-        self.currentSpeed = CSStageSpeedSlow;
-    }
     else if (buttonPressed.tag==6) //z-
-    {
         self.currentDirection = CSStageDirectionFocusDown;
-        self.currentSpeed = CSStageSpeedSlow;
-    }
     
     
     holdTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(moveStage:) userInfo:nil repeats:YES];
     
 }
 
-- (void) toggleBF
+- (IBAction)didPressManualFocusDown:(id)sender
 {
-    if (_BFOn)
-    {
-        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
-        [self.bfButton setTitle:NSLocalizedString(@"BF Off",nil) forState:UIControlStateNormal];
-        [self.bfButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
-        self.intensitySlider.hidden = YES;
-        
-    }
-    else
+    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
+                                                StepInterval:500
+                                                       Steps:20
+                                                 StopOnLimit:YES
+                                                DisableAfter:NO];
+}
+
+- (IBAction)didPressManualFocusUp:(id)sender
+{
+    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
+                                                StepInterval:500
+                                                       Steps:20
+                                                 StopOnLimit:YES
+                                                DisableAfter:NO];
+}
+
+- (IBAction)didPressManualFocusOk:(id)sender
+{
+    [[TBScopeHardware sharedHardware] disableMotors];
+    [NSThread sleepForTimeInterval:0.1];
+    _isWaitingForFocusConfirmation = NO;
+}
+
+- (void) toggleBF:(BOOL)on
+{
+    if (on)
     {
         int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultBFIntensity"];
         self.intensitySlider.hidden = NO;
-        [self.intensitySlider setValue:intensity/255];
+        self.intensityLabel.hidden = NO;
+        [self.intensitySlider setValue:(float)intensity/255];
+        [self.intensityLabel setText:[NSString stringWithFormat:@"%d",intensity]];
+        
         self.intensitySlider.tintColor = [UIColor greenColor];
+        self.intensityLabel.textColor = [UIColor greenColor];
         
         [previewView setExposureLock:NO];
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
@@ -233,31 +301,46 @@ BOOL _BFOn=NO;
         [self.bfButton setTitle:NSLocalizedString(@"BF On",nil) forState:UIControlStateNormal];
         [self.bfButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
     }
-    _BFOn = !_BFOn;
+    else
+    {
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
+        [self.bfButton setTitle:NSLocalizedString(@"BF Off",nil) forState:UIControlStateNormal];
+        [self.bfButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        self.intensitySlider.hidden = YES;
+        self.intensityLabel.hidden = YES;
+        
+    }
+
 }
 
-- (void) toggleFL
+- (void) toggleFL:(BOOL)on
 {
-    if (_FLOn)
+    if (on)
+    {
+        int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultFLIntensity"];
+        self.intensitySlider.hidden = NO;
+        self.intensityLabel.hidden = NO;
+        [self.intensitySlider setValue:(float)intensity/255];
+        [self.intensityLabel setText:[NSString stringWithFormat:@"%d",intensity]];
+        
+        self.intensitySlider.tintColor = [UIColor blueColor];
+        self.intensityLabel.textColor = [UIColor blueColor];
+        
+        
+        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
+        [self.flButton setTitle:NSLocalizedString(@"FL On",nil) forState:UIControlStateNormal];
+        [self.flButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
+    }
+    else
     {
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
         [self.flButton setTitle:NSLocalizedString(@"FL Off",nil) forState:UIControlStateNormal];
         [self.flButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         self.intensitySlider.hidden = YES;
+        self.intensityLabel.hidden = YES;
     }
-    else
-    {
-        int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultFLIntensity"];
-        self.intensitySlider.hidden = NO;
-        [self.intensitySlider setValue:(float)intensity/255];
-        self.intensitySlider.tintColor = [UIColor blueColor];
-        
-        [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
-        [self.flButton setTitle:NSLocalizedString(@"FL On",nil) forState:UIControlStateNormal];
-        [self.flButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
-    }
-    _FLOn = !_FLOn;
 }
 
 - (IBAction)intensitySliderDidChange:(id)sender
@@ -265,12 +348,14 @@ BOOL _BFOn=NO;
     if (_BFOn)
     {
         int intensity = self.intensitySlider.value*255;
+        [self.intensityLabel setText:[NSString stringWithFormat:@"%d",intensity]];
         [[NSUserDefaults standardUserDefaults] setInteger:intensity forKey:@"DefaultBFIntensity"];
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
     }
     else if (_FLOn)
     {
         int intensity = self.intensitySlider.value*255;
+        [self.intensityLabel setText:[NSString stringWithFormat:@"%d",intensity]];
         [[NSUserDefaults standardUserDefaults] setInteger:intensity forKey:@"DefaultFLIntensity"];
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
     }
@@ -286,18 +371,23 @@ BOOL _BFOn=NO;
     
     if (buttonPressed.tag==7) //BF
     {
-        if (_FLOn)
-            [self toggleFL];
+        if (_FLOn) {
+            [self toggleFL:NO];
+            _FLOn = NO;
+        }
 
-        [self toggleBF];
+        _BFOn = !_BFOn;
+        [self toggleBF:_BFOn];
         
     }
     else if (buttonPressed.tag==8) //FL
     {
-        if (_BFOn)
-            [self toggleBF];
-        
-        [self toggleFL];
+        if (_BFOn) {
+            [self toggleBF:NO];
+            _BFOn = NO;
+        }
+        _FLOn = !_FLOn;
+        [self toggleFL:_FLOn];
     }
     else if (buttonPressed.tag==9) //AE
     {
@@ -336,128 +426,214 @@ BOOL _BFOn=NO;
         [holdTimer invalidate];
         holdTimer = nil;
         [[TBScopeHardware sharedHardware] disableMotors];
-        self.currentSpeed = CSStageSpeedStopped;
     }
 }
 
-
+//this function gets called whenever a stage move has completed, regardless of what initiated the move
+- (void) tbScopeStageMoveDidCompleteWithXLimit:(BOOL)xLimit YLimit:(BOOL)yLimit ZLimit:(BOOL)zLimit;
+{
+    NSLog(@"move completed x=%d y=%d z=%d",xLimit,yLimit,zLimit);
+}
 
 //timer function
 -(void) moveStage:(NSTimer *)timer
 {
     if (self.currentSpeed==CSStageSpeedSlow)
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:50 DisableAfter:NO];
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection StepInterval:500 Steps:20 StopOnLimit:YES DisableAfter:NO];
     else if (self.currentSpeed==CSStageSpeedFast)
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:100 DisableAfter:NO];
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection StepInterval:100 Steps:100 StopOnLimit:YES DisableAfter:NO];
 }
 
 - (void) didReceiveMemoryWarning
 {
     self.previewView.lastCapturedImage = nil;
+    [TBScopeData CSLog:@"CaptureViewController received memory warning" inCategory:@"MEMORY"];
 }
 
-//FSM for autofocusing
+- (void)didPressFastSlow:(id)sender
+{
+    if (self.currentSpeed==CSStageSpeedFast)
+    {
+        self.currentSpeed = CSStageSpeedSlow;
+        [self.fastSlowButton setTitle:NSLocalizedString(@"Slow",0) forState:UIControlStateNormal];
+        [self.fastSlowButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    else
+    {
+        self.currentSpeed = CSStageSpeedFast;
+        [self.fastSlowButton setTitle:NSLocalizedString(@"Fast",0) forState:UIControlStateNormal];
+        [self.fastSlowButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
+        
+    }
+}
 
 - (IBAction)didPressAutoFocus:(id)sender;
 {
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self autofocus];
+        [self autoFocusWithStackSize:20
+                       stepsPerSlice:80];
+        
+        [self autoFocusWithStackSize:10
+                       stepsPerSlice:20];
+        
     });
 }
 
 - (IBAction)didPressAutoScan:(id)sender;
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self autoscan];
+        [self autoscanWithCols:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanCols"]
+                          Rows:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanRows"]
+            stepsBetweenFields:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanStepsBetweenFields"]
+                 focusInterval:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanFocusInterval"]
+                   bfIntensity:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanBFIntensity"]
+                   flIntensity:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanFluorescentIntensity"]];
     });
 }
 
 
-#define NUM_BACKUP_CYCLES 5
-#define BACKUP_STEP_SIZE 200
-#define NUM_FORWARD_CYCLES 41 //adding 1 for backlash
-#define FORWARD_STEP_SIZE 50
-#define NUM_FINE_STEP_CYCLES 102 //adding 2 for backlash
-#define FINE_STEP_SIZE 20
-
-
-- (void) autofocus
+//this algorithm will go numSteps/2 up, then numSteps down, then back up to a maximum of numSteps+1 (backlash)
+- (BOOL) autoFocusWithStackSize:(int)stackSize
+                    stepsPerSlice:(int)stepsPerSlice
 {
     int state = 1;
-    
-    int maxFocus = 0;
-    //int maxPosition = 0; //deprecated
+    double maxFocus = 0;
+    double minFocus = 0;
     int currentCycle = 0;
+    int numCyclesToGoBack = 0;
+    int numIterationsRemaining = 3;
     
     while (state!=0) {
 
+        //check if abort button pressed
+        if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return YES; }
+        
         switch (state) {
             case 1: //reset
                 state = 0;
                 maxFocus = 0;
+                minFocus = previewView.currentImageQuality.movingAverageSharpness;
+                currentCycle = 0;
+                numCyclesToGoBack = 0;
                 state = 2;
                 break;
             case 2: //backup
                 [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                 Steps:BACKUP_STEP_SIZE
-                                                          DisableAfter:NO];
-                [NSThread sleepForTimeInterval:0.1];
-                currentCycle++;
-                if (currentCycle>NUM_BACKUP_CYCLES) {
-                    currentCycle = 0;
-                    state = 3;
-                }
+                                                            StepInterval:500
+                                                                   Steps:ceil(stepsPerSlice*stackSize/2)
+                                                             StopOnLimit:YES
+                                                            DisableAfter:NO];
+                [[TBScopeHardware sharedHardware] waitForStage];
+                [NSThread sleepForTimeInterval:0.4];
+                state = 3;
                 break;
-            case 3:
+            case 3: //scan forward
                 [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
-                                                                 Steps:FORWARD_STEP_SIZE
-                                                          DisableAfter:NO];
-                [NSThread sleepForTimeInterval:0.2];
-                if (previewView.currentFocusValue > maxFocus)
+                                                            StepInterval:500
+                                                                   Steps:stepsPerSlice
+                                                             StopOnLimit:YES
+                                                            DisableAfter:NO];
+                [[TBScopeHardware sharedHardware] waitForStage];
+                [NSThread sleepForTimeInterval:0.4];
+                if (previewView.currentImageQuality.movingAverageSharpness > maxFocus)
                 {
-                    maxFocus = previewView.currentFocusValue;
+                    maxFocus = previewView.currentImageQuality.movingAverageSharpness;
+                    numCyclesToGoBack = 0;
                     //maxPosition = currentPosition;
                 }
+                else
+                    numCyclesToGoBack++;
+                
+                if (previewView.currentImageQuality.movingAverageSharpness < minFocus)
+                    minFocus = previewView.currentImageQuality.movingAverageSharpness;
+                
                 currentCycle++;
-                if (currentCycle>NUM_FORWARD_CYCLES) {
+                if (currentCycle>=stackSize) {
                     currentCycle = 0;
                     state = 4;
                 }
                 break;
-            case 4: //move back to maxFocus (within 5%)
-                currentCycle++;
-                if (currentCycle>NUM_FINE_STEP_CYCLES) {
-                    currentCycle = 0;
-                    maxFocus = 0;
-                    state = 1; //restart
-                }
+            case 4: //move back to maxfocus position
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
+                                                            StepInterval:500
+                                                                   Steps:stepsPerSlice*numCyclesToGoBack
+                                                             StopOnLimit:YES
+                                                            DisableAfter:NO];
                 
-
-                if (previewView.currentFocusValue < round(0.95*maxFocus)) {
-                    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                     Steps:FINE_STEP_SIZE/2
-                                                              DisableAfter:NO];
-                    [NSThread sleepForTimeInterval:0.2];
+                [[TBScopeHardware sharedHardware] waitForStage];
+                [NSThread sleepForTimeInterval:0.4];
+                
+                //if maxFocus wasn't significantly better than minFocus OR if current focus isn't at least 90% of maxFocs, start at this point and do another iteration
+                if ((maxFocus/minFocus)<FOCUS_IMPROVEMENT_THRESHOLD) {
+                    if (numIterationsRemaining>0) {
+                        numIterationsRemaining--;
+                        stackSize = ceil(stackSize*1.5);
+                        state = 1;
+                    }
+                    else {
+                        [TBScopeData CSLog:[NSString stringWithFormat:@"Could not auto focus. minFocus=%lf, maxFocus=%lf",minFocus,maxFocus] inCategory:@"CAPTURE"];
+                        [[TBScopeHardware sharedHardware] disableMotors];
+                        return NO;
+                    }
                 }
-                else {
+                else
+                {
+                    [TBScopeData CSLog:[NSString stringWithFormat:@"Autofocused with minFocus=%lf, maxFocus=%lf",minFocus,maxFocus] inCategory:@"CAPTURE"];
                     state = 0; //done
+                    [[TBScopeHardware sharedHardware] disableMotors];
+                    return YES;
                 }
-
                 break;
             default:
                 break;
         }
-        NSLog(@"currentCycle=%d currentFocus=%d, maxFocus=%d",currentCycle,previewView.currentFocusValue,maxFocus);
+        NSLog(@"currentCycle=%d currentFocus=%f, maxFocus=%f",currentCycle,previewView.currentImageQuality.movingAverageSharpness,maxFocus);
     }
-    
+    [[TBScopeHardware sharedHardware] disableMotors];
+    return YES;
 }
 
-- (void) autoscan
+- (void) manualFocusWithFL:(int)flIntensity BF:(int)bfIntensity
 {
-    //wait for BLE to connect
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        self.scanStatusLabel.text = NSLocalizedString(@"Please Re-focus", nil);
+        self.manualScanFocusDown.hidden = NO;
+        self.manualScanFocusUp.hidden = NO;
+        self.manualScanFocusOk.hidden = NO;
+
+    });
     
-    //disable all buttons
+    self.currentSpeed = CSStageSpeedSlow;
+    
+    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:flIntensity]; 
+    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:bfIntensity]; //little bit of BF helps w/ focus
+    
+    _isWaitingForFocusConfirmation = YES;
+    while (_isWaitingForFocusConfirmation && !_isAborting)
+        [NSThread sleepForTimeInterval:0.1];
+    
+    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+
+        self.manualScanFocusDown.hidden = YES;
+        self.manualScanFocusUp.hidden = YES;
+        self.manualScanFocusOk.hidden = YES;
+    });
+}
+
+- (void) autoscanWithCols:(int)numCols
+                     Rows:(int)numRows
+       stepsBetweenFields:(long)stepsBetween
+            focusInterval:(int)focusInterval
+              bfIntensity:(int)bfIntensity
+              flIntensity:(int)flIntensity
+{
+                   
+    [TBScopeData CSLog:@"Autoscanning..." inCategory:@"CAPTURE"];
+    
+    //setup UI
     dispatch_async(dispatch_get_main_queue(), ^(void){
     self.controlPanelView.hidden = YES;
     self.leftButton.hidden = YES;
@@ -465,84 +641,179 @@ BOOL _BFOn=NO;
     self.downButton.hidden = YES;
     self.upButton.hidden = YES;
     self.intensitySlider.hidden = YES;
+    self.intensityLabel.hidden = YES;
     self.autoFocusButton.hidden = YES;
     self.autoScanButton.hidden = YES;
     self.scanStatusLabel.hidden = NO;
+    self.abortButton.hidden = NO;
+    self.autoScanProgressBar.hidden = NO;
+    self.autoScanProgressBar.progress = 0;
+    self.scanStatusLabel.text = NSLocalizedString(@"Moving to slide center...", nil);
+        
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
     });
     
     //starting conditions
-    //[previewView setExposureLock:NO];
-    //[previewView setFocusLock:NO];
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
+    [previewView setExposureLock:NO];
+    [previewView setFocusLock:YES];
+    [self toggleBF:NO];
+    [self toggleFL:NO];
     [NSThread sleepForTimeInterval:0.1];
     
-    //draw in tray to start point
-    NSLog(@"draw in tray");
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        self.scanStatusLabel.text = NSLocalizedString(@"Loading sample...", nil);});
-    for (int i=0;i<30;i++)
-    {
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionDown
-                                                         Steps:100
-                                                  DisableAfter:NO];
-        [NSThread sleepForTimeInterval:0.1];
-    }
-    [[TBScopeHardware sharedHardware] disableMotors];
+    //TODO: take picture of test target
     
+    
+    //move to slide center
+    [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionSlideCenter];
+    [[TBScopeHardware sharedHardware] waitForStage];
+    
+    //check if abort button pressed
+    if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return; }
+    
+    
+    //move to first position in grid
+    //backup in both X and Y by half the row/col distance
+    int xSteps = (numCols/2)*stepsBetween;
+    int ySteps = (numRows/2)*stepsBetween;
+    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionUp StepInterval:100 Steps:ySteps StopOnLimit:YES DisableAfter:YES];
+    [[TBScopeHardware sharedHardware] waitForStage];
+    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionLeft StepInterval:100 Steps:xSteps StopOnLimit:YES DisableAfter:YES];
+    [[TBScopeHardware sharedHardware] waitForStage];
+    
+    //check if abort button pressed
+    if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return; }
+    
+    //do auto exposure
     //turn on BF and wait for exposure to settle
-    NSLog(@"BF on");
-    //[[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultBFIntensity"]];
-    //[NSThread sleepForTimeInterval:2.0];
+    NSLog(@"auto expose");
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        self.scanStatusLabel.text = NSLocalizedString(@"Exposure Calibration...", nil);});
+    [previewView setExposureLock:NO];
+    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:bfIntensity];
+    [NSThread sleepForTimeInterval:2.0];
+    [previewView setExposureLock:YES];
     
-    //set exposure lock and focus lock
-    NSLog(@"exposure/focus lock");
-    //[previewView setExposureLock:YES];
-    //[previewView setFocusLock:YES];
-    //[NSThread sleepForTimeInterval:1.0];
-    
-    //do autofocus
-    NSLog(@"autofocus");
-    //dispatch_async(dispatch_get_main_queue(), ^(void){
-    //   self.scanStatusLabel.text = NSLocalizedString(@"Focusing...", nil);});
-    //[self autofocus];
-    
-    //turn off BF and turn on FL
-    NSLog(@"FL on");
-    int intensity = [[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultFLIntensity"];
-    
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
-    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
-    
-    //[NSThread sleepForTimeInterval:0.2];
-    
-    //acquire 5 fields
-    for (int fieldNumber=0; fieldNumber<[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]; fieldNumber++)
-    {
-        //take an image
+    //focus in BF with wide range first
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"AutoScanInitialFocus"]) {
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            self.scanStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Acquiring image %d of %d...", nil),fieldNumber+1,[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]];});
+            self.scanStatusLabel.text = NSLocalizedString(@"Initial Focusing...", nil);});
         
-        [self didPressCapture:nil];
-        [NSThread sleepForTimeInterval:0.5];
+        [self autoFocusWithStackSize:40
+                       stepsPerSlice:80];
+    }
+    
+    
+    //check if abort button pressed
+    if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return; }
+    
+    int yDir;
+    //x iterator
+    for (int i=0; i<numCols; i++) {
         
-        //move
-        CSStageDirection dir = CSStageDirectionDown;
-        if (fieldNumber<10)
-            dir = CSStageDirectionDown;
-        else if (fieldNumber==10)
-            dir = CSStageDirectionLeft;
-        else if (fieldNumber<20)
-            dir = CSStageDirectionUp;
+        //figure out which way y is moving
+        if ((i%2)==0) //even, move down
+            yDir = CSStageDirectionDown;
+        else //odd, move up
+            yDir = CSStageDirectionUp;
+        
+        //backlash compensation
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:yDir
+                                                    StepInterval:100
+                                                           Steps:BACKLASH_STEPS
+                                                     StopOnLimit:YES
+                                                    DisableAfter:YES];
+        [[TBScopeHardware sharedHardware] waitForStage];
+        
+        
+        //y iterator
+        for (int j=0; j<numRows; j++) {
+            int fieldNum = i*numRows + j;
+            NSLog(@"scanning field #%d",fieldNum);
+            
+            //check if abort button pressed
+            if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return; }
+            
+            //re-focus, if necessary
+            if ((fieldNum%focusInterval)==0) {
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DoAutoFocus"]) {
+                    
+                    NSLog(@"auto focus");
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        self.scanStatusLabel.text = NSLocalizedString(@"Focusing...", nil);});
+                    
+                    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
+                    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:bfIntensity];
+                    
+                    [NSThread sleepForTimeInterval:0.1];
+                    
+                    //auto focus, coarse and fine
+                    BOOL focusSuccess1; BOOL focusSuccess2;
+                    focusSuccess1 = [self autoFocusWithStackSize:20
+                                   stepsPerSlice:80];
 
+                    focusSuccess2 = [self autoFocusWithStackSize:10
+                                       stepsPerSlice:20];
+                    
+                    if (!focusSuccess1 || !focusSuccess2)
+                        [self manualFocusWithFL:flIntensity BF:1];
+                    else
+                    {
+                        //the fluorescence seems to have a systematic offset of about 20 steps UP relative to BF
+                        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
+                                                                    StepInterval:100
+                                                                           Steps:20
+                                                                     StopOnLimit:YES
+                                                                    DisableAfter:YES];
+                        [[TBScopeHardware sharedHardware] waitForStage];
+                    }
+                        
+                    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:flIntensity];
+                    [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
+                    [NSThread sleepForTimeInterval:0.1];
+                    
+                    
+                }
+                else //manual focus
+                {
+                    [self manualFocusWithFL:flIntensity BF:1];
+                }
+
+                
+                //switch back to FL
+                //[[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0]; //might want this to be different
+                //[[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:flIntensity];
+                //[NSThread sleepForTimeInterval:1];
+            }
+            
+            //check if abort button pressed
+            if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return; }
+            
+            //take an image
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                self.scanStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Acquiring image %d of %d...", nil),fieldNum+1,numRows*numCols];
+                self.autoScanProgressBar.progress = (float)fieldNum/(numRows*numCols);
+            });
+            [NSThread sleepForTimeInterval:0.5];
+            [self didPressCapture:nil];
+            [NSThread sleepForTimeInterval:0.5];
+            
+
+            [[TBScopeHardware sharedHardware] moveStageWithDirection:yDir
+                                                        StepInterval:100
+                                                               Steps:stepsBetween
+                                                         StopOnLimit:YES
+                                                        DisableAfter:YES];
+            [[TBScopeHardware sharedHardware] waitForStage];
+            
+        }
         
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            self.scanStatusLabel.text = NSLocalizedString(@"Next field...", nil);});
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:dir
-                                                         Steps:200
-                                                  DisableAfter:YES];
-        [NSThread sleepForTimeInterval:0.5];
-    
+        //move stage in x (next column)
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionRight
+                                                    StepInterval:100
+                                                           Steps:stepsBetween
+                                                     StopOnLimit:YES
+                                                    DisableAfter:YES];
+        [[TBScopeHardware sharedHardware] waitForStage];
     }
     
     //turn off BF and turn on FL
@@ -552,20 +823,7 @@ BOOL _BFOn=NO;
     
     
     dispatch_async(dispatch_get_main_queue(), ^(void){
-        self.scanStatusLabel.text = NSLocalizedString(@"Acquisition complete...", nil);});
-    
-    //eject slide
-    for (int i=0;i<60;i++)
-    {
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionUp
-                                                         Steps:100
-                                                  DisableAfter:NO];
-        [NSThread sleepForTimeInterval:0.1];
-    }
-    [[TBScopeHardware sharedHardware] disableMotors];
-    
-
-    dispatch_async(dispatch_get_main_queue(), ^(void){
+        self.scanStatusLabel.text = NSLocalizedString(@"Acquisition complete...", nil);
         
         //do analysis
         [self performSegueWithIdentifier:@"AnalysisSegue" sender:self];
@@ -579,6 +837,8 @@ BOOL _BFOn=NO;
         self.autoFocusButton.hidden = NO;
         self.autoScanButton.hidden = NO;
         self.scanStatusLabel.hidden = YES;
+        self.abortButton.hidden = YES;
+        self.autoScanProgressBar.hidden = YES;
     });
     
 }

@@ -10,8 +10,18 @@
 
 @implementation CSAppDelegate
 
+void onUncaughtException(NSException* exception)
+{
+    [TBScopeData CSLog:[exception description] inCategory:@"CRASH"];
+    [TBScopeData CSLog:[[NSThread callStackSymbols] description] inCategory:@"CRASH"];
+    [[[TBScopeData sharedData] logMOC] save:nil];
+    [[TBScopeData sharedData] saveCoreData];
+    
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSSetUncaughtExceptionHandler(&onUncaughtException);
     
     [TBScopeData CSLog:@"App started" inCategory:@"SYSTEM"];
     

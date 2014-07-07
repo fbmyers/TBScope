@@ -13,6 +13,8 @@
 
 #import "CaptureViewController.h"
 
+#define EJECT_SLIDE 1
+
 @interface LoadSampleViewController : UIViewController
 
 @property (strong, nonatomic) Slides* currentSlide;

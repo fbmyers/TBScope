@@ -8,6 +8,8 @@
 
 #import "TBScopeHardware.h"
 
+BOOL _isMoving = NO;
+
 @implementation TBScopeHardware
 
 @synthesize ble;
@@ -80,27 +82,33 @@
 {
     [TBScopeData CSLog:@"Bluetooth Connected" inCategory:@"HARDWARE"];
     
+    [self setMicroscopeLED:CSLEDBrightfield Level:0];
+    [self setMicroscopeLED:CSLEDFluorescent Level:0];
+    [self disableMotors];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BluetoothConnected" object:nil];
 }
 
 // When data is comming, this will be called
 -(void) bleDidReceiveData:(unsigned char *)data length:(int)length
 {
-    NSLog(@"Length: %d", length);
-    
-    // parse data, all commands are in 3-byte
+    // parse data, all commands are in 3-byte chunks
     for (int i = 0; i < length; i+=3)
     {
-        NSLog(@"0x%02X, 0x%02X, 0x%02X", data[i], data[i+1], data[i+2]);
         
-        if (data[i] == 0x0A)
+        if (data[i] == 0xFF) //all "move completed" messages should start with FF
         {
-        }
-        else if (data[i] == 0x0B)
-        {
-            UInt16 Value;
+            BOOL xLimit = ((data[i+1] & 0b00000100)!=0);
+            BOOL yLimit = ((data[i+1] & 0b00000010)!=0);
+            BOOL zLimit = ((data[i+1] & 0b00000001)!=0);
             
-            Value = data[i+2] | data[i+1] << 8;
+            _isMoving = NO;
+            
+            //[[self delegate] tbScopeStageMoveDidCompleteWithXLimit:xLimit YLimit:yLimit ZLimit:zLimit];
+        }
+        else
+        {
+            NSLog(@"unrecognized response from scope");
         }
     }
 }
@@ -185,69 +193,106 @@
 
 -(void) disableMotors
 {
-    UInt8 buf[3] = {0x03, 0x01, 0x00};
-    [ble write:[NSData dataWithBytes:buf length:3]];
-    buf[1] = 0x02;
-    [ble write:[NSData dataWithBytes:buf length:3]];
-    buf[1] = 0x03;
-    [ble write:[NSData dataWithBytes:buf length:3]];
+    [self moveStageWithDirection:CSStageDirectionDown StepInterval:100 Steps:0 StopOnLimit:NO DisableAfter:YES];
+    [self moveStageWithDirection:CSStageDirectionLeft StepInterval:100 Steps:0 StopOnLimit:NO DisableAfter:YES];
+    [self moveStageWithDirection:CSStageDirectionFocusUp StepInterval:100 Steps:0 StopOnLimit:NO DisableAfter:YES];
+
 }
 
 - (void) moveStageWithDirection:(CSStageDirection) dir
-                          Steps:(int)steps
+                          StepInterval:(UInt16)stepInterval
+                          Steps:(UInt16)steps
+                    StopOnLimit:(BOOL)stopOnLimit
                    DisableAfter:(BOOL)disableAfter
 {
     NSLog(@"moving stage");
+    _isMoving = YES;
+    
     UInt8 buf[3] = {0x00, 0x00, 0x00};
     
-    //set dir
-    buf[0] = 0x02;
+    
+    //   0   0   1   A   A   D   L   E                           {16 bits}
+    // |-----------  ------  --- --- ---||-------------------------||---------------------------|
+    //   move cmd     axis   dir lim en                         # steps
+    
+    buf[0] |= 0b00100000; //move command
+    
     switch (dir) {
         case CSStageDirectionUp:
-            buf[1] = 0x02;
-            buf[2] = 0x01;
+            buf[0] |= 0b00001100;
             break;
         case CSStageDirectionDown:
-            buf[1] = 0x02;
-            buf[2] = 0x00;
+            buf[0] |= 0b00001000;
             break;
         case CSStageDirectionLeft:
-            buf[1] = 0x01;
-            buf[2] = 0x00;
+            buf[0] |= 0b00010000;
             break;
         case CSStageDirectionRight:
-            buf[1] = 0x01;
-            buf[2] = 0x01;
+            buf[0] |= 0b00010100;
             break;
         case CSStageDirectionFocusUp:
-            buf[1] = 0x03;
-            buf[2] = 0x00;
+            buf[0] |= 0b00011000;
             break;
         case CSStageDirectionFocusDown:
-            buf[1] = 0x03;
-            buf[2] = 0x01;
+            buf[0] |= 0b00011100;
             break;
     }
+    if (stopOnLimit)
+        buf[0] |= 0b00000010;
+    if (disableAfter)
+        buf[0] |= 0b00000001;
+    
+    //last 2 bytes = # steps
+    buf[1] = (UInt8)((steps & 0xFF00) >> 8);
+    buf[2] = (UInt8)(steps & 0x00FF);
+    
+    //send move command
     [ble write:[NSData dataWithBytes:buf length:3]];
     
-    //enable
-    buf[0] = 0x03;
-    buf[2] = 0x01;
-    [ble write:[NSData dataWithBytes:buf length:3]];
-    
-    //step
-    buf[0] = 0x01;
-    buf[2]= (UInt8)steps;
-    [ble write:[NSData dataWithBytes:buf length:3]];
-    
+
     //disable
+    /*
     if (disableAfter)
     {
-        buf[0] = 0x03;
-        buf[2] = 0x00;
+        buf[0] = (UInt8)((buf[0] & 0x0F) | 0x30);
+        buf[1] = (UInt8)0x00;
+        buf[2] = (UInt8)0x00;
         [ble write:[NSData dataWithBytes:buf length:3]];
     }
+    */
     
+}
+
+- (void) moveToPosition:(CSStagePosition) position
+{
+    UInt8 buf[3] = {0b01100000, 0x00, 0x00};
+    _isMoving = YES;
+    
+    switch (position) {
+        case CSStagePositionHome:
+            buf[1] = 0x00;
+            break;
+        case CSStagePositionTestTarget:
+            buf[1] = 0x01;
+            break;
+        case CSStagePositionSlideCenter:
+            buf[1] = 0x02;
+            break;
+        case CSStagePositionLoading:
+            buf[1] = 0x03;
+            break;
+    }
+    
+    
+    [ble write:[NSData dataWithBytes:buf length:3]];
+}
+
+- (void) waitForStage
+{
+    while (_isMoving)
+        [NSThread sleepForTimeInterval:0.05];
+    
+    //[NSThread sleepForTimeInterval:0.1]; //give stage some time to settle
 }
 
 - (void) setMicroscopeLED:(CSLED) led
@@ -256,7 +301,7 @@
     NSLog(@"setting LED state");
     
     //0x04: LED command
-    UInt8 buf[3] = {0x04, 0x00, 0x00};
+    UInt8 buf[3] = {0b10000000, 0x00, 0x00};
     
     //set LED
     switch (led) {
@@ -268,8 +313,6 @@
             break;
     }
     
-    //set state
-    //buf[2] = on?0x01:0x00;
     buf[2] = level;
     
     [ble write:[NSData dataWithBytes:buf length:3]];

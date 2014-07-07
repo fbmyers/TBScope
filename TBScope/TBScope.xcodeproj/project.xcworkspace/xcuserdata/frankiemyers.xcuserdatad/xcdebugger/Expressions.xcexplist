@@ -59,7 +59,7 @@
                value = "inObject.length">
             </PersistentString>
             <PersistentString
-               value = "theData[0]">
+               value = "inObject[0]">
             </PersistentString>
             <PersistentString
                value = "[theData bytes]">
@@ -68,7 +68,7 @@
                value = "[inObject length]">
             </PersistentString>
             <PersistentString
-               value = "inObject[0]">
+               value = "theData[0]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -102,13 +102,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__37-[AnalysisViewController viewDidLoad]_block_invoke:AnalysisViewController.m">
+         contextName = "-[ImageResultViewController viewWillDisappear:]:ImageResultViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "image.size">
-            </PersistentString>
-            <PersistentString
-               value = "self.roiData">
+               value = "self.currentSlide.">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -121,16 +118,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
+         contextName = "__37-[AnalysisViewController viewDidLoad]_block_invoke:AnalysisViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "[UIColor yellowColor]">
+               value = "image.size">
             </PersistentString>
             <PersistentString
-               value = "buttonPressed.tag">
-            </PersistentString>
-            <PersistentString
-               value = "buttonPressed.titleLabel.textColor">
+               value = "self.roiData">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -149,10 +143,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ImageResultViewController viewWillDisappear:]:ImageResultViewController.m">
+         contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.currentSlide.">
+               value = "[UIColor yellowColor]">
+            </PersistentString>
+            <PersistentString
+               value = "buttonPressed.tag">
+            </PersistentString>
+            <PersistentString
+               value = "buttonPressed.titleLabel.textColor">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CameraScrollView captureOutput:didOutputSampleBuffer:fromConnection:]:CameraScrollView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "iq.entropy">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -166,6 +174,9 @@
                value = "previewView.lastCapturedImage.size">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "+[ImageQualityAnalyzer calculateFocusMetric:]:ImageQualityAnalyzer.mm">
       </ContextState>
       <ContextState
          contextName = "__62-[GoogleDriveSync uploadImage:completionHandler:errorHandler:]_block_invoke_2:GoogleDriveSync.m">
