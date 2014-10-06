@@ -20,7 +20,10 @@ typedef struct
         double tenengrad3;
         double tenengrad9;
         double movingAverageSharpness;
+        double movingAverageContrast;
         double entropy;
+        double maxVal;
+        double contrast;
     } ImageQuality;
 
 @interface ImageQualityAnalyzer : NSObject

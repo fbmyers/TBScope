@@ -22,7 +22,6 @@
 
 
 //exam info
-@property (weak, nonatomic) IBOutlet UILabel* examIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel* locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel* userLabel;
 @property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
@@ -37,11 +36,13 @@
 @property (weak, nonatomic) IBOutlet UILabel* patientDOBLabel;
 @property (weak, nonatomic) IBOutlet UILabel* patientGenderLabel;
 
+
 //notes
 @property (weak, nonatomic) IBOutlet UITextView* intakeNotesTextView;
 @property (weak, nonatomic) IBOutlet UITextView* diagnosisNotesTextView;
 
 //slide 1
+@property (weak, nonatomic) IBOutlet UILabel *slideLabel1;
 @property (weak, nonatomic) IBOutlet UIView* scoreView1;
 @property (weak, nonatomic) IBOutlet UIImageView* scoreMarker1;
 @property (weak, nonatomic) IBOutlet UILabel* scoreLabel1;
@@ -56,6 +57,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *reanalyzeButton1;
 
 //slide 2
+@property (weak, nonatomic) IBOutlet UILabel *slideLabel2;
 @property (weak, nonatomic) IBOutlet UIView* scoreView2;
 @property (weak, nonatomic) IBOutlet UIImageView* scoreMarker2;
 @property (weak, nonatomic) IBOutlet UILabel* scoreLabel2;
@@ -70,6 +72,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *reanalyzeButton2;
 
 //slide 3
+@property (weak, nonatomic) IBOutlet UILabel *slideLabel3;
 @property (weak, nonatomic) IBOutlet UIView* scoreView3;
 @property (weak, nonatomic) IBOutlet UIImageView* scoreMarker3;
 @property (weak, nonatomic) IBOutlet UILabel* scoreLabel3;

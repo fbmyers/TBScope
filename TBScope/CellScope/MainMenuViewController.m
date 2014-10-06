@@ -55,19 +55,22 @@
 {
     [super viewWillAppear:animated];
     
-    self.loggedInAs.text = [NSString stringWithFormat:NSLocalizedString(@"Current user: %@",nil),[[[TBScopeData sharedData] currentUser] username]];
+    //localization
+    [self.navigationItem setTitle:NSLocalizedString(@"Main Menu",nil)];
+    self.loggedInAs.text = [NSString stringWithFormat:NSLocalizedString(@"Logged in as: %@",nil),[[[TBScopeData sharedData] currentUser] username]];
+    self.syncLabel.text = NSLocalizedString(@"Syncing...", nil);
+    self.bluetoothIndicator.text = NSLocalizedString(@"Bluetooth Connected", nil);
+    
     self.cellscopeIDLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeID"];
     self.locationLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"];
-    
-    [self.navigationItem setTitle:NSLocalizedString(@"Main Menu",nil)];
 
-    
-    
     [TBScopeData CSLog:@"Main menu screen presented" inCategory:@"USER"];
     
     [self setSyncIndicator];
     [self setBTIndicator];
     [self setMenuPermissions];
+    
+
 }
 
 - (void)setMenuPermissions
@@ -114,6 +117,7 @@
 {
     if([segue.identifier isEqualToString:@"ScanSlideSegue"])
     {
+        
         EditExamViewController* eevc = (EditExamViewController*)[segue destinationViewController];
         eevc.currentExam = nil;
         eevc.isNewExam = YES;

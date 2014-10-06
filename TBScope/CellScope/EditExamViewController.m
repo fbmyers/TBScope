@@ -29,6 +29,7 @@
     self.addressLabel.text = NSLocalizedString(@"Address", nil);
     self.hivStatusLabel.text = NSLocalizedString(@"HIV Status", nil);
     self.intakeNotesLabel.text = NSLocalizedString(@"Intake Notes", nil);
+    [self.mapButton setTitle:NSLocalizedString(@"Map", nil) forState:UIControlStateNormal];
     
     //match the textview to one of the textfields
     [[self.intakeNotesTextView layer] setBorderColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor];

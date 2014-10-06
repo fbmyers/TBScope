@@ -17,46 +17,51 @@
     
     ///////////////////////////////////
     //localization
+    //TODO: make other prompt/label pairs visually consistent with this
     self.examInfoLabel.text = NSLocalizedString(@"Exam Info", nil);
-    //self.examIDPromptLabel.text = NSLocalizedString(@"Exam ID", nil);
     self.locationPromptLabel.text = NSLocalizedString(@"Clinic", nil);
     self.userPromptLabel.text = NSLocalizedString(@"User", nil);
     self.cellscopeIDPromptLabel.text = NSLocalizedString(@"CellScope ID", nil);
+    self.lastModifiedPromptLabel.text = NSLocalizedString(@"Last Modified", nil);
     
-    self.patientNamePromptLabel.text = NSLocalizedString(@"Name", nil);
+    self.patientInfoLabel.text = NSLocalizedString(@"Patient Info", nil);
     self.patientIDPromptLabel.text = NSLocalizedString(@"Patient ID", nil);
-    self.patientAddressPromptLabel.text = NSLocalizedString(@"Patient Address", nil);
+    self.patientNamePromptLabel.text = NSLocalizedString(@"Name", nil);
+    self.patientAddressPromptLabel.text = NSLocalizedString(@"Address", nil);
     self.patientGenderPromptLabel.text = NSLocalizedString(@"Gender", nil);
     self.patientDOBPromptLabel.text = NSLocalizedString(@"DOB", nil);
     self.patientHIVStatusPromptLabel.text = NSLocalizedString(@"HIV Status", nil);
     self.intakeNotesPromptLabel.text = NSLocalizedString(@"Intake Notes", nil);
     self.diagnosisNotesPromptLabel.text = NSLocalizedString(@"Diagnosis Notes", nil);
+    
+    self.slideLabel1.text = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),1];
+    self.dateCollectedPromptLabel1.text = NSLocalizedString(@"Date Collected", nil);
+    self.dateScannedPromptLabel1.text = NSLocalizedString(@"Date Scanned", nil);
+    self.sputumQualityPromptLabel1.text = NSLocalizedString(@"Sputum Quality", nil);
+    self.imageQualityPromptLabel1.text = NSLocalizedString(@"Image Quality", nil);
+    self.fieldsPromptLabel1.text = NSLocalizedString(@"# Fields", nil);
+    self.numAFBAlgorithmPromptLabel1.text = NSLocalizedString(@"# AFB (Algorithm)", nil);
+    self.numAFBConfirmedPromptLabel1.text = NSLocalizedString(@"# AFB (Confirmed)", nil);
     [self.rescanButton1 setTitle:NSLocalizedString(@"Re-scan", nil) forState:UIControlStateNormal];
     [self.reanalyzeButton1 setTitle:NSLocalizedString(@"Re-analyze", nil) forState:UIControlStateNormal];
     
-    self.dateCollectedPromptLabel1.text = NSLocalizedString(@"Collection Date", nil);
-    self.dateScannedPromptLabel1.text = NSLocalizedString(@"Scan Date", nil);
-    self.sputumQualityPromptLabel1.text = NSLocalizedString(@"Sputum Quality", nil);
-    self.imageQualityPromptLabel1.text = NSLocalizedString(@"Image Quality", nil);
-    self.fieldsPromptLabel1.text = NSLocalizedString(@"Fields", nil);
-    self.numAFBAlgorithmPromptLabel1.text = NSLocalizedString(@"# AFB (Algorithm)", nil);
-    self.numAFBConfirmedPromptLabel1.text = NSLocalizedString(@"# AFB (Confirmed)", nil);
-    
-    self.dateCollectedPromptLabel2.text = NSLocalizedString(@"Collection Date", nil);
-    self.dateScannedPromptLabel2.text = NSLocalizedString(@"Scan Date", nil);
+    self.slideLabel2.text = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),2];
+    self.dateCollectedPromptLabel2.text = NSLocalizedString(@"Date Collected", nil);
+    self.dateScannedPromptLabel2.text = NSLocalizedString(@"Date Scanned", nil);
     self.sputumQualityPromptLabel2.text = NSLocalizedString(@"Sputum Quality", nil);
     self.imageQualityPromptLabel2.text = NSLocalizedString(@"Image Quality", nil);
-    self.fieldsPromptLabel2.text = NSLocalizedString(@"Fields", nil);
+    self.fieldsPromptLabel2.text = NSLocalizedString(@"# Fields", nil);
     self.numAFBAlgorithmPromptLabel2.text = NSLocalizedString(@"# AFB (Algorithm)", nil);
     self.numAFBConfirmedPromptLabel2.text = NSLocalizedString(@"# AFB (Confirmed)", nil);
     [self.rescanButton2 setTitle:NSLocalizedString(@"Re-scan", nil) forState:UIControlStateNormal];
     [self.reanalyzeButton2 setTitle:NSLocalizedString(@"Re-analyze", nil) forState:UIControlStateNormal];
     
-    self.dateCollectedPromptLabel3.text = NSLocalizedString(@"Collection Date", nil);
-    self.dateScannedPromptLabel3.text = NSLocalizedString(@"Scan Date", nil);
+    self.slideLabel3.text = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),3];
+    self.dateCollectedPromptLabel3.text = NSLocalizedString(@"Date Collected", nil);
+    self.dateScannedPromptLabel3.text = NSLocalizedString(@"Date Scanned", nil);
     self.sputumQualityPromptLabel3.text = NSLocalizedString(@"Sputum Quality", nil);
     self.imageQualityPromptLabel3.text = NSLocalizedString(@"Image Quality", nil);
-    self.fieldsPromptLabel3.text = NSLocalizedString(@"Fields", nil);
+    self.fieldsPromptLabel3.text = NSLocalizedString(@"# Fields", nil);
     self.numAFBAlgorithmPromptLabel3.text = NSLocalizedString(@"# AFB (Algorithm)", nil);
     self.numAFBConfirmedPromptLabel3.text = NSLocalizedString(@"# AFB (Confirmed)", nil);
     [self.rescanButton3 setTitle:NSLocalizedString(@"Re-scan", nil) forState:UIControlStateNormal];
@@ -64,6 +69,7 @@
     
     [self.gpsMapButton setTitle:NSLocalizedString(@"Map", nil) forState:UIControlStateNormal];
     [self.addSlideButton setTitle:NSLocalizedString(@"Add Slide", nil) forState:UIControlStateNormal];
+    [self.editExamButton setTitle:NSLocalizedString(@"Edit",nil) forState:UIControlStateNormal];
     
     //date formatter
     NSDate* date;

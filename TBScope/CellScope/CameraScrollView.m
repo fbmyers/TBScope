@@ -80,12 +80,15 @@
     self.imageQualityLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.imageQualityLabel.numberOfLines = 0;
     
+    self.imageQualityLabel.hidden = NO; //remove for now
+    
     // Setup still image output
     
     self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
+    //NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, @1.0, AVVideoQualityKey, nil];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
-    [self.stillOutput setOutputSettings:outputSettings];
     
+    [self.stillOutput setOutputSettings:outputSettings];
     
     // Add session input and output
     [self.session addInput:self.input];
@@ -136,8 +139,8 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
 {
-    static double averagingArray[] = {0,0,0};
-    
+    static double sharpnessAveragingArray[] = {0,0,0};
+    static double contrastAveragingArray[] = {0,0,0};
 
     ImageQuality iq = [ImageQualityAnalyzer calculateFocusMetric:sampleBuffer];
     
@@ -152,16 +155,28 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     */
     
     //why is this crashing w/ back?
-    averagingArray[2] = averagingArray[1];
-    averagingArray[1] = averagingArray[0];
-    averagingArray[0] = iq.tenengrad3;
+    sharpnessAveragingArray[2] = sharpnessAveragingArray[1];
+    sharpnessAveragingArray[1] = sharpnessAveragingArray[0];
+    sharpnessAveragingArray[0] = iq.tenengrad3;
     
-    iq.movingAverageSharpness = (averagingArray[0] + averagingArray[1] + averagingArray[2])/3.0;
+    iq.movingAverageSharpness = (sharpnessAveragingArray[0] + sharpnessAveragingArray[1] + sharpnessAveragingArray[2])/3.0;
+    
+    contrastAveragingArray[2] = contrastAveragingArray[1];
+    contrastAveragingArray[1] = contrastAveragingArray[0];
+    contrastAveragingArray[0] = iq.contrast;
+    
+    iq.movingAverageContrast = (contrastAveragingArray[0] + contrastAveragingArray[1] + contrastAveragingArray[2])/3.0;
+    
     
     self.currentImageQuality = iq;
 
+    if (self.focusMode==0)
+        self.currentFocusMetric = iq.tenengrad3; //iq.movingAverageSharpness;
+    else if (self.focusMode==1)
+        self.currentFocusMetric = iq.contrast; //iq.movingAverageContrast;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.imageQualityLabel setText:[NSString stringWithFormat:@"entropy: %3.3lf\nmod lap: %3.3lf\nnorm gray var: %3.3lf\nvar lap: %3.3lf\ntgrad1: %3.3lf\ntgrad3: %3.3lf\ntgrad9: %3.3lf\navg sharpness: %3.3lf",
+        [self.imageQualityLabel setText:[NSString stringWithFormat:@"entropy: %3.3lf\nmod lap: %3.3lf\nnorm gray var: %3.3lf\nvar lap: %3.3lf\ntgrad1: %3.3lf\ntgrad3: %3.3lf\ntgrad9: %3.3lf\nmaxval: %3.0lf\ncontrast: %3.3lf\navg sharpness: %3.3lf\navg contrast: %3.3lf",
                                         iq.entropy,
                                         iq.modifiedLaplacian,
                                         iq.normalizedGraylevelVariance,
@@ -169,7 +184,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                         iq.tenengrad1,
                                         iq.tenengrad3,
                                         iq.tenengrad9,
-                                         iq.movingAverageSharpness]];
+                                         iq.maxVal,
+                                         iq.contrast,
+                                         iq.movingAverageSharpness,
+                                         iq.movingAverageContrast]];
     });
 }
 
@@ -275,8 +293,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
          }
          else
          {
-             //extract green channel only
-             
+
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
              self.lastCapturedImage = [[UIImage alloc] initWithData:imageData];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"ImageCaptured" object:nil];

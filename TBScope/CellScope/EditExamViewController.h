@@ -46,6 +46,6 @@
 @property (weak, nonatomic) IBOutlet UILabel* addressLabel;
 @property (weak, nonatomic) IBOutlet UILabel* hivStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel* intakeNotesLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton* mapButton;
 
 @end

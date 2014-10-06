@@ -16,8 +16,17 @@
 #import "CameraScrollView.h"
 #import "AnalysisViewController.h"
 
-#define FOCUS_IMPROVEMENT_THRESHOLD 1.5
+#define FOCUS_IMPROVEMENT_THRESHOLD_SHARPNESS 1.4
+#define FOCUS_IMPROVEMENT_THRESHOLD_CONTRAST 1.3
+
 #define BACKLASH_STEPS 500
+#define FOCUS_BACKLASH_CORRECTION 10
+
+#define MAX_FLUORESCENCE_AF_FAILURES 3
+
+//todo: redo as enums
+#define AUTOFOCUS_ON_SHARPNESS 0
+#define AUTOFOCUS_ON_CONTRAST 1
 
 @interface CaptureViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate, TBScopeHardwareDelegate>
 
@@ -32,12 +41,9 @@
 
 @property (strong, nonatomic) NSTimer* holdTimer;
 
-@property (weak, nonatomic) IBOutlet UILabel* bleConnectionLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *bfButton;
 @property (weak, nonatomic) IBOutlet UIButton *flButton;
-@property (weak, nonatomic) IBOutlet UIButton *aeButton;
-@property (weak, nonatomic) IBOutlet UIButton *afButton;
 
 @property (weak, nonatomic) IBOutlet UIView *controlPanelView;
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
@@ -48,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *autoScanButton;
 @property (weak, nonatomic) IBOutlet UILabel *scanStatusLabel;
 @property (weak, nonatomic) IBOutlet UIButton *abortButton;
+@property (weak, nonatomic) IBOutlet UIButton *refocusButton;
 
 @property (weak, nonatomic) IBOutlet UISlider *intensitySlider;
 @property (weak, nonatomic) IBOutlet UILabel *intensityLabel;
@@ -56,9 +63,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *manualScanFocusOk;
 @property (weak, nonatomic) IBOutlet UIButton *manualScanFocusDown;
 
-@property (weak, nonatomic) IBOutlet UILabel *focusMetricLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *fastSlowButton;
+
 @property (weak, nonatomic) IBOutlet UIProgressView *autoScanProgressBar;
 
 @property (nonatomic) int currentField;
@@ -78,6 +85,7 @@
 - (IBAction)didPressAutoScan:(id)sender;
 - (IBAction)didPressSlideCenter:(id)sender;
 - (IBAction)didPressAbort:(id)sender;
+- (IBAction)didPressManualFocus:(id)sender;
 - (IBAction)didPressFastSlow:(id)sender;
 
 - (IBAction)didPressManualFocusUp:(id)sender;

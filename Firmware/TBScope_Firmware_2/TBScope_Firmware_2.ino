@@ -46,7 +46,7 @@
 #define LOADING_Z 0
 
 #define BLE_BLINK_FREQ 1
-#define TIMEOUT_DURATION 60000
+#define TIMEOUT_DURATION 20000
 
 //top 3 bits = opcode
 #define CMD_MOVE 1
@@ -155,12 +155,22 @@ void goto_special_position(byte position) {
       //move_stage(3,1,100,1,1,200); //backup in Z
       //while (move_stage(3,0,100,1,1,20000)==20000); 
       
-      unsigned long tic = millis();
+      unsigned long timeout_millis = millis() + TIMEOUT_DURATION;
       move_stage(2,1,100,1,1,200); //backup in Y
-      while ((move_stage(2,0,100,1,1,10000)==10000) || (millis()>(tic+TIMEOUT_DURATION))); //move Y, and continue until it hits limit (if the tray is out/unmeshed to gear, it will keep spinning)
+      while ((move_stage(2,0,100,1,1,10000)==10000)) //move Y, and continue until it hits limit (if the tray is out/unmeshed to gear, it will keep spinning)
+      {
+        if (millis()>timeout_millis)
+          return;
+      }
       
       move_stage(1,0,100,1,1,200); //backup in X
-      while (move_stage(1,1,100,1,1,10000)==10000); //move X till limit
+      
+      while ((move_stage(1,1,100,1,1,10000)==10000)) //move X till limit
+      {
+        if (millis()>timeout_millis)
+          return;
+      }
+      
       break;    
     }
     case POSITION_TEST_TARGET:
@@ -299,7 +309,7 @@ void loop()
     
   if (ble_connected())
   {
-    digitalWrite(BLE_INDICATOR_PIN,HIGH);
+    digitalWrite(BLE_INDICATOR_PIN,LOW); //old FLAMB is active highb
   }
   else
   {

@@ -45,16 +45,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    usernameField.text = @"";
-    passwordField.text = @"";
-    invalidLogin.hidden = YES;
-    
+
+    //localization
     self.titleLabel.text = NSLocalizedString(@"Automatic Tuberculosis Diagnostic System",nil);
     usernameField.placeholder = NSLocalizedString(@"username", nil);
     passwordField.placeholder = NSLocalizedString(@"password", nil);
     invalidLogin.text = NSLocalizedString(@"Invalid username or password", nil);
+    self.syncLabel.text = NSLocalizedString(@"Syncing...",nil);
     
+    
+    usernameField.text = @"";
+    passwordField.text = @"";
+    invalidLogin.hidden = YES;
     self.cellscopeIDLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeID"];
     self.locationLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"];
     

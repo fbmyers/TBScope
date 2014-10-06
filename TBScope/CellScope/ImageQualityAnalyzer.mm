@@ -287,6 +287,8 @@ float computeShannonEntropy(Mat src)
     return entropy;
 }
 
+
+
 + (ImageQuality) calculateFocusMetric:(CMSampleBufferRef)sampleBuffer
 {
     
@@ -315,26 +317,36 @@ float computeShannonEntropy(Mat src)
     //cv::extractChannel(src, greenChannel, 1);
     
     Laplacian(src, lap, CV_64F);
-
+*/
+    
     Scalar mean, stDev;
     double minVal;
     double maxVal;
     
     
-    meanStdDev(lap, mean, stDev);
+    meanStdDev(src, mean, stDev);
     minMaxIdx(src, &minVal, &maxVal);
-    */
     
-    iq.normalizedGraylevelVariance = normalizedGraylevelVariance(src);
-    iq.varianceOfLaplacian = varianceOfLaplacian(src);
-    iq.modifiedLaplacian = modifiedLaplacian(src);
-    iq.tenengrad1 = tenengrad(src, 1);
+    
+    
+    iq.normalizedGraylevelVariance = 0; //normalizedGraylevelVariance(src);
+    iq.varianceOfLaplacian = 0; //varianceOfLaplacian(src);
+    iq.modifiedLaplacian = 0; //modifiedLaplacian(src);
+    iq.tenengrad1 = 0; //tenengrad(src, 1);
     iq.tenengrad3 = tenengrad(src, 3);
-    iq.tenengrad9 = tenengrad(src, 9);
+    iq.tenengrad9 = 0; //tenengrad(src, 9);
+
+    iq.maxVal = maxVal;
+    iq.contrast = maxVal/mean.val[0];
     
+    //maxVal = std::max_element(src.begin<double>(),src.end<double>());
+    
+    
+    //TODO: compute contrast as top 0.01% / bottom 50%?
+    //TODO: need a metric for overall image content (if > 20%, throw it out)
     
     //iq.contrast = maxVal/mean.val[0];
-    iq.entropy = computeShannonEntropy(src);
+    iq.entropy = 0; //computeShannonEntropy(src);
     
 
     src.release();

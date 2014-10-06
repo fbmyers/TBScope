@@ -24,7 +24,7 @@
 }
 
 @property (strong,nonatomic) Slides* currentSlide;
-@property (strong,nonatomic) Exams* currentExam;
+//@property (strong,nonatomic) Exams* currentExam;
 
 @property (weak, nonatomic) IBOutlet UIProgressView* progress;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView* spinner;
@@ -33,6 +33,9 @@
 @property (nonatomic) int currentField;
 
 @property (nonatomic) BOOL hasAborted;
+
+@property (nonatomic) BOOL showResultsAfterAnalysis;
+
 
 - (void)analyzeField:(int)fieldNumber;
 - (void) analysisCompleteCallback;

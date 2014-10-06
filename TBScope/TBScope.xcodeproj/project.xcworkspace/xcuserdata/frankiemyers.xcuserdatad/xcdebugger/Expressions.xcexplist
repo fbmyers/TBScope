@@ -59,16 +59,16 @@
                value = "inObject.length">
             </PersistentString>
             <PersistentString
-               value = "inObject[0]">
+               value = "theData[0]">
             </PersistentString>
             <PersistentString
                value = "[theData bytes]">
             </PersistentString>
             <PersistentString
-               value = "[inObject length]">
+               value = "inObject[0]">
             </PersistentString>
             <PersistentString
-               value = "theData[0]">
+               value = "[inObject length]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -85,7 +85,12 @@
          contextName = "-[Runner imagePickerController:didFinishPickingMediaWithInfo:]:Runner.mm">
       </ContextState>
       <ContextState
-         contextName = "-[GoogleDriveSync managedObjectsFromJSONStructure:withManagedObjectContext:]:GoogleDriveSync.m">
+         contextName = "-[CameraScrollView captureOutput:didOutputSampleBuffer:fromConnection:]:CameraScrollView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "iq.entropy">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "Classifier::featureDetection(cv::Mat, cv::Mat):Classifier.cpp">
@@ -143,6 +148,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[GoogleDriveSync managedObjectsFromJSONStructure:withManagedObjectContext:]:GoogleDriveSync.m">
+      </ContextState>
+      <ContextState
          contextName = "-[CaptureViewController didTouchUpStageButton:]:CaptureViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -157,15 +165,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CameraScrollView captureOutput:didOutputSampleBuffer:fromConnection:]:CameraScrollView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "iq.entropy">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__64-[GoogleDriveSync downloadImage:completionHandler:errorHandler:]_block_invoke:GoogleDriveSync.m">
       </ContextState>
       <ContextState
-         contextName = "__64-[GoogleDriveSync downloadImage:completionHandler:errorHandler:]_block_invoke:GoogleDriveSync.m">
+         contextName = "-[ExamListViewController runAnalysisOnNextExam]:ExamListViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.examListData.count">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[CaptureViewController didPressCapture:]:CaptureViewController.m">
@@ -174,6 +182,9 @@
                value = "previewView.lastCapturedImage.size">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Classifier::classifyObjects(std::__1::vector&lt;std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cv::Mat, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cv::Mat&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cv::Mat, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cv::Mat&gt; &gt; &gt; &gt; &gt;):Classifier.cpp">
       </ContextState>
       <ContextState
          contextName = "+[ImageQualityAnalyzer calculateFocusMetric:]:ImageQualityAnalyzer.mm">

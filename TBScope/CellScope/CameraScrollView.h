@@ -38,6 +38,8 @@
 @property (nonatomic) BOOL isExposureLocked;
 
 @property (nonatomic) ImageQuality currentImageQuality;
+@property (nonatomic) int focusMode;
+@property (nonatomic) double currentFocusMetric;
 
 - (void) setupCamera;
 - (void) takeDownCamera;

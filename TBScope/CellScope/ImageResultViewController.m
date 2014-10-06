@@ -92,7 +92,7 @@
             });
         }];
         
-        self.tabBarController.navigationItem.title = [NSString stringWithFormat:@"Exam %@, Slide %d, Image %d of %ld",
+        self.tabBarController.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Exam %@, Slide %d, Image %d of %ld",nil),
                                                         self.currentSlide.exam.examID,
                                                         self.currentSlide.slideNumber,
                                                         self.currentImageIndex+1,
@@ -123,7 +123,7 @@
             [av dismissWithClickedButtonIndex:0 animated:YES];
         });
         
-        self.tabBarController.navigationItem.title = [NSString stringWithFormat:@"Exam %@, Slide %d, Analyzed Patches",
+        self.tabBarController.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Exam %@, Slide %d, Analyzed Patches",nil),
                                      self.currentSlide.exam.examID,
                                      self.currentSlide.slideNumber];
         
@@ -146,7 +146,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [av dismissWithClickedButtonIndex:0 animated:YES];
             
-            self.tabBarController.navigationItem.title = [NSString stringWithFormat:@"Exam %@, Slide %d, Image %d of %ld",
+            self.tabBarController.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Exam %@, Slide %d, Image %d of %ld",nil),
                                                           self.currentSlide.exam.examID,
                                                           self.currentSlide.slideNumber,
                                                           self.currentImageIndex+1,
@@ -168,7 +168,7 @@
 
 
 -(UIAlertView*)showWaitIndicator{
-    UIAlertView* altpleasewait = [[UIAlertView alloc] initWithTitle:@"Please Wait..." message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    UIAlertView* altpleasewait = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please wait...",nil) message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
     
     [altpleasewait show];
     

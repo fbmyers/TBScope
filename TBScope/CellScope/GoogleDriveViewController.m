@@ -27,20 +27,16 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    // Always display the camera UI.
-    //[self showCamera];
     
     //if logged in, display current username and the logout button, else, load the login screen
     if ([[GoogleDriveSync sharedGDS] isLoggedIn]) {
-        NSMutableString* s = [NSMutableString stringWithString:@"Logged in as: "];
-        [s appendString:[[GoogleDriveSync sharedGDS] userEmail]];
-        self.usernameLabel.text = s;
-        [self.loginButton setTitle:@"Log Out" forState:UIControlStateNormal];
+        self.usernameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Logged in as: %@", nil),[[GoogleDriveSync sharedGDS] userEmail]];
+        [self.loginButton setTitle:NSLocalizedString(@"Log Out",nil) forState:UIControlStateNormal];
     }
     else
     {
-        self.usernameLabel.text = @"Not logged in to Google Drive";
-        [self.loginButton setTitle:@"Log In" forState:UIControlStateNormal];
+        self.usernameLabel.text = NSLocalizedString(@"Not logged in to Google Drive",nil);
+        [self.loginButton setTitle:NSLocalizedString(@"Log In",nil) forState:UIControlStateNormal];
     }
 }
 
@@ -86,10 +82,10 @@ static NSString *const kClientSecret = @"mbDjzu2hKDW23QpNJXe_0Ukd";
     {
         
         UIAlertView *alert;
-        alert = [[UIAlertView alloc] initWithTitle: @"Authentication Error"
+        alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Authentication Error",nil)
                                            message: error.localizedDescription
                                           delegate: nil
-                                 cancelButtonTitle: @"OK"
+                                 cancelButtonTitle: NSLocalizedString(@"OK",nil)
                                  otherButtonTitles: nil];
         [alert show];
         

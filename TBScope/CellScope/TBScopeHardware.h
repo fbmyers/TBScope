@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+
 #import "BLE.h"
 #import "TBScopeData.h"
 
@@ -77,5 +79,6 @@ typedef NS_ENUM(int, CSStagePosition)
                     Level:(Byte) level;
 
 -(void) pairBLECellScope;
+
 
 @end

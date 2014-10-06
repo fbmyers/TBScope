@@ -32,6 +32,7 @@
                                              selector:@selector(setSyncIndicator)
                                                  name:@"GoogleSyncStopped"
                                                object:nil];
+    
 }
 
 - (void)setSyncIndicator
@@ -60,6 +61,16 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //localize
+    self.navigationItem.title = NSLocalizedString(@"Exam Registry", nil);
+    [self.printButton setTitle:NSLocalizedString(@"Print", nil) forState:UIControlStateNormal];
+    [self.mapButton setTitle:NSLocalizedString(@"Map", nil) forState:UIControlStateNormal];
+    self.examNumHeaderLabel.text = NSLocalizedString(@"Exam ID", nil);
+    self.patientHeaderLabel.text = NSLocalizedString(@"Patient", nil);
+    self.clinicHeaderLabel.text = NSLocalizedString(@"Clinic/User", nil);
+    self.resultsHeaderLabel.text = NSLocalizedString(@"Analysis Results", nil);
+    self.firstCollectionHeaderLabel.text = NSLocalizedString(@"First Collection Date", nil);
+    
     //setup date/time formatters
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateStyle:NSDateFormatterShortStyle];
@@ -115,7 +126,7 @@
     }
     else
     {
-        dateString = @"N/A";
+        dateString = NSLocalizedString(@"N/A",nil);
         timeString = @"";
     }
     
@@ -141,7 +152,7 @@
         else
         {
             cell.scoreLabel1.backgroundColor = [UIColor lightGrayColor];
-            cell.scoreLabel1.text = @"N/A";
+            cell.scoreLabel1.text = NSLocalizedString(@"N/A",nil);
         }
     }
     else
@@ -165,7 +176,7 @@
         else
         {
             cell.scoreLabel2.backgroundColor = [UIColor lightGrayColor];
-            cell.scoreLabel2.text = @"N/A";
+            cell.scoreLabel2.text = NSLocalizedString(@"N/A",nil);
         }
     }
     else
@@ -188,7 +199,7 @@
         else //algorithm hasn't run yet
         {
             cell.scoreLabel3.backgroundColor = [UIColor lightGrayColor];
-            cell.scoreLabel3.text = @"N/A";
+            cell.scoreLabel3.text = NSLocalizedString(@"N/A",nil);
         }
     }
     else
@@ -288,5 +299,44 @@
     
 }
 
+- (IBAction)didPressAnalyzeAll:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(runAnalysisOnNextExam)
+                                                 name:@"AnalysisResultsSaved"
+                                               object:nil];
+    [self runAnalysisOnNextExam];
+    
+
+}
+
+//gets called when the button is pressed and also when AnalysisResultsSaved notification is posted
+- (void)runAnalysisOnNextExam
+{
+    static int examNum = 0;
+    
+    [NSThread sleepForTimeInterval:2.0]; //a little delay so you can see the result
+    
+    if (self.examListData.count>examNum) {
+        Exams* ex = self.examListData[examNum];
+        
+        if (ex.examSlides.count>0) {
+            AnalysisViewController *avc = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisViewController"];
+            
+            avc.currentSlide = ex.examSlides[0];
+            avc.showResultsAfterAnalysis = NO;
+            
+            [self.navigationController pushViewController:avc animated:YES];
+        }
+        examNum++;
+    }
+    else {
+        //we're through the whole list
+        examNum = 0;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AnalysisResultsSaved" object:nil];
+    }
+
+}
 
 @end

@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>AddBFWhenManualFocusing</key>
-	<false/>
-	<key>AutoScanInitialFocus</key>
-	<false/>
-	<key>BypassDataEntry</key>
 	<true/>
+	<key>AutoScanInitialFocus</key>
+	<true/>
+	<key>BypassDataEntry</key>
+	<false/>
 	<key>DoAutoLoadSlide</key>
 	<true/>
 	<key>AutoScanFluorescentIntensity</key>
@@ -15,21 +15,21 @@
 	<key>AutoScanBFIntensity</key>
 	<integer>2</integer>
 	<key>AutoScanFocusInterval</key>
-	<integer>3</integer>
+	<integer>10</integer>
 	<key>AutoScanStepsBetweenFields</key>
 	<integer>100</integer>
 	<key>AutoScanCols</key>
-	<integer>20</integer>
-	<key>AutoScanRows</key>
 	<integer>10</integer>
+	<key>AutoScanRows</key>
+	<integer>20</integer>
 	<key>DoAutoFocus</key>
 	<true/>
 	<key>DoAutoScan</key>
 	<true/>
 	<key>DefaultFLIntensity</key>
-	<integer>150</integer>
-	<key>DefaultBFIntensity</key>
 	<integer>255</integer>
+	<key>DefaultBFIntensity</key>
+	<integer>5</integer>
 	<key>AllowScanWithoutCellScope</key>
 	<true/>
 	<key>DefaultEmailRecipient</key>
@@ -50,8 +50,6 @@
 	<string>.*</string>
 	<key>DoAnalysisByDefault</key>
 	<true/>
-	<key>DateFormat</key>
-	<string>yyyy-MM-dd &apos;at&apos; HH:mm</string>
 	<key>DefaultLocation</key>
 	<string>Fletcher Lab</string>
 	<key>CellScopeID</key>
@@ -69,7 +67,7 @@
 	<key>NumFieldsPerSlide</key>
 	<integer>5</integer>
 	<key>BypassLogin</key>
-	<string>NO</string>
+	<string>YES</string>
 	<key>ResetCoreDataOnStartup</key>
 	<true/>
 	<key>DiagnosticThreshold</key>

@@ -16,8 +16,6 @@
 @property (strong, nonatomic) Users* currentUser;
 
 @property (weak, nonatomic) IBOutlet UITextField* defaultLocation;
-@property (weak, nonatomic) IBOutlet UIPickerView* language;
-@property (weak, nonatomic) IBOutlet UITextField* dateFormat;
 @property (weak, nonatomic) IBOutlet UITextField* cellscopeID;
 @property (weak, nonatomic) IBOutlet UITextField* numFieldsPerSlide;
 @property (weak, nonatomic) IBOutlet UITextField* patientIDFormat;

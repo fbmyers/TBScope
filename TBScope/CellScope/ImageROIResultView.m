@@ -74,10 +74,9 @@ float threshold_score = 1;
         if (p.x<512)
             neighborhoodX = 750;
         
-        NSIndexPath *indexPath = [self indexPathForItemAtPoint:p];
-        if (indexPath == nil){
-            NSLog(@"couldn't find index path following long press gesture");
-        } else {
+        
+        NSIndexPath *indexPath = [self indexPathForItemAtPoint:p];;
+        if (indexPath != nil) {
             // get the cell at indexPath (the one you long pressed)
             ImageROIResultCell* cell = [self cellForItemAtIndexPath:indexPath];
             // do stuff with the cell
@@ -116,9 +115,9 @@ float threshold_score = 1;
             
         }
     }
-    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled || gestureRecognizer.state == UIGestureRecognizerStateFailed)//gesture ended
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled)//gesture ended
     {
-        self.roiNeighborhoodView.hidden = YES;
+        [self.roiNeighborhoodView removeFromSuperview];
         self.roiNeighborhoodView = nil;
     }
 }

@@ -61,6 +61,23 @@ namespace Features
 		return partial;
 	}
 
+	bool checkPatchOutsideCircle(int row, int col, int maxRow, int maxCol, int radius)
+	{
+		bool partial = false;
+        
+        double centerX = maxCol/2;
+        double centerY = maxRow/2;
+        
+        double r = sqrt(pow((row-centerY),2) + pow((col-centerX),2));
+        
+        
+		if (r > (double)radius) {
+			partial = true;
+		}
+        
+		return partial;
+	}
+    
 	double momentpq(const Mat image, int p, int q, double xc, double yc)
     {
         double sum = 0;

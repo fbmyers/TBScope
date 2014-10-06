@@ -7,40 +7,70 @@
  */
 
 //Login Screen
-"Automated Tuberculosis Diagnostic System" = "Hệ thống chẩn đoán tự động lao";
+"Automatic Tuberculosis Diagnostic System" = "Hệ thống chẩn đoán lao tự động";
 "username" = "tên truy nhập";
 "password" = "mật khẩu";
 "Invalid username or password" = "Tên đăng nhập hoặc mật khẩu không hợp lệ";
+"Syncing..." = "Đang đồng bộ...";
 
 //Main Menu
-"Main Menu" = "Mục lục";
+"Main Menu" = "Mục Lục";
 "Logged in as: %@" = "Đăng nhập: %@";
-"Scan Slide" = "Đọc tiêu bản";
-"Review Results" = "Kết quả";
+"Scan Slide" = "Đọc Tiêu Bản";
+"Review Results" = "Kết Quả";
 "Configuration" = "Cấu Hình";
 "Logout" = "Đăng Xuất";
+"Bluetooth Connected" = "Blu-tút đã được kết nối";
+"CellScope Not Connected" = "CellScope không được kết nối";
 
-//Assay Screen
+//Edit Exam
 "Assay Parameters" = "Khảo nghiệm Tham số";
-"Name" = "Họ Tên"; //shorten?
-"Patient ID" = "Bệnh nhân ID";
+"Name" = "Họ Tên";
+"Patient ID" = "Bệnh nhân ID"; //longer
 "Slide #" = "Tiêu bản số #";
 "Read #" = "Đọc lần #";
-"Location" = "Nơi gửi xét nghiệm";
 "Patient Address" = "Địa chỉ bệnh nhân";
 "Intake Notes" = "Ghi chú";
 "User: %@" = "Người sử dụng: %@";
 "Date: %@" = "Ngày: %@";
-"Run Analysis" = "Phân tích kết quả đọc";
-"Patient  name cannot be blank." = "Không thể để trống tên bệnh nhân";
-"Patient ID cannot be blank." = "Không thể để trống ID bệnh nhân.";
-"Patient ID is improperly formatted." = "Không đúng định dạng ID bệnh nhân.";
+"Run Analysis" = "Phân tích kết quả";
+"Patient name cannot be blank." = "Không thể để trống tên bệnh nhân";
+"Patient ID cannot be blank." = "Không thể để trống ID bệnh nhân."; //check that this is getting validated
+"Patient ID is invalid." = "Định dạng ID bệnh nhân không đúng.";
 "Slide number cannot be blank." = "Số tiêu bản không thể để trống.";
 "Read number cannot be blank." = "Tiêu bản đọc không được để trống.";
-"Input Error" = "Nhập Lỗi";
+"Input Error" = "Thông tin nhập bị lỗi";
 "OK" = "OK";
-"Next" = "Tiếp"; //ok?
-"Back" = "Mặt dưới tiêu bản"; //shorten?
+"Next" = "Tiếp";
+"Back" = "Mặt dưới";
+"New Exam" = "Xét nghiệm mới";
+"Edit Exam" = "Thay đổi xét nghiệm";
+"Exam ID" = "ID xét nghiệm"; //make field longer
+"Gender" = "Giới tính"; //field longer
+"DOB" = "Ngày sinh";
+"Clinic" = "Phòng khám"; //field longer
+"Address" = "Địa chỉ";
+"HIV Status" = "Tình trạng HIV"; //field longer
+"NO GPS" = "Không có GPS";
+"GPS OK" = "GPS OK";
+"Exam ID cannot be blank." = "ID xét nghiệm không thể để trống."; //make sure in popup
+"Exam ID is invalid" = "ID xét nghiệm không đúng";
+"M" = "Nam";
+"F" = "Nữ";
+"Map" = "Bản đồ"; //make button sưitch hêre
+
+//Edit Slide
+"GOOD" = "Tốt";
+"BLOOD" = "Máu";
+"SALIVA" = "Nước bọt";
+"BLOOD+SALIVA" = "Máu + Nước bọt";
+"New Slide" = "Tiêu bản mới";
+"Date Collected" = "Ngày lấy mẫu"; //field longer
+"Sputum Quality" = "Chất lượng mẫu";
+"Date Scanned: %@" = "Ngày chụp: %@"; 
+"Exam ID: %@" = "ID xét nghiệm: %@";
+"Patient ID: %@" = "Bệnh nhân ID: %@";
+"Name: %@" = "Họ Tên: %@";
 
 //Slide Loading
 "Load Sample Slide" = "Tải ảnh mẫu đã chụp";
@@ -48,55 +78,106 @@
 "Wait for loading tray to come to a stop before inserting slide. Insert slide with sputum side up and gently push into machine. Click next. Slide will automatically load into position for image capture." = "Chờ cho khay nđặt tiêu bản dịch chuyển đến điểm dừng trước khi đặt tiêu bản. Đặt tiêu bản sao cho mặt phết đờm quay lên trên và nhẹ nhàng đẩy vào máy. Bấm vào chữ tiếp theo. Tiêu bản sẽ tự động nạp vào vị trí để chụp ảnh.";
 
 //Image Capture
-"Capture Field %d of %d" = "Chụp ảnh số %d của %d";
+"Capture Field %d of %d" = "Chụp ảnh số %d/%d";
 "Analyze" = "Phân tích kết quả ảnh đã chụp";
 "Done" = "Hoàn Thành";
-"BF Off" = "BF Tắt"; //abbreviate? "Tắt nguồn sáng nền";
-"BF On" = "BF Trên"; //"Bật nguồn sáng nền";
-"FL Off" = "FL Tắt"; //"Tắt ánh sáng huỳnh quang";
-"FL On" = "FL Trên"; //"Bật ánh sáng huỳnh quang";
-"AE Off" = "AE Tắt";
-"AE On" = "Bật AE";
-"AF Off" = "AF Tắt";
-"AF On" = "Bật AF";
+"BF Off" = "BF Tắt";
+"BF On" = "BF Bật";
+"FL Off" = "FL Tắt";
+"FL On" = "FL Bật";
 "Not Connected" = "Không kết nối";
 "Connected" = "Đã kết nối";
 "Capture Complete" = "Hoàn thành chụp ảnh";
-"Loading sample..." = "Mẫu tải...";
-"Focusing..." = "Tập trung...";
-"Acquiring image %d of %d..." = "Lấy lại hình ảnh %d của %d...";
+"Loading sample..." = "Đang tải mẫu...";
+"Focusing..." = "Đang lấy nét...";
+"Acquiring image %d of %d..." = "Đang chụp ảnh %d của %d...";
 "Next field..." = "Vi trường tiếp theo..";
-"Acquisition complete..." = "Lấy lại toàn bộ ảnh chụp";
-"Auto Focus" = "Lấy độ nét tự động";
-"Auto Scan" = "Tự động lấy độ nét và chụp ảnh";
+"Acquisition complete..." = "Kết thúc chụp ảnh...";
+"Focus" = "Lấy nét";
+"Auto Scan" = "Tự động";
+"Fast" = "Nhanh";
+"Slow" = "Chậm";
+"Please Re-focus" = "Lấy lại độ nét";
+"Moving to slide center..." = "Di chuyển tới giữa tiêu bản";
+"Exposure Calibration..." = "Chỉnh độ sáng";
+"Initial Focusing..." = "Lấy nét ban đầu";
 
 
 //Analysis
 "Analyzing..." = "Phân tích kết quả ảnh đã chụp...";
 "Processing image %d of %d..." = "Xử lý ảnh %d của %d...";
+"Abort" = "Dừng"; //make sủe this is set
+"Please wait..." = "Làm ơn đợi...";
+
 
 //Diagnosis
+"Exam %@" = "Xét nghiệm %@";
 "Date" = "Ngày";
 "Review Slide" = "Kết quả chụp ảnh và phân tích";
 "Slide Info" = "Thông tin mẫu phẩm";
 "Analysis Result" = "Phân tích kết quả";
 "Analysis Date" = "Phân tích ngày";
-"Slide Score" = "Điểm sau đánh giá phân tích ảnh chụp";
-"Image Quality" = "chất lượng hình ảnh";
-"Fields" = "Vi trường";
+"Slide Score" = "Điểm tiêu bản sau đánh giá phân tích ảnh chụp"; //shorten?
+"Image Quality" = "Chất lượng ảnh";
+"# Fields" = "# Vi trường";
 "Diagnosis Notes" = "Chẩn đoán cần chú ý";
-"Re-run Analysis" = "Phân tích một lần nữa";
 "Upload" = "Tải lên";
 "Results" = "Kết quả";
 "Images" = "ảnh đã chụp";
-
+"Slide %d" = "Tiêu bản %d";
+"Exam Info" = "Thông tin xét nghiệm";
+"User" = "Người sử dụng";
+"CellScope ID" = "ID của CellScope";
+"Last Modified" = "Thay đổi gần đây";
+"Patient Info" = "Thông tin bệnh nhân";
+"# AFB (Algorithm)" = "Số TB (Máy tính)";
+"# AFB (Confirmed)" = "Số TB (Xác nhận)";
+"Re-analyze" = "Phân tích lại";
+"Re-scan" = "Chụp ảnh lại";
+"Not Evaluated" = "N/A"; //"Không được đánh giá";
+"Add Slide" = "Thêm tiêu bản";
 
 "NONE" = "không ai";
 "ANALYSIS HAS NOT BEEN PERFORMED" = "PHÂN TÍCH ĐÃ KHÔNG ĐƯỢC THỰC HIỆN";
-"SLIDE IS POSITIVE FOR TUBERCULOSIS" = "Tiêu bản dương tính";
-"SLIDE IS NEGATIVE FOR TUBERCULOSIS" = "Tiêu bản âm tính";
-"SLIDE IS INDETERMINATE" = "MẪU LÀ KHÔNG XÁC ĐỊNH";
+"PATIENT IS POSITIVE FOR TUBERCULOSIS" = "Bệnh nhân dương tính với lao";
+"PATIENT IS NEGATIVE FOR TUBERCULOSIS" = "Bệnh nhân âm tính với lao";
+"PATIENT STATUS IS INDETERMINATE" = "Tình trạng bệnh nhân ở mức giữa";
 
-//Review list
+//Image Review
+"Show Patches" = "Xem mảng";
+"Show Images" = "Xem ảnh";
+"Exam %@, Slide %d, Analyzed Patches" = "Xét nghiệm %@, Tiêu bản %d, Mảng được phân tích";
+"Exam %@, Slide %d, Image %d of %ld" = "Xét nghiệm %@, Tiêu bản %d, Ảnh chụp %d của %ld"; //not showing
+
+//Exam List
 "Review Results" = "kết quả rà soát";
-"N/A" = "N/A"; //"Không phù hợp"; abbreviation?
+"N/A" = "N/A"; //??
+"Print" = "In ra";
+"Patient" = "Bệnh nhân";
+"Clinic/User" = "Phòng khám/Người chụp";
+"Analysis Results" = "Kết quả phân tích";
+"First Collection Date" = "Ngày lấy mẫu đầu tiên";
+"Exam Registry" = "Số xét nghiệm"; //make sure this is in title
+//change exam # to Exam ID
+
+//Print Registry
+"Print TB Registry" = "In sổ xét nghiệm TB"; //fix
+"Email (PDF)" = "Email";
+"CellScope TB Registry" = "Sổ xét nghiệm TB của CellScope";
+"CellScope TB Registry\nDate Prepared: %@\nPrepared By: %@\nLocation: %@\nCellScope ID: %@\n\nDate Range: %@\n" = "Số xét nghiệm TB của CellScope\nngày chuẩn bị: %@\nbởi: %@\ntại: %@\nCellScope ID: %@\n\ntrong khoảng: %@\n";
+"TB Registry - %@ - %@.pdf" = "Số xét nghiệm TB - %@ - %@.pdf";
+"Page %@" = "Trang %@";
+"Printed on %@ by %@" = "In vào ngày %@ bởi %@";
+
+//Google Drive
+"Log Out" = "Đăng xuất";
+"Log In" = "Đăng nhập";
+"Authentication Error" = "Lỗi xác nhận";
+
+//Bluetooth
+"A new CellScope has been detected. Pair this iPad with this CellScope?" = "Tìm thấy một CellScope mới. Kết nối với iPad với CellScope này?";
+"Bluetooth Connection" = "Kết nối Blu-tút";
+"No" = "Không";
+"Yes" = "Có";
+
+

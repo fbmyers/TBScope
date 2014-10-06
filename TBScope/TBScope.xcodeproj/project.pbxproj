@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84072C4B196BB3EA004F8826 /* ImageQualityAnalyzer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84072C4A196BB3EA004F8826 /* ImageQualityAnalyzer.mm */; };
+		84072C4E196BB403004F8826 /* CoreDataJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84072C4D196BB403004F8826 /* CoreDataJSONHelper.m */; };
+		84072C51196BB410004F8826 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 84072C50196BB410004F8826 /* Reachability.m */; };
 		9B13455615E28E14009863DF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B13455515E28E14009863DF /* ImageIO.framework */; };
 		9B6BF0B915E19ACD002834C5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6BF0B815E19ACD002834C5 /* UIKit.framework */; };
 		9B6BF0BB15E19ACD002834C5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6BF0BA15E19ACD002834C5 /* Foundation.framework */; };
@@ -36,6 +39,9 @@
 		A50B061B1831D75500880350 /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B061A1831D75500880350 /* train_min.csv */; };
 		A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06511835695100880350 /* SlideDiagnosisViewController.m */; };
 		A50B06551835697700880350 /* ImageResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06541835697700880350 /* ImageResultViewController.m */; };
+		A515265E19C2715C00AFC42E /* please_refocus.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265B19C2715C00AFC42E /* please_refocus.mp3 */; };
+		A515265F19C2715C00AFC42E /* scanning_complete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265C19C2715C00AFC42E /* scanning_complete.mp3 */; };
+		A515266019C2715C00AFC42E /* scanning_started.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265D19C2715C00AFC42E /* scanning_started.mp3 */; };
 		A5176664195C817400EBCEF0 /* circlemask.png in Resources */ = {isa = PBXBuildFile; fileRef = A5176663195C817400EBCEF0 /* circlemask.png */; };
 		A52BDEB71859236F00B4ECB2 /* TBScope.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A52BDEB51859236F00B4ECB2 /* TBScope.xcdatamodeld */; };
 		A52D7D49183DEBB000A487EA /* GTMGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D7863183DEBAA00A487EA /* GTMGatherInputStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -105,7 +111,6 @@
 		A52D7FD1183DF24200A487EA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52D7FD0183DF24200A487EA /* MobileCoreServices.framework */; };
 		A52D7FD6183DF2C000A487EA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52D7FD5183DF2C000A487EA /* SystemConfiguration.framework */; };
 		A52D7FD8183DF2CC00A487EA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52D7FD7183DF2CC00A487EA /* Security.framework */; };
-		A563C8B818CACC0700146930 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A563C8B718CACC0700146930 /* Reachability.m */; };
 		A570147E18A5BE4600881F95 /* configicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A570147D18A5BE4600881F95 /* configicon.png */; };
 		A570148318A5BE4F00881F95 /* googleicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A570148018A5BE4F00881F95 /* googleicon.png */; };
 		A570148418A5BE4F00881F95 /* imagesicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A570148118A5BE4F00881F95 /* imagesicon.png */; };
@@ -126,8 +131,6 @@
 		A5C0156D18F8C9B7004BC143 /* PrintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0156C18F8C9B7004BC143 /* PrintViewController.m */; };
 		A5C0157D18F8CB37004BC143 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C0157C18F8CB37004BC143 /* CoreText.framework */; };
 		A5C0157F18FDD1D5004BC143 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C0157E18FDD1D5004BC143 /* MessageUI.framework */; };
-		A5C0158218FE0EB7004BC143 /* NSData_HexData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0158118FE0EB7004BC143 /* NSData_HexData.m */; };
-		A5C0158518FE1026004BC143 /* NSData+HexData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0158418FE1026004BC143 /* NSData+HexData.m */; };
 		A5C27AA1182C3AB900A8CB1D /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */; };
 		A5C27AA4182C3E8600A8CB1D /* EditExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA3182C3E8600A8CB1D /* EditExamViewController.m */; };
 		A5C27AA7182C562C00A8CB1D /* CaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AA6182C562C00A8CB1D /* CaptureViewController.m */; };
@@ -136,8 +139,8 @@
 		A5C341941835A4CD00DBBD37 /* scalearrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341931835A4CD00DBBD37 /* scalearrow.png */; };
 		A5C341A41835A4D200DBBD37 /* scalearrow2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341A31835A4D200DBBD37 /* scalearrow2x.png */; };
 		A5C5079E1866304D00187BBC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5079D1866304D00187BBC /* CoreBluetooth.framework */; };
-		A5CAEA771952732400416E4B /* ImageQualityAnalyzer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5CAEA761952732400416E4B /* ImageQualityAnalyzer.mm */; };
-		A5CB970018EF4E90009CD561 /* CoreDataJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */; };
+		A5C8E177196DFF8C0072D99C /* NSData+HexData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C8E176196DFF8C0072D99C /* NSData+HexData.m */; };
+		A5C8E17B196F86860072D99C /* pictureicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C8E17A196F86860072D99C /* pictureicon.png */; };
 		A5CF19FA187A39DF00C2C2E1 /* CameraScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CF19F9187A39DF00C2C2E1 /* CameraScrollView.m */; };
 		A5CF1A08187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A04187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif */; };
 		A5CF1A09187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif in Resources */ = {isa = PBXBuildFile; fileRef = A5CF1A05187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif */; };
@@ -354,6 +357,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84072C49196BB3EA004F8826 /* ImageQualityAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageQualityAnalyzer.h; path = CellScope/ImageQualityAnalyzer.h; sourceTree = "<group>"; };
+		84072C4A196BB3EA004F8826 /* ImageQualityAnalyzer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageQualityAnalyzer.mm; path = CellScope/ImageQualityAnalyzer.mm; sourceTree = "<group>"; };
+		84072C4C196BB403004F8826 /* CoreDataJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataJSONHelper.h; path = CellScope/CoreDataJSONHelper.h; sourceTree = "<group>"; };
+		84072C4D196BB403004F8826 /* CoreDataJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataJSONHelper.m; path = CellScope/CoreDataJSONHelper.m; sourceTree = "<group>"; };
+		84072C4F196BB410004F8826 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = CellScope/Reachability.h; sourceTree = "<group>"; };
+		84072C50196BB410004F8826 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = CellScope/Reachability.m; sourceTree = "<group>"; };
 		9B13455515E28E14009863DF /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		9B6BF0B415E19ACD002834C5 /* TBScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TBScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B6BF0B815E19ACD002834C5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -394,6 +403,10 @@
 		A50B06511835695100880350 /* SlideDiagnosisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideDiagnosisViewController.m; sourceTree = "<group>"; };
 		A50B06531835697700880350 /* ImageResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResultViewController.h; sourceTree = "<group>"; };
 		A50B06541835697700880350 /* ImageResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResultViewController.m; sourceTree = "<group>"; };
+		A515264919C2674000AFC42E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		A515265B19C2715C00AFC42E /* please_refocus.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = please_refocus.mp3; sourceTree = "<group>"; };
+		A515265C19C2715C00AFC42E /* scanning_complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scanning_complete.mp3; sourceTree = "<group>"; };
+		A515265D19C2715C00AFC42E /* scanning_started.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scanning_started.mp3; sourceTree = "<group>"; };
 		A5176663195C817400EBCEF0 /* circlemask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circlemask.png; sourceTree = "<group>"; };
 		A52BDEB61859236F00B4ECB2 /* TBScope.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TBScope.xcdatamodel; sourceTree = "<group>"; };
 		A52D785F183DEBAA00A487EA /* GTLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLDefines.h; sourceTree = "<group>"; };
@@ -520,8 +533,6 @@
 		A52D7FD0183DF24200A487EA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A52D7FD5183DF2C000A487EA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A52D7FD7183DF2CC00A487EA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		A563C8B618CACC0700146930 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		A563C8B718CACC0700146930 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		A570147D18A5BE4600881F95 /* configicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = configicon.png; sourceTree = "<group>"; };
 		A570148018A5BE4F00881F95 /* googleicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = googleicon.png; sourceTree = "<group>"; };
 		A570148118A5BE4F00881F95 /* imagesicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imagesicon.png; sourceTree = "<group>"; };
@@ -546,16 +557,12 @@
 		A5B45F9618303E51002F4D30 /* ExamListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamListViewController.h; sourceTree = "<group>"; };
 		A5B45F9718303E51002F4D30 /* ExamListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamListViewController.m; sourceTree = "<group>"; };
 		A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GoogleDriveSync.m; path = CellScope/GoogleDriveSync.m; sourceTree = "<group>"; };
-		A5B72A901899F88F0013DA9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A5B72A931899FF6C0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A5B72A95189A025F0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A5C0156B18F8C9B7004BC143 /* PrintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintViewController.h; sourceTree = "<group>"; };
 		A5C0156C18F8C9B7004BC143 /* PrintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintViewController.m; sourceTree = "<group>"; };
 		A5C0157C18F8CB37004BC143 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		A5C0157E18FDD1D5004BC143 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		A5C0158118FE0EB7004BC143 /* NSData_HexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSData_HexData.m; sourceTree = SOURCE_ROOT; };
-		A5C0158318FE1026004BC143 /* NSData+HexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexData.h"; sourceTree = SOURCE_ROOT; };
-		A5C0158418FE1026004BC143 /* NSData+HexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+HexData.m"; sourceTree = SOURCE_ROOT; };
 		A5C27A9F182C3AB900A8CB1D /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
 		A5C27AA0182C3AB900A8CB1D /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
 		A5C27AA2182C3E8600A8CB1D /* EditExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditExamViewController.h; sourceTree = "<group>"; };
@@ -569,10 +576,9 @@
 		A5C341931835A4CD00DBBD37 /* scalearrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow.png; sourceTree = "<group>"; };
 		A5C341A31835A4D200DBBD37 /* scalearrow2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow2x.png; sourceTree = "<group>"; };
 		A5C5079D1866304D00187BBC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		A5CAEA751952732400416E4B /* ImageQualityAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageQualityAnalyzer.h; sourceTree = "<group>"; };
-		A5CAEA761952732400416E4B /* ImageQualityAnalyzer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageQualityAnalyzer.mm; sourceTree = "<group>"; };
-		A5CB96FE18EF4E90009CD561 /* CoreDataJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataJSONHelper.h; sourceTree = "<group>"; };
-		A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataJSONHelper.m; sourceTree = "<group>"; };
+		A5C8E175196DFF8C0072D99C /* NSData+HexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+HexData.h"; path = "CellScope/NSData+HexData.h"; sourceTree = SOURCE_ROOT; };
+		A5C8E176196DFF8C0072D99C /* NSData+HexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+HexData.m"; path = "CellScope/NSData+HexData.m"; sourceTree = SOURCE_ROOT; };
+		A5C8E17A196F86860072D99C /* pictureicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pictureicon.png; sourceTree = "<group>"; };
 		A5CF19F8187A39DF00C2C2E1 /* CameraScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraScrollView.h; sourceTree = "<group>"; };
 		A5CF19F9187A39DF00C2C2E1 /* CameraScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraScrollView.m; sourceTree = "<group>"; };
 		A5CF1A04187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif; sourceTree = "<group>"; };
@@ -711,8 +717,6 @@
 		9B6BF0A915E19ACD002834C5 = {
 			isa = PBXGroup;
 			children = (
-				A5CAEA751952732400416E4B /* ImageQualityAnalyzer.h */,
-				A5CAEA761952732400416E4B /* ImageQualityAnalyzer.mm */,
 				A57014B318A7091D00881F95 /* Images.xcassets */,
 				A5C5079C18662AF500187BBC /* BLE */,
 				9B6BF0C115E19ACD002834C5 /* Supporting Files */,
@@ -723,16 +727,18 @@
 				AC0353A61786106D001AE3FA /* Classifier */,
 				9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */,
 				9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.mm */,
+				84072C49196BB3EA004F8826 /* ImageQualityAnalyzer.h */,
+				84072C4A196BB3EA004F8826 /* ImageQualityAnalyzer.mm */,
 				A5FCCD3618B6F0DD0004B2F5 /* TBScopeData.h */,
 				A5FCCD3718B6F0DD0004B2F5 /* TBScopeData.m */,
 				A57014AD18A6F0BE00881F95 /* TBScopeHardware.h */,
 				A57014AE18A6F0BE00881F95 /* TBScopeHardware.m */,
 				A500C0B018AC0DF300D8C569 /* GoogleDriveSync.h */,
 				A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */,
-				A5CB96FE18EF4E90009CD561 /* CoreDataJSONHelper.h */,
-				A5CB96FF18EF4E90009CD561 /* CoreDataJSONHelper.m */,
-				A563C8B618CACC0700146930 /* Reachability.h */,
-				A563C8B718CACC0700146930 /* Reachability.m */,
+				84072C4C196BB403004F8826 /* CoreDataJSONHelper.h */,
+				84072C4D196BB403004F8826 /* CoreDataJSONHelper.m */,
+				84072C4F196BB410004F8826 /* Reachability.h */,
+				84072C50196BB410004F8826 /* Reachability.m */,
 				9B6BF0B715E19ACD002834C5 /* Frameworks */,
 				9B6BF0B515E19ACD002834C5 /* Products */,
 				ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */,
@@ -751,6 +757,7 @@
 		9B6BF0B715E19ACD002834C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A515264919C2674000AFC42E /* AudioToolbox.framework */,
 				A5C0157E18FDD1D5004BC143 /* MessageUI.framework */,
 				A5C0157C18F8CB37004BC143 /* CoreText.framework */,
 				A5FCCD4218BC6A600004B2F5 /* MapKit.framework */,
@@ -778,6 +785,9 @@
 		9B6BF0C115E19ACD002834C5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A515265B19C2715C00AFC42E /* please_refocus.mp3 */,
+				A515265C19C2715C00AFC42E /* scanning_complete.mp3 */,
+				A515265D19C2715C00AFC42E /* scanning_started.mp3 */,
 				9BD352BF15FAAC3D00E331E9 /* Images */,
 				ACC23A21176241C000C6BF9D /* default-configuration.plist */,
 				9B6BF0C215E19ACD002834C5 /* CellScope-Info.plist */,
@@ -829,6 +839,7 @@
 				A570148118A5BE4F00881F95 /* imagesicon.png */,
 				A570148618A5BE5500881F95 /* resultsicon.png */,
 				A570148A18A5BE5500881F95 /* usericon.png */,
+				A5C8E17A196F86860072D99C /* pictureicon.png */,
 				A5C341931835A4CD00DBBD37 /* scalearrow.png */,
 				A5C341A31835A4D200DBBD37 /* scalearrow2x.png */,
 				9BD352C015FAAC3D00E331E9 /* cellscope_logo_1600-bkgd.png */,
@@ -1129,9 +1140,8 @@
 				A500C0B418AC0E4100D8C569 /* CJSONSerializer.m */,
 				A500C0B518AC0E4100D8C569 /* JSONRepresentation.h */,
 				A500C0B618AC0E4100D8C569 /* NSDictionary_JSONExtensions.m */,
-				A5C0158118FE0EB7004BC143 /* NSData_HexData.m */,
-				A5C0158318FE1026004BC143 /* NSData+HexData.h */,
-				A5C0158418FE1026004BC143 /* NSData+HexData.m */,
+				A5C8E175196DFF8C0072D99C /* NSData+HexData.h */,
+				A5C8E176196DFF8C0072D99C /* NSData+HexData.m */,
 			);
 			name = TouchJSON;
 			path = Source;
@@ -1444,6 +1454,7 @@
 				A5CF1A16187E4B8A00C2C2E1 /* up.png in Resources */,
 				A570147E18A5BE4600881F95 /* configicon.png in Resources */,
 				A5CF1A09187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif in Resources */,
+				A515266019C2715C00AFC42E /* scanning_started.mp3 in Resources */,
 				A5CF1A1B187E4B9F00C2C2E1 /* down.png in Resources */,
 				A52D7D67183DEBB000A487EA /* GTMOAuth2Framework-Info.plist in Resources */,
 				A570148C18A5BE5500881F95 /* resultsicon.png in Resources */,
@@ -1458,12 +1469,15 @@
 				A5CF1A14187E4B8A00C2C2E1 /* right.png in Resources */,
 				A5FCCD1D18B6DC830004B2F5 /* scanslide.png in Resources */,
 				A5CF1A2E187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif in Resources */,
+				A5C8E17B196F86860072D99C /* pictureicon.png in Resources */,
 				A50B061B1831D75500880350 /* train_min.csv in Resources */,
 				A52D7D5E183DEBB000A487EA /* UnitTests-Info.plist in Resources */,
+				A515265F19C2715C00AFC42E /* scanning_complete.mp3 in Resources */,
 				A52D7D6A183DEBB000A487EA /* ReleaseNotes.txt in Resources */,
 				A5C341A41835A4D200DBBD37 /* scalearrow2x.png in Resources */,
 				A52D7D68183DEBB000A487EA /* GTMOAuth2Window.xib in Resources */,
 				A52D7D77183DEBB000A487EA /* DevTestTool-Info.plist in Resources */,
+				A515265E19C2715C00AFC42E /* please_refocus.mp3 in Resources */,
 				A52D7D78183DEBB000A487EA /* GTLFramework-Info.plist in Resources */,
 				A570148418A5BE4F00881F95 /* imagesicon.png in Resources */,
 				A5CF1A27187E65AC00C2C2E1 /* DHC5_CHP21_1010107_S1_R1_HLH_I1_Fluor_N_F.tif in Resources */,
@@ -1522,13 +1536,13 @@
 				A5C27AA4182C3E8600A8CB1D /* EditExamViewController.m in Sources */,
 				9BD352B215FAABE800E331E9 /* CoreDataHelper.m in Sources */,
 				ACFC05AF1698D13500411641 /* TBDiagnoser.mm in Sources */,
+				84072C51196BB410004F8826 /* Reachability.m in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
 				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
 				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
 				A500C0B818AC0E4100D8C569 /* CJSONSerializer.m in Sources */,
 				A500C0B718AC0E4100D8C569 /* CJSONDeserializer.m in Sources */,
 				A57014AF18A6F0BE00881F95 /* TBScopeHardware.m in Sources */,
-				A563C8B818CACC0700146930 /* Reachability.m in Sources */,
 				AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */,
 				A5B45F95183039BE002F4D30 /* LoadSampleViewController.m in Sources */,
 				A5B45F8018302D4E002F4D30 /* ConfigurationViewController.m in Sources */,
@@ -1556,8 +1570,10 @@
 				AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */,
 				A5C27AA7182C562C00A8CB1D /* CaptureViewController.m in Sources */,
 				A5FD37A0183DDEB400C67D85 /* GoogleDriveViewController.m in Sources */,
+				A5C8E177196DFF8C0072D99C /* NSData+HexData.m in Sources */,
 				A52BDEB71859236F00B4ECB2 /* TBScope.xcdatamodeld in Sources */,
 				A52D7E5D183DEBB000A487EA /* GTLDriveChildList.m in Sources */,
+				84072C4E196BB403004F8826 /* CoreDataJSONHelper.m in Sources */,
 				A5A0F3E118F70E4900909615 /* ImageROIResultCell.m in Sources */,
 				A52D7D49183DEBB000A487EA /* GTMGatherInputStream.m in Sources */,
 				A52D7D69183DEBB000A487EA /* GTMOAuth2WindowController.m in Sources */,
@@ -1565,7 +1581,6 @@
 				A52D7D72183DEBB000A487EA /* GTLQuery.m in Sources */,
 				A52D7E5F183DEBB000A487EA /* GTLDriveComment.m in Sources */,
 				A52D7E71183DEBB000A487EA /* GTLServiceDrive.m in Sources */,
-				A5CAEA771952732400416E4B /* ImageQualityAnalyzer.mm in Sources */,
 				A52D7E61183DEBB000A487EA /* GTLDriveCommentReply.m in Sources */,
 				A52D7D6B183DEBB000A487EA /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				A52D7E58183DEBB000A487EA /* GTLDriveApp.m in Sources */,
@@ -1592,10 +1607,10 @@
 				A52D7E70183DEBB000A487EA /* GTLQueryDrive.m in Sources */,
 				A52D7E67183DEBB000A487EA /* GTLDriveParentReference.m in Sources */,
 				A52D7FAF183DEBB000A487EA /* GTLUtilities.m in Sources */,
-				A5CB970018EF4E90009CD561 /* CoreDataJSONHelper.m in Sources */,
 				A52D7E6C183DEBB000A487EA /* GTLDrivePropertyList.m in Sources */,
 				A52D7D4C183DEBB000A487EA /* GTMHTTPFetcherLogViewController.m in Sources */,
 				A52D7E5A183DEBB000A487EA /* GTLDriveChange.m in Sources */,
+				84072C4B196BB3EA004F8826 /* ImageQualityAnalyzer.mm in Sources */,
 				A52D7FAE183DEBB000A487EA /* GTLJSONParser.m in Sources */,
 				A500C0B918AC0E4100D8C569 /* NSDictionary_JSONExtensions.m in Sources */,
 				A52D7E69183DEBB000A487EA /* GTLDrivePermissionId.m in Sources */,
@@ -1613,7 +1628,6 @@
 				A5FCCD2F18B6F0730004B2F5 /* ImageAnalysisResults.m in Sources */,
 				A52D7D4D183DEBB000A487EA /* GTMHTTPFetcherService.m in Sources */,
 				A5FCCD3218B6F0730004B2F5 /* ROIs.m in Sources */,
-				A5C0158218FE0EB7004BC143 /* NSData_HexData.m in Sources */,
 				A52D7E59183DEBB000A487EA /* GTLDriveAppList.m in Sources */,
 				A5FCCD3418B6F0730004B2F5 /* Slides.m in Sources */,
 				A52D7D65183DEBB000A487EA /* GTMOAuth2Authentication.m in Sources */,
@@ -1621,7 +1635,6 @@
 				A52D7D74183DEBB000A487EA /* GTLService.m in Sources */,
 				A52D7E5C183DEBB000A487EA /* GTLDriveChannel.m in Sources */,
 				A52D7E6B183DEBB000A487EA /* GTLDriveProperty.m in Sources */,
-				A5C0158518FE1026004BC143 /* NSData+HexData.m in Sources */,
 				A52D7D4A183DEBB000A487EA /* GTMHTTPFetcher.m in Sources */,
 				A52D7D71183DEBB000A487EA /* GTLObject.m in Sources */,
 				A52D7E6E183DEBB000A487EA /* GTLDriveRevisionList.m in Sources */,
@@ -1685,7 +1698,6 @@
 		A5B72A911899F88F0013DA9F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A5B72A901899F88F0013DA9F /* en */,
 				A5B72A95189A025F0013DA9F /* vi */,
 			);
 			name = Localizable.strings;

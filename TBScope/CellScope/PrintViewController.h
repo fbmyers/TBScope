@@ -31,6 +31,7 @@
 
 @interface PrintViewController : UIViewController <MFMailComposeViewControllerDelegate, UIPrintInteractionControllerDelegate, UIDocumentInteractionControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIWebView *pdfPreviewWebView;
 @property (weak, nonatomic) IBOutlet UIButton *emailButton;
 @property (weak, nonatomic) IBOutlet UIButton *printButton;

@@ -40,7 +40,7 @@
         for (Images* im in self.currentSlide.slideImages)
             if (im.imageAnalysisResults!=nil)
                 [[[TBScopeData sharedData] managedObjectContext] deleteObject:im.imageAnalysisResults];
-        [TBScopeData touchExam:self.currentExam];
+        [TBScopeData touchExam:self.currentSlide.exam];
         [[TBScopeData sharedData] saveCoreData];
         
         //start analysis
@@ -133,7 +133,7 @@
                 
                 currentImage.imageAnalysisResults = [diagnoser runWithImage:(image)]; //todo: spin out as new thread
 
-                [TBScopeData touchExam:self.currentExam];
+                [TBScopeData touchExam:self.currentSlide.exam];
                 [[TBScopeData sharedData] saveCoreData];
             }
             
@@ -215,9 +215,18 @@
         [TBScopeData touchExam:self.currentSlide.exam];
         [[TBScopeData sharedData] saveCoreData];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self performSegueWithIdentifier:@"ResultsSegue" sender:nil];
-        });
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AnalysisResultsSaved" object:nil];
+        
+        if (self.showResultsAfterAnalysis) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self performSegueWithIdentifier:@"ResultsSegue" sender:nil];
+            });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+        }
 
     }
     

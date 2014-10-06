@@ -54,7 +54,6 @@
     self.numPatchesToAverage.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"NumPatchesToAverage"]];
     self.defaultLocation.text = [prefs stringForKey:@"DefaultLocation"];
     //self.language = [prefs stringForKey:@"Language"];
-    self.dateFormat.text = [prefs stringForKey:@"DateFormat"];
     
     self.patientIDFormat.text = [[NSString alloc] initWithFormat:@"%@",[prefs stringForKey:@"PatientIDFormat"]];
     self.maxNameLocationAddressLength.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"MaxNameLocationAddressLength"]];
@@ -99,7 +98,6 @@
     else
         [prefs setValue:self.patientIDFormat.text forKey:@"PatientIDFormat"];
     
-    [prefs setValue:self.dateFormat.text forKey:@"DateFormat"];
     [prefs setValue:self.defaultLocation.text forKey:@"DefaultLocation"];
     
     [prefs setInteger:self.maxNameLocationAddressLength.text.integerValue forKey:@"MaxNameLocationAddressLength"];

@@ -9,6 +9,7 @@
 #import "TBScopeHardware.h"
 
 BOOL _isMoving = NO;
+CBPeripheral* _tbScopePeripheral;
 
 @implementation TBScopeHardware
 
@@ -117,21 +118,40 @@ BOOL _isMoving = NO;
 //It attempts to connect to BLE device, and auto-retries if it fails
 -(void) connectionTimer:(NSTimer *)timer
 {
+    BOOL NewTBScopeWasFound = NO;
+    BOOL PreviouslyPairedTBScopeWasFound = NO;
+    _tbScopePeripheral = nil;
     
     if (ble.peripherals.count > 0)
     {
         for (CBPeripheral* p in ble.peripherals)
         {
-            [TBScopeData CSLog:[NSString stringWithFormat:@"CellScope detected w/ UUID: %@",p.identifier.UUIDString]
-                    inCategory:@"HARDWARE"];
-            
-            if ([p.identifier.UUIDString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeBTUUID"]])
-            {
-                [ble connectPeripheral:p];
-                return;
+            if ([p.name isEqualToString:@"TB Scope"]) {
+                [TBScopeData CSLog:[NSString stringWithFormat:@"TB Scope detected w/ UUID: %@",p.identifier.UUIDString]
+                        inCategory:@"HARDWARE"];
+                
+                _tbScopePeripheral = p;
+                
+                if ([p.identifier.UUIDString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeBTUUID"]])
+                {
+                    PreviouslyPairedTBScopeWasFound = YES;
+                    _tbScopePeripheral = p;
+                    break; //stop searching
+                }
+                else
+                {
+                    NewTBScopeWasFound = YES;
+                    //keep searching, in case we see the one we want
+                }
             }
         }
-        
+    }
+    
+    if (PreviouslyPairedTBScopeWasFound) {
+        [ble connectPeripheral:_tbScopePeripheral];
+    }
+    else if (NewTBScopeWasFound) {
+
         [TBScopeData CSLog:@"Currently paired CellScope was not detected." inCategory:@"HARDWARE"];
         
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Bluetooth Connection", nil)
@@ -166,11 +186,11 @@ BOOL _isMoving = NO;
 {
     if (ble.peripherals.count > 0)
     {
-        NSString* newUUID = ((CBPeripheral*)ble.peripherals[0]).identifier.UUIDString;
+        NSString* newUUID = (_tbScopePeripheral).identifier.UUIDString;
         
         [[NSUserDefaults standardUserDefaults] setObject:newUUID forKey:@"CellScopeBTUUID"];
         
-        [ble connectPeripheral:[ble.peripherals objectAtIndex:0]];
+        [ble connectPeripheral:_tbScopePeripheral];
         
         [TBScopeData CSLog:[NSString stringWithFormat:@"This iPad is now paired with CellScope Bluetooth UUID: %@",newUUID]
                 inCategory:@"HARDWARE"];
@@ -205,7 +225,7 @@ BOOL _isMoving = NO;
                     StopOnLimit:(BOOL)stopOnLimit
                    DisableAfter:(BOOL)disableAfter
 {
-    NSLog(@"moving stage");
+    //NSLog(@"moving stage");
     _isMoving = YES;
     
     UInt8 buf[3] = {0x00, 0x00, 0x00};
@@ -317,5 +337,6 @@ BOOL _isMoving = NO;
     
     [ble write:[NSData dataWithBytes:buf length:3]];
 }
+
 
 @end

@@ -61,7 +61,8 @@ namespace Classifier
 			int row = (int)pt.x;
             int col = (int)pt.y;
 			
-			bool partial = Features::checkPartialPatch(row, col, imageBw.rows-1, imageBw.cols-1);
+			//bool partial = Features::checkPartialPatch(row, col, imageBw.rows-1, imageBw.cols-1);
+            bool partial = Features::checkPatchOutsideCircle(row, col, imageBw.rows-1, imageBw.cols-1, CIRCLEMASKRADIUS);
 			if (!partial)
 			{
 				cv::Mat rowMat = cv::Mat(1, 1, CV_32F);

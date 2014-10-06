@@ -32,6 +32,13 @@ UITapGestureRecognizer* recognizer;
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.titleLabel = NSLocalizedString(@"Print TB Registry", nil);
+    [self.emailButton setTitle:NSLocalizedString(@"Email (PDF)",nil) forState:UIControlStateNormal];
+    [self.printButton setTitle:NSLocalizedString(@"Print", nil) forState:UIControlStateNormal];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     //cancel this modal view if user taps background
@@ -105,11 +112,11 @@ UITapGestureRecognizer* recognizer;
     [df setTimeStyle:NSDateFormatterShortStyle];
     NSString* dateString = [df stringFromDate:[NSDate date]];
     
-    NSString *emailSubject = @"CellScope TB Registry";
+    NSString *emailSubject = NSLocalizedString(@"CellScope TB Registry",nil);
     // Email Content
 
     
-    NSString *emailBody = [NSString stringWithFormat:@"CellScope TB Registry\nDate Prepared: %@\nPrepared By:%@\nLocation: %@\nCellScope ID: %@\n\nDate Range: %@\n",
+    NSString *emailBody = [NSString stringWithFormat:NSLocalizedString(@"CellScope TB Registry\nDate Prepared: %@\nPrepared By: %@\nLocation: %@\nCellScope ID: %@\n\nDate Range: %@\n",nil),
                              dateString,
                              [[[TBScopeData sharedData] currentUser] username],
                              [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"],
@@ -135,7 +142,7 @@ UITapGestureRecognizer* recognizer;
     
     [df setTimeStyle:NSDateFormatterNoStyle];
     
-    NSString* filename = [NSString stringWithFormat:@"TB Registry - %@ - %@.pdf",
+    NSString* filename = [NSString stringWithFormat:NSLocalizedString(@"TB Registry - %@ - %@.pdf",nil),
                           [[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeID"],
                           [df stringFromDate:[NSDate date]]];
     [mc addAttachmentData:pdfData mimeType:@"application/pdf" fileName:filename];
@@ -198,7 +205,7 @@ UITapGestureRecognizer* recognizer;
 
 - (void)drawPageNumber:(NSInteger)pageNum
 {
-    NSString *pageString = [NSString stringWithFormat:@"Page %d", pageNum];
+    NSString *pageString = [NSString stringWithFormat:NSLocalizedString(@"Page %d",nil), pageNum];
     UIFont *theFont = [UIFont systemFontOfSize:12];
     CGSize maxSize = CGSizeMake(612, 72);
     
@@ -224,7 +231,7 @@ UITapGestureRecognizer* recognizer;
     UIFont* font = [UIFont systemFontOfSize:PDF_FONT_SIZE];
     
     col = PDF_PAGE_MARGIN_SIDE;
-    [@"CellScope TB Registry" drawInRect:CGRectMake(col,lineNum,PDF_PAGE_WIDTH,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"CellScope TB Registry",nil) drawInRect:CGRectMake(col,lineNum,PDF_PAGE_WIDTH,PDF_LINE_SPACING) withFont:font];
     lineNum = lineNum + PDF_LINE_SPACING;
     
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
@@ -232,32 +239,32 @@ UITapGestureRecognizer* recognizer;
     [df setTimeStyle:NSDateFormatterShortStyle];
     NSString* dateString = [df stringFromDate:[NSDate date]];
     NSString* currentUser = [[[TBScopeData sharedData] currentUser] username];
-    [[NSString stringWithFormat:@"Printed on %@ by %@",dateString,currentUser] drawInRect:CGRectMake(col,lineNum,PDF_PAGE_WIDTH,PDF_LINE_SPACING) withFont:font];
+    [[NSString stringWithFormat:NSLocalizedString(@"Printed on %@ by %@",nil),dateString,currentUser] drawInRect:CGRectMake(col,lineNum,PDF_PAGE_WIDTH,PDF_LINE_SPACING) withFont:font];
     lineNum = lineNum + PDF_LINE_SPACING*2;
     
 
     width = PDF_EXAMID_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [@"Exam #" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"Exam ID",nil) drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
     width = PDF_PATIENTID_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [@"Patient #" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"Patient ID",nil) drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
     width = PDF_PATIENTNAME_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [@"Name" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"Name",nil) drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
     width = PDF_LOCATION_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [@"Clinic" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"Clinic",nil) drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
     width = (PDF_SLIDERESULT_WIDTH*3+PDF_SLIDERESULT_MARGIN*3)*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [@"Results" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"Results",nil) drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     col = col + width;
     width = PDF_DATE_WIDTH*(PDF_PAGE_WIDTH-2*PDF_PAGE_MARGIN_SIDE);
-    [@"First Collection Date" drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
+    [NSLocalizedString(@"First Collection Date",nil) drawInRect:CGRectMake(col,lineNum,width,PDF_LINE_SPACING) withFont:font];
     
     lineNum = lineNum + PDF_LINE_SPACING;
     
@@ -306,7 +313,7 @@ UITapGestureRecognizer* recognizer;
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
     [df setDateStyle:NSDateFormatterShortStyle];
     [df setTimeStyle:NSDateFormatterShortStyle];
-    NSString* dateString = @"N/A";
+    NSString* dateString = NSLocalizedString(@"N/A",nil);
     if (ex.examSlides.count>0)
         dateString = [df stringFromDate:[TBScopeData dateFromString:((Slides*)ex.examSlides[0]).dateCollected]];
     
@@ -327,7 +334,7 @@ UITapGestureRecognizer* recognizer;
     NSString* scoreString = @"";
     if ((ex.examSlides.count)>slideNum)
     {
-        scoreString = @"N/A";
+        scoreString = NSLocalizedString(@"N/A",nil);
         if (((Slides*)ex.examSlides[slideNum]).slideAnalysisResults!=nil)
         {
             score = ((Slides*)ex.examSlides[slideNum]).slideAnalysisResults.score;

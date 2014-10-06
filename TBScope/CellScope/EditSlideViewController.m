@@ -32,6 +32,8 @@
 
     //localization
     self.navigationItem.title = NSLocalizedString(@"New Slide", nil);
+    self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Next", nil);
+    
     self.slideNumLabel.text = NSLocalizedString(@"Slide #", nil);
     self.dateCollectedLabel.text = NSLocalizedString(@"Date Collected", nil);
     self.sputumQualityLabel.text = NSLocalizedString(@"Sputum Quality", nil);
