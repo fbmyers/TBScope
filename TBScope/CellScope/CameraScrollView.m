@@ -171,9 +171,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     self.currentImageQuality = iq;
 
     if (self.focusMode==0)
-        self.currentFocusMetric = iq.tenengrad3; //iq.movingAverageSharpness;
+        self.currentFocusMetric = iq.tenengrad3; //iq.movingAverageSharpness; // //
     else if (self.focusMode==1)
-        self.currentFocusMetric = iq.contrast; //iq.movingAverageContrast;
+        self.currentFocusMetric = iq.contrast; //iq.movingAverageContrast; // //
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.imageQualityLabel setText:[NSString stringWithFormat:@"entropy: %3.3lf\nmod lap: %3.3lf\nnorm gray var: %3.3lf\nvar lap: %3.3lf\ntgrad1: %3.3lf\ntgrad3: %3.3lf\ntgrad9: %3.3lf\nmaxval: %3.0lf\ncontrast: %3.3lf\navg sharpness: %3.3lf\navg contrast: %3.3lf",

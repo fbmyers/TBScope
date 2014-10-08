@@ -20,7 +20,7 @@
 #define FOCUS_IMPROVEMENT_THRESHOLD_CONTRAST 1.3
 
 #define BACKLASH_STEPS 500
-#define FOCUS_BACKLASH_CORRECTION 10
+#define FOCUS_BACKLASH_CORRECTION 10 //TODO: make this a config setting (stage backlash too)
 
 #define MAX_FLUORESCENCE_AF_FAILURES 3
 

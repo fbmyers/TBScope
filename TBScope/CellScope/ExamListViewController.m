@@ -321,14 +321,22 @@
         Exams* ex = self.examListData[examNum];
         
         if (ex.examSlides.count>0) {
-            AnalysisViewController *avc = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisViewController"];
-            
-            avc.currentSlide = ex.examSlides[0];
-            avc.showResultsAfterAnalysis = NO;
-            
-            [self.navigationController pushViewController:avc animated:YES];
+            Slides* sl = ex.examSlides[0];
+            if (sl.slideImages.count>0) {
+                AnalysisViewController *avc = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalysisViewController"];
+                
+                avc.currentSlide = sl;
+                avc.showResultsAfterAnalysis = NO;
+                
+                [self.navigationController pushViewController:avc animated:YES];
+                examNum++;
+            }
+            else { //skip and move on
+                examNum++;
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"AnalysisResultsSaved" object:nil];
+            }
         }
-        examNum++;
+
     }
     else {
         //we're through the whole list
