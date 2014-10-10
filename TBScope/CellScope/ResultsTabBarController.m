@@ -19,6 +19,7 @@
     
 
     [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Results", nil)];
+    [[self.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"Other Data", nil)];
     
     //TODO: only show image view if user has permission.  also tailor slide diagnosis view accordingly
     
@@ -26,8 +27,11 @@
     
     SlideDiagnosisViewController* slideDiagnosisVC = (SlideDiagnosisViewController*)(self.viewControllers[0]);
     slideDiagnosisVC.currentExam = self.currentExam;
-    
     [tabVCs addObject:slideDiagnosisVC];
+    
+    FollowUpViewController* followUpVC = (FollowUpViewController*)(self.viewControllers[1]);
+    followUpVC.currentExam = self.currentExam;
+    [tabVCs addObject:followUpVC];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TBScopeStoryboard" bundle: nil];
     

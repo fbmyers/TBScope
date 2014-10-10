@@ -13,6 +13,7 @@
 #import "TBSlideViewer.h"
 #import "SlideDiagnosisViewController.h"
 #import "ImageResultViewController.h"
+#import "FollowUpViewController.h"
 
 @class CSUserContext;
 

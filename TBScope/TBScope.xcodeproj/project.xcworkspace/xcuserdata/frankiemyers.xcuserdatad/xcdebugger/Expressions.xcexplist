@@ -350,6 +350,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ResultsTabBarController viewDidLoad]:ResultsTabBarController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.viewControllers[1]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__42-[CaptureViewController saveImageCallback]_block_invoke:CaptureViewController.m">
          <PersistentStrings>
             <PersistentString

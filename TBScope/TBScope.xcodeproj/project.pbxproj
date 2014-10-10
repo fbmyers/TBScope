@@ -39,6 +39,7 @@
 		A50B061B1831D75500880350 /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B061A1831D75500880350 /* train_min.csv */; };
 		A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06511835695100880350 /* SlideDiagnosisViewController.m */; };
 		A50B06551835697700880350 /* ImageResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06541835697700880350 /* ImageResultViewController.m */; };
+		A513226219E5FDF900B11AEE /* FollowUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A513226119E5FDF900B11AEE /* FollowUpViewController.m */; };
 		A515265E19C2715C00AFC42E /* please_refocus.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265B19C2715C00AFC42E /* please_refocus.mp3 */; };
 		A515265F19C2715C00AFC42E /* scanning_complete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265C19C2715C00AFC42E /* scanning_complete.mp3 */; };
 		A515266019C2715C00AFC42E /* scanning_started.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265D19C2715C00AFC42E /* scanning_started.mp3 */; };
@@ -403,6 +404,8 @@
 		A50B06511835695100880350 /* SlideDiagnosisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideDiagnosisViewController.m; sourceTree = "<group>"; };
 		A50B06531835697700880350 /* ImageResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResultViewController.h; sourceTree = "<group>"; };
 		A50B06541835697700880350 /* ImageResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResultViewController.m; sourceTree = "<group>"; };
+		A513226019E5FDF900B11AEE /* FollowUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FollowUpViewController.h; path = ../FollowUpViewController.h; sourceTree = "<group>"; };
+		A513226119E5FDF900B11AEE /* FollowUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowUpViewController.m; path = ../FollowUpViewController.m; sourceTree = "<group>"; };
 		A515264919C2674000AFC42E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A515265B19C2715C00AFC42E /* please_refocus.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = please_refocus.mp3; sourceTree = "<group>"; };
 		A515265C19C2715C00AFC42E /* scanning_complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scanning_complete.mp3; sourceTree = "<group>"; };
@@ -1080,6 +1083,8 @@
 			isa = PBXGroup;
 			children = (
 				A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */,
+				A513226019E5FDF900B11AEE /* FollowUpViewController.h */,
+				A513226119E5FDF900B11AEE /* FollowUpViewController.m */,
 				A5C0156B18F8C9B7004BC143 /* PrintViewController.h */,
 				A5C0156C18F8C9B7004BC143 /* PrintViewController.m */,
 				A5A0F3DF18F70E4900909615 /* ImageROIResultCell.h */,
@@ -1538,6 +1543,7 @@
 				ACFC05AF1698D13500411641 /* TBDiagnoser.mm in Sources */,
 				84072C51196BB410004F8826 /* Reachability.m in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
+				A513226219E5FDF900B11AEE /* FollowUpViewController.m in Sources */,
 				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
 				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
 				A500C0B818AC0E4100D8C569 /* CJSONSerializer.m in Sources */,

@@ -139,6 +139,10 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
 {
+    //NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
+    //NSLog(@"before %@",timestamp);
+    
+    
     static double sharpnessAveragingArray[] = {0,0,0};
     static double contrastAveragingArray[] = {0,0,0};
 
@@ -146,13 +150,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     
     //NSLog(@"%lf",iq.contrast);
-    /*
-    NSMutableString* strBar = [NSMutableString stringWithString:@""];
-    for(int i=0;i<iq.movingAverageSharpness;i+=10)
-        [strBar appendString:@"-"];
     
-    NSLog(strBar);
-    */
+    //NSMutableString* strBar = [NSMutableString stringWithString:@""];
+    //for(int i=0;i<iq.movingAverageSharpness;i+=10)
+    //    [strBar appendString:@"-"];
+    
+   // NSLog(strBar);
+    
     
     //why is this crashing w/ back?
     sharpnessAveragingArray[2] = sharpnessAveragingArray[1];
@@ -189,6 +193,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                          iq.movingAverageSharpness,
                                          iq.movingAverageContrast]];
     });
+    
+    //timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
+    //NSLog(@"after %@",timestamp);
 }
 
 
