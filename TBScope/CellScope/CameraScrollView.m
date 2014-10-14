@@ -80,7 +80,7 @@
     self.imageQualityLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.imageQualityLabel.numberOfLines = 0;
     
-    self.imageQualityLabel.hidden = NO; //remove for now
+    self.imageQualityLabel.hidden = YES; //remove for now
     
     // Setup still image output
     

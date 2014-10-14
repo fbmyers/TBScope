@@ -13,6 +13,7 @@
 #import "Exams.h"
 #import "Slides.h"
 #import "Images.h"
+#import "FollowUpData.h"
 #import "ImageAnalysisResults.h"
 #import "SlideAnalysisResults.h"
 #import "ROIs.h"

@@ -2,12 +2,14 @@
 //  Exams.m
 //  TBScope
 //
-//  Created by Frankie Myers on 2/24/14.
+//  Created by Frankie Myers on 10/9/2014.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import "Exams.h"
+#import "FollowUpData.h"
 #import "Slides.h"
+
 
 @implementation Exams
 
@@ -28,8 +30,10 @@
 @dynamic patientHIVStatus;
 @dynamic patientID;
 @dynamic patientName;
+@dynamic synced;
 @dynamic userName;
 @dynamic examSlides;
+@dynamic examFollowUpData;
 
 - (void)addExamSlidesObject:(Slides *)value {
     NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.examSlides];

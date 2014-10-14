@@ -40,6 +40,22 @@
 		A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06511835695100880350 /* SlideDiagnosisViewController.m */; };
 		A50B06551835697700880350 /* ImageResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06541835697700880350 /* ImageResultViewController.m */; };
 		A513226219E5FDF900B11AEE /* FollowUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A513226119E5FDF900B11AEE /* FollowUpViewController.m */; };
+		A513226619E7857D00B11AEE /* FollowUpData.m in Sources */ = {isa = PBXBuildFile; fileRef = A513226519E7857D00B11AEE /* FollowUpData.m */; };
+		A513226919E7866100B11AEE /* Exams.m in Sources */ = {isa = PBXBuildFile; fileRef = A513226819E7866100B11AEE /* Exams.m */; };
+		A513226C19E8AD4E00B11AEE /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A513226B19E8AD4E00B11AEE /* LogViewController.m */; };
+		A513227819E9E6AA00B11AEE /* followup.png in Resources */ = {isa = PBXBuildFile; fileRef = A513226D19E9E6A900B11AEE /* followup.png */; };
+		A513227919E9E6AA00B11AEE /* followup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A513226E19E9E6AA00B11AEE /* followup@2x.png */; };
+		A513227A19E9E6AA00B11AEE /* resultsicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A513226F19E9E6AA00B11AEE /* resultsicon.png */; };
+		A513227B19E9E6AA00B11AEE /* resultsicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227019E9E6AA00B11AEE /* resultsicon@2x.png */; };
+		A513227C19E9E6AA00B11AEE /* scalearrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227119E9E6AA00B11AEE /* scalearrow@2x.png */; };
+		A513227D19E9E6AA00B11AEE /* slide1icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227219E9E6AA00B11AEE /* slide1icon.png */; };
+		A513227E19E9E6AA00B11AEE /* slide1icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227319E9E6AA00B11AEE /* slide1icon@2x.png */; };
+		A513227F19E9E6AA00B11AEE /* slide2icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227419E9E6AA00B11AEE /* slide2icon.png */; };
+		A513228019E9E6AA00B11AEE /* slide2icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227519E9E6AA00B11AEE /* slide2icon@2x.png */; };
+		A513228119E9E6AA00B11AEE /* slide3icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227619E9E6AA00B11AEE /* slide3icon.png */; };
+		A513228219E9E6AA00B11AEE /* slide3icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A513227719E9E6AA00B11AEE /* slide3icon@2x.png */; };
+		A513228519E9F32A00B11AEE /* LogEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A513228419E9F32A00B11AEE /* LogEntryCell.m */; };
+		A513228819E9F65E00B11AEE /* LogEntryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A513228719E9F65E00B11AEE /* LogEntryDetailViewController.m */; };
 		A515265E19C2715C00AFC42E /* please_refocus.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265B19C2715C00AFC42E /* please_refocus.mp3 */; };
 		A515265F19C2715C00AFC42E /* scanning_complete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265C19C2715C00AFC42E /* scanning_complete.mp3 */; };
 		A515266019C2715C00AFC42E /* scanning_started.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A515265D19C2715C00AFC42E /* scanning_started.mp3 */; };
@@ -138,7 +154,6 @@
 		A5C27AAF182EFAF400A8CB1D /* TBSlideViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AAC182EFAF400A8CB1D /* TBSlideViewer.m */; };
 		A5C27AB0182EFAF400A8CB1D /* TBSlideViewerSubview.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C27AAE182EFAF400A8CB1D /* TBSlideViewerSubview.m */; };
 		A5C341941835A4CD00DBBD37 /* scalearrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341931835A4CD00DBBD37 /* scalearrow.png */; };
-		A5C341A41835A4D200DBBD37 /* scalearrow2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C341A31835A4D200DBBD37 /* scalearrow2x.png */; };
 		A5C5079E1866304D00187BBC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5079D1866304D00187BBC /* CoreBluetooth.framework */; };
 		A5C8E177196DFF8C0072D99C /* NSData+HexData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C8E176196DFF8C0072D99C /* NSData+HexData.m */; };
 		A5C8E17B196F86860072D99C /* pictureicon.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C8E17A196F86860072D99C /* pictureicon.png */; };
@@ -176,7 +191,6 @@
 		A5FCCD3418B6F0730004B2F5 /* Slides.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCD2C18B6F0730004B2F5 /* Slides.m */; };
 		A5FCCD3518B6F0730004B2F5 /* Users.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCD2E18B6F0730004B2F5 /* Users.m */; };
 		A5FCCD3818B6F0DD0004B2F5 /* TBScopeData.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCD3718B6F0DD0004B2F5 /* TBScopeData.m */; };
-		A5FCCD3C18BC47660004B2F5 /* Exams.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCD3B18BC47660004B2F5 /* Exams.m */; };
 		A5FCCD3E18BC4B610004B2F5 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FCCD3D18BC4B610004B2F5 /* CoreLocation.framework */; };
 		A5FCCD4118BC681B0004B2F5 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FCCD4018BC681B0004B2F5 /* MapViewController.m */; };
 		A5FCCD4318BC6A600004B2F5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FCCD4218BC6A600004B2F5 /* MapKit.framework */; };
@@ -406,6 +420,28 @@
 		A50B06541835697700880350 /* ImageResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResultViewController.m; sourceTree = "<group>"; };
 		A513226019E5FDF900B11AEE /* FollowUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FollowUpViewController.h; path = ../FollowUpViewController.h; sourceTree = "<group>"; };
 		A513226119E5FDF900B11AEE /* FollowUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowUpViewController.m; path = ../FollowUpViewController.m; sourceTree = "<group>"; };
+		A513226319E7796200B11AEE /* TBScope 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TBScope 2.xcdatamodel"; sourceTree = "<group>"; };
+		A513226419E7857D00B11AEE /* FollowUpData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowUpData.h; sourceTree = "<group>"; };
+		A513226519E7857D00B11AEE /* FollowUpData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowUpData.m; sourceTree = "<group>"; };
+		A513226719E7866100B11AEE /* Exams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exams.h; sourceTree = "<group>"; };
+		A513226819E7866100B11AEE /* Exams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exams.m; sourceTree = "<group>"; };
+		A513226A19E8AD4E00B11AEE /* LogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogViewController.h; sourceTree = "<group>"; };
+		A513226B19E8AD4E00B11AEE /* LogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
+		A513226D19E9E6A900B11AEE /* followup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = followup.png; sourceTree = "<group>"; };
+		A513226E19E9E6AA00B11AEE /* followup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "followup@2x.png"; sourceTree = "<group>"; };
+		A513226F19E9E6AA00B11AEE /* resultsicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resultsicon.png; sourceTree = "<group>"; };
+		A513227019E9E6AA00B11AEE /* resultsicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "resultsicon@2x.png"; sourceTree = "<group>"; };
+		A513227119E9E6AA00B11AEE /* scalearrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scalearrow@2x.png"; sourceTree = "<group>"; };
+		A513227219E9E6AA00B11AEE /* slide1icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide1icon.png; sourceTree = "<group>"; };
+		A513227319E9E6AA00B11AEE /* slide1icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slide1icon@2x.png"; sourceTree = "<group>"; };
+		A513227419E9E6AA00B11AEE /* slide2icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide2icon.png; sourceTree = "<group>"; };
+		A513227519E9E6AA00B11AEE /* slide2icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slide2icon@2x.png"; sourceTree = "<group>"; };
+		A513227619E9E6AA00B11AEE /* slide3icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide3icon.png; sourceTree = "<group>"; };
+		A513227719E9E6AA00B11AEE /* slide3icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slide3icon@2x.png"; sourceTree = "<group>"; };
+		A513228319E9F32A00B11AEE /* LogEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogEntryCell.h; sourceTree = "<group>"; };
+		A513228419E9F32A00B11AEE /* LogEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogEntryCell.m; sourceTree = "<group>"; };
+		A513228619E9F65E00B11AEE /* LogEntryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogEntryDetailViewController.h; sourceTree = "<group>"; };
+		A513228719E9F65E00B11AEE /* LogEntryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogEntryDetailViewController.m; sourceTree = "<group>"; };
 		A515264919C2674000AFC42E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A515265B19C2715C00AFC42E /* please_refocus.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = please_refocus.mp3; sourceTree = "<group>"; };
 		A515265C19C2715C00AFC42E /* scanning_complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scanning_complete.mp3; sourceTree = "<group>"; };
@@ -577,7 +613,6 @@
 		A5C27AAD182EFAF400A8CB1D /* TBSlideViewerSubview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSlideViewerSubview.h; sourceTree = "<group>"; };
 		A5C27AAE182EFAF400A8CB1D /* TBSlideViewerSubview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSlideViewerSubview.m; sourceTree = "<group>"; };
 		A5C341931835A4CD00DBBD37 /* scalearrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow.png; sourceTree = "<group>"; };
-		A5C341A31835A4D200DBBD37 /* scalearrow2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scalearrow2x.png; sourceTree = "<group>"; };
 		A5C5079D1866304D00187BBC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		A5C8E175196DFF8C0072D99C /* NSData+HexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+HexData.h"; path = "CellScope/NSData+HexData.h"; sourceTree = SOURCE_ROOT; };
 		A5C8E176196DFF8C0072D99C /* NSData+HexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+HexData.m"; path = "CellScope/NSData+HexData.m"; sourceTree = SOURCE_ROOT; };
@@ -632,8 +667,6 @@
 		A5FCCD2E18B6F0730004B2F5 /* Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Users.m; path = CellScope/Users.m; sourceTree = "<group>"; };
 		A5FCCD3618B6F0DD0004B2F5 /* TBScopeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeData.h; path = CellScope/TBScopeData.h; sourceTree = "<group>"; };
 		A5FCCD3718B6F0DD0004B2F5 /* TBScopeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeData.m; path = CellScope/TBScopeData.m; sourceTree = "<group>"; };
-		A5FCCD3A18BC47660004B2F5 /* Exams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Exams.h; path = CellScope/Exams.h; sourceTree = "<group>"; };
-		A5FCCD3B18BC47660004B2F5 /* Exams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Exams.m; path = CellScope/Exams.m; sourceTree = "<group>"; };
 		A5FCCD3D18BC4B610004B2F5 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A5FCCD3F18BC681B0004B2F5 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		A5FCCD4018BC681B0004B2F5 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
@@ -811,8 +844,10 @@
 			isa = PBXGroup;
 			children = (
 				A52BDEB51859236F00B4ECB2 /* TBScope.xcdatamodeld */,
-				A5FCCD3A18BC47660004B2F5 /* Exams.h */,
-				A5FCCD3B18BC47660004B2F5 /* Exams.m */,
+				A513226719E7866100B11AEE /* Exams.h */,
+				A513226819E7866100B11AEE /* Exams.m */,
+				A513226419E7857D00B11AEE /* FollowUpData.h */,
+				A513226519E7857D00B11AEE /* FollowUpData.m */,
 				A5FCCD2118B6F0730004B2F5 /* ImageAnalysisResults.h */,
 				A5FCCD2218B6F0730004B2F5 /* ImageAnalysisResults.m */,
 				A5FCCD2318B6F0730004B2F5 /* Images.h */,
@@ -839,12 +874,22 @@
 				A5CF19FF187DED9400C2C2E1 /* Example Images */,
 				A570147D18A5BE4600881F95 /* configicon.png */,
 				A570148018A5BE4F00881F95 /* googleicon.png */,
+				A513226D19E9E6A900B11AEE /* followup.png */,
+				A513226E19E9E6AA00B11AEE /* followup@2x.png */,
+				A513226F19E9E6AA00B11AEE /* resultsicon.png */,
+				A513227019E9E6AA00B11AEE /* resultsicon@2x.png */,
+				A513227119E9E6AA00B11AEE /* scalearrow@2x.png */,
+				A513227219E9E6AA00B11AEE /* slide1icon.png */,
+				A513227319E9E6AA00B11AEE /* slide1icon@2x.png */,
+				A513227419E9E6AA00B11AEE /* slide2icon.png */,
+				A513227519E9E6AA00B11AEE /* slide2icon@2x.png */,
+				A513227619E9E6AA00B11AEE /* slide3icon.png */,
+				A513227719E9E6AA00B11AEE /* slide3icon@2x.png */,
 				A570148118A5BE4F00881F95 /* imagesicon.png */,
 				A570148618A5BE5500881F95 /* resultsicon.png */,
 				A570148A18A5BE5500881F95 /* usericon.png */,
 				A5C8E17A196F86860072D99C /* pictureicon.png */,
 				A5C341931835A4CD00DBBD37 /* scalearrow.png */,
-				A5C341A31835A4D200DBBD37 /* scalearrow2x.png */,
 				9BD352C015FAAC3D00E331E9 /* cellscope_logo_1600-bkgd.png */,
 				A5CF1A0C187E4B8A00C2C2E1 /* left.png */,
 				A5CF1A0D187E4B8A00C2C2E1 /* right.png */,
@@ -1083,6 +1128,10 @@
 			isa = PBXGroup;
 			children = (
 				A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */,
+				A513228619E9F65E00B11AEE /* LogEntryDetailViewController.h */,
+				A513228719E9F65E00B11AEE /* LogEntryDetailViewController.m */,
+				A513228319E9F32A00B11AEE /* LogEntryCell.h */,
+				A513228419E9F32A00B11AEE /* LogEntryCell.m */,
 				A513226019E5FDF900B11AEE /* FollowUpViewController.h */,
 				A513226119E5FDF900B11AEE /* FollowUpViewController.m */,
 				A5C0156B18F8C9B7004BC143 /* PrintViewController.h */,
@@ -1121,6 +1170,8 @@
 				A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */,
 				A5FD379B183DCF4700C67D85 /* UsersViewController.h */,
 				A5FD379C183DCF4700C67D85 /* UsersViewController.m */,
+				A513226A19E8AD4E00B11AEE /* LogViewController.h */,
+				A513226B19E8AD4E00B11AEE /* LogViewController.m */,
 				A5FD379E183DDEB400C67D85 /* GoogleDriveViewController.h */,
 				A5FD379F183DDEB400C67D85 /* GoogleDriveViewController.m */,
 				A5CF19F8187A39DF00C2C2E1 /* CameraScrollView.h */,
@@ -1454,19 +1505,26 @@
 				A5CF1A28187E65AC00C2C2E1 /* DHC5_CHP21_1010107_S1_R1_HLH_I2_Fluor_N_F.tif in Resources */,
 				9B6BF0C515E19ACD002834C5 /* InfoPlist.strings in Resources */,
 				A52D7D79183DEBB000A487EA /* GTLUnitTests-Info.plist in Resources */,
+				A513228119E9E6AA00B11AEE /* slide3icon.png in Resources */,
 				9BD352C215FAAC3D00E331E9 /* cellscope_logo_1600-bkgd.png in Resources */,
 				A5CF1A18187E4B8A00C2C2E1 /* zdown.png in Resources */,
 				A5CF1A16187E4B8A00C2C2E1 /* up.png in Resources */,
 				A570147E18A5BE4600881F95 /* configicon.png in Resources */,
 				A5CF1A09187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I2_Fluor_Y_F.tif in Resources */,
 				A515266019C2715C00AFC42E /* scanning_started.mp3 in Resources */,
+				A513228019E9E6AA00B11AEE /* slide2icon@2x.png in Resources */,
+				A513227919E9E6AA00B11AEE /* followup@2x.png in Resources */,
+				A513228219E9E6AA00B11AEE /* slide3icon@2x.png in Resources */,
 				A5CF1A1B187E4B9F00C2C2E1 /* down.png in Resources */,
 				A52D7D67183DEBB000A487EA /* GTMOAuth2Framework-Info.plist in Resources */,
+				A513227819E9E6AA00B11AEE /* followup.png in Resources */,
 				A570148C18A5BE5500881F95 /* resultsicon.png in Resources */,
+				A513227A19E9E6AA00B11AEE /* resultsicon.png in Resources */,
 				A5CF1A0A187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I3_Fluor_Y_F.tif in Resources */,
 				A5FCCD1C18B6DC830004B2F5 /* reviewresults.png in Resources */,
 				A570149018A5BE5500881F95 /* usericon.png in Resources */,
 				A5176664195C817400EBCEF0 /* circlemask.png in Resources */,
+				A513227C19E9E6AA00B11AEE /* scalearrow@2x.png in Resources */,
 				A50B06171831D6C800880350 /* model_out.txt in Resources */,
 				A5CF1A2F187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif in Resources */,
 				A5CF1A13187E4B8A00C2C2E1 /* left.png in Resources */,
@@ -1479,11 +1537,11 @@
 				A52D7D5E183DEBB000A487EA /* UnitTests-Info.plist in Resources */,
 				A515265F19C2715C00AFC42E /* scanning_complete.mp3 in Resources */,
 				A52D7D6A183DEBB000A487EA /* ReleaseNotes.txt in Resources */,
-				A5C341A41835A4D200DBBD37 /* scalearrow2x.png in Resources */,
 				A52D7D68183DEBB000A487EA /* GTMOAuth2Window.xib in Resources */,
 				A52D7D77183DEBB000A487EA /* DevTestTool-Info.plist in Resources */,
 				A515265E19C2715C00AFC42E /* please_refocus.mp3 in Resources */,
 				A52D7D78183DEBB000A487EA /* GTLFramework-Info.plist in Resources */,
+				A513227B19E9E6AA00B11AEE /* resultsicon@2x.png in Resources */,
 				A570148418A5BE4F00881F95 /* imagesicon.png in Resources */,
 				A5CF1A27187E65AC00C2C2E1 /* DHC5_CHP21_1010107_S1_R1_HLH_I1_Fluor_N_F.tif in Resources */,
 				A59AE396182B4F3B00BD3802 /* TBScopeStoryboard.storyboard in Resources */,
@@ -1493,8 +1551,11 @@
 				ACC23A22176241C000C6BF9D /* default-configuration.plist in Resources */,
 				A5C341941835A4CD00DBBD37 /* scalearrow.png in Resources */,
 				A52D7D76183DEBB000A487EA /* ReleaseNotes.txt in Resources */,
+				A513227F19E9E6AA00B11AEE /* slide2icon.png in Resources */,
 				A5CF1A29187E65AC00C2C2E1 /* DHC5_CHP21_1010107_S1_R1_HLH_I3_Fluor_N_F.tif in Resources */,
+				A513227D19E9E6AA00B11AEE /* slide1icon.png in Resources */,
 				A5CF1A31187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif in Resources */,
+				A513227E19E9E6AA00B11AEE /* slide1icon@2x.png in Resources */,
 				A5CF1A08187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif in Resources */,
 				A50B06191831D74600880350 /* train_max.csv in Resources */,
 			);
@@ -1543,6 +1604,7 @@
 				ACFC05AF1698D13500411641 /* TBDiagnoser.mm in Sources */,
 				84072C51196BB410004F8826 /* Reachability.m in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
+				A513226619E7857D00B11AEE /* FollowUpData.m in Sources */,
 				A513226219E5FDF900B11AEE /* FollowUpViewController.m in Sources */,
 				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
 				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
@@ -1592,7 +1654,6 @@
 				A52D7E58183DEBB000A487EA /* GTLDriveApp.m in Sources */,
 				A52D7E62183DEBB000A487EA /* GTLDriveCommentReplyList.m in Sources */,
 				A52D7E63183DEBB000A487EA /* GTLDriveConstants.m in Sources */,
-				A5FCCD3C18BC47660004B2F5 /* Exams.m in Sources */,
 				A52D7E65183DEBB000A487EA /* GTLDriveFileList.m in Sources */,
 				A52D7D51183DEBB000A487EA /* GTMReadMonitorInputStream.m in Sources */,
 				A52D7E6D183DEBB000A487EA /* GTLDriveRevision.m in Sources */,
@@ -1600,13 +1661,17 @@
 				A52D7FAD183DEBB000A487EA /* GTLFramework.m in Sources */,
 				A52D7D4E183DEBB000A487EA /* GTMHTTPFetchHistory.m in Sources */,
 				A52D7E6A183DEBB000A487EA /* GTLDrivePermissionList.m in Sources */,
+				A513226919E7866100B11AEE /* Exams.m in Sources */,
+				A513228519E9F32A00B11AEE /* LogEntryCell.m in Sources */,
 				A52D7D6E183DEBB000A487EA /* GTLBatchResult.m in Sources */,
+				A513226C19E8AD4E00B11AEE /* LogViewController.m in Sources */,
 				A52D7E6F183DEBB000A487EA /* GTLDriveUser.m in Sources */,
 				A5B72A7318988FB90013DA9F /* GoogleDriveSync.m in Sources */,
 				A52D7D4F183DEBB000A487EA /* GTMHTTPUploadFetcher.m in Sources */,
 				A52D7D50183DEBB000A487EA /* GTMMIMEDocument.m in Sources */,
 				A52D7D70183DEBB000A487EA /* GTLErrorObject.m in Sources */,
 				A52D7E57183DEBB000A487EA /* GTLDriveAbout.m in Sources */,
+				A513228819E9F65E00B11AEE /* LogEntryDetailViewController.m in Sources */,
 				A52D7D4B183DEBB000A487EA /* GTMHTTPFetcherLogging.m in Sources */,
 				A52D7E66183DEBB000A487EA /* GTLDriveParentList.m in Sources */,
 				A52D7D66183DEBB000A487EA /* GTMOAuth2SignIn.m in Sources */,
@@ -1938,9 +2003,10 @@
 		A52BDEB51859236F00B4ECB2 /* TBScope.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A513226319E7796200B11AEE /* TBScope 2.xcdatamodel */,
 				A52BDEB61859236F00B4ECB2 /* TBScope.xcdatamodel */,
 			);
-			currentVersion = A52BDEB61859236F00B4ECB2 /* TBScope.xcdatamodel */;
+			currentVersion = A513226319E7796200B11AEE /* TBScope 2.xcdatamodel */;
 			name = TBScope.xcdatamodeld;
 			path = CellScope/TBScope.xcdatamodeld;
 			sourceTree = "<group>";

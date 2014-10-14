@@ -15,6 +15,8 @@
 
 @property (nonatomic) int32_t fieldNumber;
 @property (nonatomic, retain) NSString * metadata;
+@property (nonatomic, retain) NSString * imageContentMetrics;
+@property (nonatomic, retain) NSString * imageFocusMetrics;
 @property (nonatomic, retain) NSString * path;
 @property (nonatomic, retain) NSString * googleDriveFileID;
 @property (nonatomic, retain) ImageAnalysisResults *imageAnalysisResults;

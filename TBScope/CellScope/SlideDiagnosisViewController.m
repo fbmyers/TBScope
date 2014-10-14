@@ -422,7 +422,7 @@
     if ([segue.identifier isEqualToString:@"ReAnalyzeSegue"])
     {
         UIViewController <TBScopeViewControllerContext> *avc = [segue destinationViewController];
-        avc.currentExam = self.currentExam;
+        //avc.currentExam = self.currentExam;
         if (sender==self.reanalyzeButton1)
             avc.currentSlide = (Slides*)self.currentExam.examSlides[0];
         else if (sender==self.reanalyzeButton2)

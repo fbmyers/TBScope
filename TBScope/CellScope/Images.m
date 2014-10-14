@@ -15,6 +15,8 @@
 
 @dynamic fieldNumber;
 @dynamic metadata;
+@dynamic imageContentMetrics;
+@dynamic imageFocusMetrics;
 @dynamic path;
 @dynamic googleDriveFileID;
 @dynamic imageAnalysisResults;

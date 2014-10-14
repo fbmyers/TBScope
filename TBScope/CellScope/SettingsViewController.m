@@ -106,6 +106,8 @@
     [prefs setInteger:self.syncInterval.text.integerValue forKey:@"SyncInterval"];
     
     [prefs setFloat:self.diagnosticThreshold.text.floatValue forKey:@"DiagnosticThreshold"];
+    [prefs setFloat:self.redThreshold.text.floatValue forKey:@"RedThreshold"];
+    [prefs setFloat:self.yellowThreshold.text.floatValue forKey:@"YellowThreshold"];
     
     [prefs setBool:self.doAnalysisByDefault.on forKey:@"DoAnalysisByDefault"];
     [prefs setBool:self.bypassLogin.on forKey:@"BypassLogin"];

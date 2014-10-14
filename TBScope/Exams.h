@@ -2,14 +2,14 @@
 //  Exams.h
 //  TBScope
 //
-//  Created by Frankie Myers on 2/24/14.
+//  Created by Frankie Myers on 10/9/2014.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Slides;
+@class FollowUpData, Slides;
 
 @interface Exams : NSManagedObject
 
@@ -30,10 +30,10 @@
 @property (nonatomic, retain) NSString * patientHIVStatus;
 @property (nonatomic, retain) NSString * patientID;
 @property (nonatomic, retain) NSString * patientName;
+@property (nonatomic) BOOL synced;
 @property (nonatomic, retain) NSString * userName;
 @property (nonatomic, retain) NSOrderedSet *examSlides;
-@property (nonatomic) BOOL synced;
-
+@property (nonatomic, retain) FollowUpData *examFollowUpData;
 @end
 
 @interface Exams (CoreDataGeneratedAccessors)
@@ -48,6 +48,4 @@
 - (void)removeExamSlidesObject:(Slides *)value;
 - (void)addExamSlides:(NSOrderedSet *)values;
 - (void)removeExamSlides:(NSOrderedSet *)values;
-
-
 @end

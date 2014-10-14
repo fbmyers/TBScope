@@ -101,7 +101,7 @@
 "Moving to slide center..." = "Di chuyển tới giữa tiêu bản";
 "Exposure Calibration..." = "Chỉnh độ sáng";
 "Initial Focusing..." = "Lấy nét ban đầu";
-
+"Re-Focus" = "Lấy nét";
 
 //Analysis
 "Analyzing..." = "Phân tích kết quả ảnh đã chụp...";
@@ -136,6 +136,8 @@
 "Re-scan" = "Chụp ảnh lại";
 "Not Evaluated" = "N/A"; //"Không được đánh giá";
 "Add Slide" = "Thêm tiêu bản";
+"Follow-Up" = "Theo Dấu";
+"Diagnosis" = "Chẩn đoán";
 
 "NONE" = "không ai";
 "ANALYSIS HAS NOT BEEN PERFORMED" = "PHÂN TÍCH ĐÃ KHÔNG ĐƯỢC THỰC HIỆN";
@@ -148,6 +150,13 @@
 "Show Images" = "Xem ảnh";
 "Exam %@, Slide %d, Analyzed Patches" = "Xét nghiệm %@, Tiêu bản %d, Mảng được phân tích";
 "Exam %@, Slide %d, Image %d of %ld" = "Xét nghiệm %@, Tiêu bản %d, Ảnh chụp %d của %ld"; //not showing
+
+//Follow-up
+"Negative" = "Âm tính";
+"Positive" = "Dương tính";
+"Indeterminate" = "Không định";
+"Susceptible" = "Nhạy cảm";
+"Resistant" = "Kháng";
 
 //Exam List
 "Review Results" = "kết quả rà soát";

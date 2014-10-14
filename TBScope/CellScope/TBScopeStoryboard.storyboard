@@ -634,6 +634,186 @@
             </objects>
             <point key="canvasLocation" x="3222" y="1846"/>
         </scene>
+        <!--Log View Controller - Logs-->
+        <scene sceneID="Zzs-KG-AXi">
+            <objects>
+                <tableViewController id="kB7-RT-jXw" customClass="LogViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="28" sectionHeaderHeight="1" sectionFooterHeight="1" id="uFM-us-PW9">
+                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" editingAccessoryType="disclosureIndicator" rowHeight="28" id="2l7-dc-Wiv" customClass="LogEntryCell">
+                                <rect key="frame" x="0.0" y="1" width="1024" height="28"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2l7-dc-Wiv" id="Cm7-Hp-gjj">
+                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="27"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C9j-hq-wLy">
+                                            <rect key="frame" x="20" y="0.0" width="73" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bkB-5q-dqn">
+                                            <rect key="frame" x="101" y="0.0" width="791" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LBn-Xy-bSa">
+                                            <rect key="frame" x="900" y="-3" width="111" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Pn-SL-9jC">
+                                            <rect key="frame" x="900" y="8" width="111" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="categoryLabel" destination="C9j-hq-wLy" id="sSS-8L-9h8"/>
+                                    <outlet property="dateLabel" destination="LBn-Xy-bSa" id="qVZ-8v-YAQ"/>
+                                    <outlet property="messageLabel" destination="bkB-5q-dqn" id="IFD-lv-2Uq"/>
+                                    <outlet property="timeLabel" destination="8Pn-SL-9jC" id="tki-ZN-4xF"/>
+                                    <segue destination="oQW-Df-6g1" kind="modal" id="joG-lj-kiX"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="kB7-RT-jXw" id="9zQ-Wt-UeO"/>
+                            <outlet property="delegate" destination="kB7-RT-jXw" id="Jul-jD-JM2"/>
+                        </connections>
+                    </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <tabBarItem key="tabBarItem" title="Logs" id="bF0-5Y-yGG"/>
+                    <navigationItem key="navigationItem" id="Eod-JJ-j13">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="OQl-yf-pis">
+                            <rect key="frame" x="212" y="6" width="600" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="4CB-w4-ZRN">
+                                    <rect key="frame" x="23" y="0.0" width="41" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="USER">
+                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didPressFilterButton:" destination="kB7-RT-jXw" eventType="touchUpInside" id="wRQ-Zf-NgY"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FKd-Ln-AoL">
+                                    <rect key="frame" x="109" y="0.0" width="86" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="HARDWARE">
+                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didPressFilterButton:" destination="kB7-RT-jXw" eventType="touchUpInside" id="pOy-uV-v21"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="MHI-mL-Xbr">
+                                    <rect key="frame" x="231" y="0.0" width="42" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="SYNC">
+                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didPressFilterButton:" destination="kB7-RT-jXw" eventType="touchUpInside" id="Q5W-Mz-h8Q"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="rO8-TC-bKU">
+                                    <rect key="frame" x="527" y="0.0" width="53" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="ERROR">
+                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didPressFilterButton:" destination="kB7-RT-jXw" eventType="touchUpInside" id="Wtl-ss-QRl"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XZb-wf-0Os">
+                                    <rect key="frame" x="416" y="0.0" width="72" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="ANALYSIS">
+                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didPressFilterButton:" destination="kB7-RT-jXw" eventType="touchUpInside" id="Kpz-QG-S8C"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="po2-Vv-3JB">
+                                    <rect key="frame" x="316" y="0.0" width="61" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="SYSTEM">
+                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didPressFilterButton:" destination="kB7-RT-jXw" eventType="touchUpInside" id="0pg-Zu-22a"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </view>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="analysisFilterButton" destination="XZb-wf-0Os" id="dWf-WM-gtE"/>
+                        <outlet property="errorFilterButton" destination="rO8-TC-bKU" id="dX1-ho-Kbq"/>
+                        <outlet property="filterBarView" destination="OQl-yf-pis" id="crO-ZL-eCn"/>
+                        <outlet property="hardwareFilterButton" destination="FKd-Ln-AoL" id="WTq-eT-ctg"/>
+                        <outlet property="syncFilterButton" destination="MHI-mL-Xbr" id="XsJ-L1-07n"/>
+                        <outlet property="systemFilterButton" destination="po2-Vv-3JB" id="Wuc-Vi-cyG"/>
+                        <outlet property="userFilterButton" destination="4CB-w4-ZRN" id="CU6-tm-Fkf"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KCI-AH-ykx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3222" y="3638"/>
+        </scene>
+        <!--Log Entry Detail View Controller-->
+        <scene sceneID="5Wd-pi-ury">
+            <objects>
+                <viewController modalPresentationStyle="formSheet" id="oQW-Df-6g1" customClass="LogEntryDetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cIW-jr-PjY">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="0wN-4r-gn5">
+                                <rect key="frame" x="20" y="28" width="500" height="564"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="logEntryTextView" destination="0wN-4r-gn5" id="7RY-Gj-k3c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T3n-zI-1vv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4706" y="3638"/>
+        </scene>
         <!--Google Drive View Controller - Google Drive-->
         <scene sceneID="ceM-SR-rzg">
             <objects>
@@ -689,6 +869,7 @@
                         <segue destination="5Zx-1g-Zub" kind="relationship" relationship="viewControllers" id="NEF-Nf-Dx8"/>
                         <segue destination="JVa-Vk-BpK" kind="relationship" relationship="viewControllers" id="mOb-jT-EtH"/>
                         <segue destination="K0f-HA-uFh" kind="relationship" relationship="viewControllers" id="8sC-c1-w5P"/>
+                        <segue destination="kB7-RT-jXw" kind="relationship" relationship="viewControllers" id="C7Z-cR-34z"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qQ3-xG-7u0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2318,7 +2499,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="8796" y="-646"/>
         </scene>
-        <!--Follow Up View Controller - Other Data-->
+        <!--Follow Up View Controller - Follow-Up-->
         <scene sceneID="2WC-gj-iJc">
             <objects>
                 <viewController id="4am-Jr-GZh" customClass="FollowUpViewController" sceneMemberID="viewController">
@@ -2383,7 +2564,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Scanty">
-                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2431,7 +2612,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="N/A">
-                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2503,7 +2684,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="N/A">
-                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2602,11 +2783,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cmA-AF-x90">
-                                <rect key="frame" x="482" y="522" width="80" height="50"/>
+                                <rect key="frame" x="471" y="522" width="110" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Positive">
-                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2626,11 +2807,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pjp-as-Mco">
-                                <rect key="frame" x="403" y="651" width="104" height="50"/>
+                                <rect key="frame" x="374" y="651" width="133" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Susceptible">
-                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2638,7 +2819,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mwr-I2-v1s">
-                                <rect key="frame" x="534" y="651" width="82" height="50"/>
+                                <rect key="frame" x="534" y="651" width="120" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Resistant">
@@ -2660,7 +2841,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Other Data" image="results.png" id="neU-X0-Znn"/>
+                    <tabBarItem key="tabBarItem" title="Follow-Up" image="followup.png" id="neU-X0-Znn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
@@ -2827,11 +3008,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="102-pc-xxo" customClass="CaptureViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="F0u-un-enq">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" id="OHk-kc-fKL" customClass="CameraScrollView">
-                                <rect key="frame" x="-1" y="0.0" width="769" height="1024"/>
+                                <rect key="frame" x="-1" y="0.0" width="1025" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -3079,6 +3260,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="Capture Images" id="5Sn-Z7-Cz3">
                         <barButtonItem key="backBarButtonItem" title="Abort" id="og8-7g-Uki"/>
@@ -3274,12 +3456,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="configuration.png" width="400" height="80"/>
         <image name="disclosureicon.png" width="1600" height="800"/>
         <image name="down.png" width="100" height="80"/>
+        <image name="followup.png" width="30" height="30"/>
         <image name="googleicon.png" width="25" height="25"/>
         <image name="left.png" width="100" height="80"/>
         <image name="logout.png" width="400" height="80"/>
         <image name="pictureicon.png" width="25" height="25"/>
-        <image name="results.png" width="1600" height="800"/>
-        <image name="resultsicon.png" width="25" height="25"/>
+        <image name="resultsicon.png" width="30" height="30"/>
         <image name="reviewresults.png" width="400" height="80"/>
         <image name="right.png" width="100" height="80"/>
         <image name="scalearrow.png" width="25" height="25"/>
@@ -3296,10 +3478,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="O4z-53-Ust"/>
-        <segue reference="Wsu-kb-Jid"/>
-        <segue reference="Qqg-aL-Bjx"/>
+        <segue reference="TNh-qe-tab"/>
+        <segue reference="1cV-dX-AVr"/>
         <segue reference="eav-O7-CnL"/>
+        <segue reference="Qqg-aL-Bjx"/>
         <segue reference="1Zz-Hb-NdL"/>
     </inferredMetricsTieBreakers>
 </document>

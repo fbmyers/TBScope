@@ -18,8 +18,8 @@
     [super viewDidLoad];
     
 
-    [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Results", nil)];
-    [[self.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"Other Data", nil)];
+    [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Diagnosis", nil)];
+    [[self.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"Follow-Up", nil)];
     
     //TODO: only show image view if user has permission.  also tailor slide diagnosis view accordingly
     
@@ -39,18 +39,21 @@
         ImageResultViewController *imageResultsVC1 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
         imageResultsVC1.currentSlide = (Slides*)self.currentExam.examSlides[0];
         imageResultsVC1.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),1];
+        imageResultsVC1.tabBarItem.image = [UIImage imageNamed:@"slide1icon.png"];
         [tabVCs addObject:imageResultsVC1];
     }
     if (self.currentExam.examSlides.count>1) {
         ImageResultViewController *imageResultsVC2 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
         imageResultsVC2.currentSlide = (Slides*)self.currentExam.examSlides[1];
         imageResultsVC2.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),2];
+        imageResultsVC2.tabBarItem.image = [UIImage imageNamed:@"slide2icon.png"];
         [tabVCs addObject:imageResultsVC2];
     }
     if (self.currentExam.examSlides.count>2) {
         ImageResultViewController *imageResultsVC3 = [storyboard instantiateViewControllerWithIdentifier:@"ImageResultViewController"];
         imageResultsVC3.currentSlide = (Slides*)self.currentExam.examSlides[2];
         imageResultsVC3.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Slide %d", nil),3];
+        imageResultsVC3.tabBarItem.image = [UIImage imageNamed:@"slide3icon.png"];
         [tabVCs addObject:imageResultsVC3];
     }
     
