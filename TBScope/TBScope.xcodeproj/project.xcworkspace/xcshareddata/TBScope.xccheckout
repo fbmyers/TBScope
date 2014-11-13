@@ -10,84 +10,66 @@
 	<string>TBScope</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>0FEFA0FB-6564-43E0-A020-8A04EDF34BFC</key>
+		<key>052f66bb-8366-e9ed-b056-95094e25c79e++505</key>
 		<string>http://google-api-objectivec-client.googlecode.com/svn/trunk</string>
-		<key>2BEE770E-8800-4984-AE23-709775EB2F00</key>
-		<string>http://gtm-http-fetcher.googlecode.com/svn/trunk/Source</string>
-		<key>372269EF-9FF3-459E-94A4-53712797ACC3</key>
+		<key>22754eea-fc93-e339-b032-c1f495b90c16++2896</key>
 		<string>http://gtm-oauth2.googlecode.com/svn/trunk/Source</string>
-		<key>488E25E0-85C3-48D5-AB02-40BC62519534</key>
+		<key>F9D94B789FD7B9BCD6578D6D427D73DA08C6A0EC</key>
 		<string>https://github.com/fbmyers/TBScope.git</string>
+		<key>b3aa69f0-f65c-a609-0a27-78855af037c1++2896</key>
+		<string>http://gtm-http-fetcher.googlecode.com/svn/trunk/Source</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>TBScope/TBScope.xcodeproj/project.xcworkspace</string>
+	<string>TBScope/TBScope.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>0FEFA0FB-6564-43E0-A020-8A04EDF34BFC</key>
+		<key>052f66bb-8366-e9ed-b056-95094e25c79e++505</key>
 		<string>../../../../../google-api-objectivec-client-read-only</string>
-		<key>2BEE770E-8800-4984-AE23-709775EB2F00</key>
-		<string>../../../../../google-api-objectivec-client-read-only/Source/HTTPFetcher</string>
-		<key>372269EF-9FF3-459E-94A4-53712797ACC3</key>
+		<key>22754eea-fc93-e339-b032-c1f495b90c16++2896</key>
 		<string>../../../../../google-api-objectivec-client-read-only/Source/OAuth2</string>
-		<key>488E25E0-85C3-48D5-AB02-40BC62519534</key>
+		<key>F9D94B789FD7B9BCD6578D6D427D73DA08C6A0EC</key>
 		<string>../../..</string>
+		<key>b3aa69f0-f65c-a609-0a27-78855af037c1++2896</key>
+		<string>../../../../../google-api-objectivec-client-read-only/Source/HTTPFetcher</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
 	<dict>
-		<key>0FEFA0FB-6564-43E0-A020-8A04EDF34BFC</key>
+		<key>052f66bb-8366-e9ed-b056-95094e25c79e++505</key>
 		<string>http://google-api-objectivec-client.googlecode.com/svn</string>
-		<key>2BEE770E-8800-4984-AE23-709775EB2F00</key>
-		<string>http://gtm-http-fetcher.googlecode.com/svn</string>
-		<key>372269EF-9FF3-459E-94A4-53712797ACC3</key>
+		<key>22754eea-fc93-e339-b032-c1f495b90c16++2896</key>
 		<string>http://gtm-oauth2.googlecode.com/svn</string>
+		<key>b3aa69f0-f65c-a609-0a27-78855af037c1++2896</key>
+		<string>http://gtm-http-fetcher.googlecode.com/svn</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/fbmyers/TBScope.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>488E25E0-85C3-48D5-AB02-40BC62519534</string>
+	<string>F9D94B789FD7B9BCD6578D6D427D73DA08C6A0EC</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
-			<key>IDESourceControlRepositoryBranchesRelativeLocationKey</key>
-			<string>branches</string>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>tags</string>
-			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
-			<string>trunk</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>0FEFA0FB-6564-43E0-A020-8A04EDF34BFC</string>
+			<string>052f66bb-8366-e9ed-b056-95094e25c79e++505</string>
 			<key>IDESourceControlWCCName</key>
 			<string>google-api-objectivec-client-read-only</string>
 		</dict>
 		<dict>
-			<key>IDESourceControlRepositoryBranchesRelativeLocationKey</key>
-			<string>branches</string>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>tags</string>
-			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
-			<string>trunk</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2BEE770E-8800-4984-AE23-709775EB2F00</string>
+			<string>b3aa69f0-f65c-a609-0a27-78855af037c1++2896</string>
 			<key>IDESourceControlWCCName</key>
 			<string>HTTPFetcher</string>
 		</dict>
 		<dict>
-			<key>IDESourceControlRepositoryBranchesRelativeLocationKey</key>
-			<string>branches</string>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>tags</string>
-			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
-			<string>trunk</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>372269EF-9FF3-459E-94A4-53712797ACC3</string>
+			<string>22754eea-fc93-e339-b032-c1f495b90c16++2896</string>
 			<key>IDESourceControlWCCName</key>
 			<string>OAuth2</string>
 		</dict>
@@ -95,7 +77,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>488E25E0-85C3-48D5-AB02-40BC62519534</string>
+			<string>F9D94B789FD7B9BCD6578D6D427D73DA08C6A0EC</string>
 			<key>IDESourceControlWCCName</key>
 			<string>TBScope</string>
 		</dict>

@@ -245,10 +245,13 @@
     }
     else if (textField==self.genderTextField)
     {
+        return ([newString length] < 2);
+        /*
         return ([newString isEqualToString:@""]
             || [newString isEqualToString:NSLocalizedString(@"M", nil)]
             || [newString isEqualToString:NSLocalizedString(@"F", nil)]
             || [newString isEqualToString:NSLocalizedString(@"U", nil)]);
+         */
         
     }
     else if (textField==self.hivStatusTextField)

@@ -136,10 +136,10 @@
 "Re-scan" = "Chụp ảnh lại";
 "Not Evaluated" = "N/A"; //"Không được đánh giá";
 "Add Slide" = "Thêm tiêu bản";
-"Follow-Up" = "Theo Dấu";
+"Follow-Up" = "Thêm thông tin"; //"More Info"
 "Diagnosis" = "Chẩn đoán";
 
-"NONE" = "không ai";
+"NONE" = "không";
 "ANALYSIS HAS NOT BEEN PERFORMED" = "PHÂN TÍCH ĐÃ KHÔNG ĐƯỢC THỰC HIỆN";
 "PATIENT IS POSITIVE FOR TUBERCULOSIS" = "Bệnh nhân dương tính với lao";
 "PATIENT IS NEGATIVE FOR TUBERCULOSIS" = "Bệnh nhân âm tính với lao";
@@ -154,16 +154,17 @@
 //Follow-up
 "Negative" = "Âm tính";
 "Positive" = "Dương tính";
-"Indeterminate" = "Không định";
+"Indeterminate" = "Không rõ";
 "Susceptible" = "Nhạy cảm";
 "Resistant" = "Kháng";
+"Scanty" = "Ít";
 
 //Exam List
 "Review Results" = "kết quả rà soát";
 "N/A" = "N/A"; //??
 "Print" = "In ra";
 "Patient" = "Bệnh nhân";
-"Clinic/User" = "Phòng khám/Người chụp";
+"Clinic/User" = "Phòng khám/Người sử dụng";
 "Analysis Results" = "Kết quả phân tích";
 "First Collection Date" = "Ngày lấy mẫu đầu tiên";
 "Exam Registry" = "Số xét nghiệm"; //make sure this is in title
