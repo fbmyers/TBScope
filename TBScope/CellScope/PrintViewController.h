@@ -5,12 +5,14 @@
 //  Created by Frankie Myers on 4/11/14.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  This view controller handles printing to a printer on the local network and/or emailing a PDF version of the exam registry.
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 #import <MessageUI/MessageUI.h>
 #import "TBScopeData.h"
 
+//default geometries for the printed page
 #define PDF_PAGE_HEIGHT 612.0
 #define PDF_PAGE_WIDTH 792.0
 #define PDF_PAGE_MARGIN_SIDE 40.0

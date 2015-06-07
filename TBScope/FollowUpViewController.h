@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 10/8/2014.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  This view controller includes data fields for capturing additional information related to a particular slide/patient. This includes culture and Xpert results as well as conventional microscopy.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeData.h"
@@ -39,7 +40,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *slide31Button;
 @property (weak, nonatomic) IBOutlet UIButton *slide32Button;
 @property (weak, nonatomic) IBOutlet UIButton *slide33Button;
-
 
 @property (weak, nonatomic) IBOutlet UIButton *xpertNAButton;
 @property (weak, nonatomic) IBOutlet UIButton *xpertNegativeButton;

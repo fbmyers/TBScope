@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 4/10/14.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  The collection view that generates the grid-style ROI viewer which displays only the bright patches of the images in an exam. This is used to quickly diagnose TB manually and to generate training set data.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeData.h"

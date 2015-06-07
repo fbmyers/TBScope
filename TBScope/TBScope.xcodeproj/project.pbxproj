@@ -140,7 +140,7 @@
 		A59AE396182B4F3B00BD3802 /* TBScopeStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */; };
 		A5A0F3CF18F70C7300909615 /* ImageROIResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A0F3CE18F70C7300909615 /* ImageROIResultView.m */; };
 		A5A0F3E118F70E4900909615 /* ImageROIResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A0F3E018F70E4900909615 /* ImageROIResultCell.m */; };
-		A5B45F8018302D4E002F4D30 /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */; };
+		A5A2189A1AF6CCE4005334FB /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A218991AF6CCE4005334FB /* ConfigurationViewController.m */; };
 		A5B45F95183039BE002F4D30 /* LoadSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F94183039BE002F4D30 /* LoadSampleViewController.m */; };
 		A5B45F9818303E51002F4D30 /* ExamListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F9718303E51002F4D30 /* ExamListViewController.m */; };
 		A5B72A7318988FB90013DA9F /* GoogleDriveSync.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */; };
@@ -589,8 +589,8 @@
 		A5A0F3CE18F70C7300909615 /* ImageROIResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageROIResultView.m; sourceTree = "<group>"; };
 		A5A0F3DF18F70E4900909615 /* ImageROIResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageROIResultCell.h; sourceTree = "<group>"; };
 		A5A0F3E018F70E4900909615 /* ImageROIResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageROIResultCell.m; sourceTree = "<group>"; };
-		A5B45F7E18302D4E002F4D30 /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
-		A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
+		A5A218981AF6CCE4005334FB /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
+		A5A218991AF6CCE4005334FB /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
 		A5B45F93183039BE002F4D30 /* LoadSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadSampleViewController.h; sourceTree = "<group>"; };
 		A5B45F94183039BE002F4D30 /* LoadSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadSampleViewController.m; sourceTree = "<group>"; };
 		A5B45F9618303E51002F4D30 /* ExamListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamListViewController.h; sourceTree = "<group>"; };
@@ -1130,6 +1130,8 @@
 				A59AE395182B4F3B00BD3802 /* TBScopeStoryboard.storyboard */,
 				A513228619E9F65E00B11AEE /* LogEntryDetailViewController.h */,
 				A513228719E9F65E00B11AEE /* LogEntryDetailViewController.m */,
+				A513226A19E8AD4E00B11AEE /* LogViewController.h */,
+				A513226B19E8AD4E00B11AEE /* LogViewController.m */,
 				A513228319E9F32A00B11AEE /* LogEntryCell.h */,
 				A513228419E9F32A00B11AEE /* LogEntryCell.m */,
 				A513226019E5FDF900B11AEE /* FollowUpViewController.h */,
@@ -1166,12 +1168,10 @@
 				A5B45F9718303E51002F4D30 /* ExamListViewController.m */,
 				A5CF1A36187F3EDC00C2C2E1 /* ExamListTableViewCell.h */,
 				A5CF1A37187F3EDC00C2C2E1 /* ExamListTableViewCell.m */,
-				A5B45F7E18302D4E002F4D30 /* ConfigurationViewController.h */,
-				A5B45F7F18302D4E002F4D30 /* ConfigurationViewController.m */,
 				A5FD379B183DCF4700C67D85 /* UsersViewController.h */,
 				A5FD379C183DCF4700C67D85 /* UsersViewController.m */,
-				A513226A19E8AD4E00B11AEE /* LogViewController.h */,
-				A513226B19E8AD4E00B11AEE /* LogViewController.m */,
+				A5A218981AF6CCE4005334FB /* ConfigurationViewController.h */,
+				A5A218991AF6CCE4005334FB /* ConfigurationViewController.m */,
 				A5FD379E183DDEB400C67D85 /* GoogleDriveViewController.h */,
 				A5FD379F183DDEB400C67D85 /* GoogleDriveViewController.m */,
 				A5CF19F8187A39DF00C2C2E1 /* CameraScrollView.h */,
@@ -1334,7 +1334,7 @@
 			name = CellScopeTests;
 			productName = CellScopeTests;
 			productReference = 9B6BF0D415E19ACD002834C5 /* CellScopeTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1613,7 +1613,6 @@
 				A57014AF18A6F0BE00881F95 /* TBScopeHardware.m in Sources */,
 				AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */,
 				A5B45F95183039BE002F4D30 /* LoadSampleViewController.m in Sources */,
-				A5B45F8018302D4E002F4D30 /* ConfigurationViewController.m in Sources */,
 				A50B06551835697700880350 /* ImageResultViewController.m in Sources */,
 				A500C0BD18AC0E8F00D8C569 /* BLE.m in Sources */,
 				AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
@@ -1632,6 +1631,7 @@
 				A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */,
 				A5C27AB0182EFAF400A8CB1D /* TBSlideViewerSubview.m in Sources */,
 				AC5E74AF179F421900BDC4EB /* svm.cpp in Sources */,
+				A5A2189A1AF6CCE4005334FB /* ConfigurationViewController.m in Sources */,
 				A5FCCD3818B6F0DD0004B2F5 /* TBScopeData.m in Sources */,
 				A599E11418247BEF00B52EF2 /* AnalysisViewController.m in Sources */,
 				A5C27AA1182C3AB900A8CB1D /* MainMenuViewController.m in Sources */,

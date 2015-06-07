@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/6/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  This provides a scrollable, zoomable view of an image which is used during image review. It is inherited from UIScrollView.
 
 #import <UIKit/UIKit.h>
 #import "TBSlideViewerSubview.h"

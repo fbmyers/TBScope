@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 10/10/2014.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Presents a listing of the logs entries on this iPad.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeData.h"

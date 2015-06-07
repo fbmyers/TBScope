@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/6/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  This subview actually contains the image presented by the TBSlideViewer
 
 #import <UIKit/UIKit.h>
 

@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/10/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Presents a listing of all the exams stored on this iPad. Note that exams in this list weren't necessarily all recorded on this iPad. Google Drive synchronization allows iPads to upload their exams to the shared cloud repository and other iPads can retrieve them. They all show up here.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeHardware.h"

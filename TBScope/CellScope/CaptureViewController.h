@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/7/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Includes functionality for both manual and automatic image capture. If manual mode is specified in the settings, a full set of controls will be presented for moving the stage/focus, adjusting illumination, and taking photos (up to the maximum number of photos specified in the settings). If automatic mode is specified, this view automatically takes pictures across the full slide, autofocusing and autoexposing as it goes. It displays a progress bar indicating scan progress.
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
@@ -16,8 +17,8 @@
 #import "CameraScrollView.h"
 #import "AnalysisViewController.h"
 
-#define FOCUS_IMPROVEMENT_THRESHOLD_SHARPNESS 1.4
-#define FOCUS_IMPROVEMENT_THRESHOLD_CONTRAST 1.3
+#define FOCUS_IMPROVEMENT_THRESHOLD_SHARPNESS 1.2
+#define FOCUS_IMPROVEMENT_THRESHOLD_CONTRAST 1.1
 
 #define BACKLASH_STEPS 500
 #define FOCUS_BACKLASH_CORRECTION 10 //TODO: make this a config setting (stage backlash too)

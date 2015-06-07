@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/1/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  This view controller handles analyzing the images associated with a slide and presents a progress bar to the user during this process.
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>

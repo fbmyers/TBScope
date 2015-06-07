@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/14/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Presents a summary of an exam, including an overall diagnosis, individual diagnoses for all slides associated with that exam, and patient/exam metadata.
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>

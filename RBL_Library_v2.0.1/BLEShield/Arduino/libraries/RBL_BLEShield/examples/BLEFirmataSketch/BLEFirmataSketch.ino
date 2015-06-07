@@ -13,7 +13,7 @@
 #include <Wire.h>
 #include "BLEFirmata.h"
 #include <ble_shield.h>
-#include <services.h>
+
 /*
  * Firmata is a generic protocol for communicating with microcontrollers
  * from software on a host computer. It is intended to work with
@@ -628,6 +628,9 @@ void setup()
   // Default pins set to 9 and 8 for REQN and RDYN
   // Set your REQN and RDYN here before ble_begin() if you need
   //ble_set_pins(3, 2);
+  
+  // Set your BLE Shield name here, max. length 10
+  //ble_set_name("My Name");
   
   // Init. BLE and start BLE library.
   ble_begin();

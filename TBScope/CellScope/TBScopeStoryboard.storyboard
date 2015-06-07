@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="dAw-As-dS7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="dAw-As-dS7">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -82,7 +83,6 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
@@ -101,7 +101,7 @@
             </objects>
             <point key="canvasLocation" x="-1524" y="-104"/>
         </scene>
-        <!--Edit Exam View Controller - New Exam-->
+        <!--New Exam-->
         <scene sceneID="w2R-ay-Fo4">
             <objects>
                 <tableViewController id="WHw-zH-QJu" customClass="EditExamViewController" sceneMemberID="viewController">
@@ -109,7 +109,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <sections>
                             <tableViewSection id="PyW-we-yFe">
                                 <cells>
@@ -358,7 +357,7 @@
             </objects>
             <point key="canvasLocation" x="2019" y="-898"/>
         </scene>
-        <!--Exam List View Controller - Exam Registry-->
+        <!--Exam Registry-->
         <scene sceneID="e72-Gh-DYa">
             <objects>
                 <tableViewController id="zw4-zn-kNc" customClass="ExamListViewController" sceneMemberID="viewController">
@@ -366,7 +365,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="5sE-Td-upf">
@@ -603,7 +601,7 @@
             </objects>
             <point key="canvasLocation" x="2019" y="2"/>
         </scene>
-        <!--Table View Controller - Users-->
+        <!--Users-->
         <scene sceneID="tbx-V1-ZSm">
             <objects>
                 <tableViewController id="JVa-Vk-BpK" sceneMemberID="viewController">
@@ -611,7 +609,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="C5q-H7-o6I">
                                 <rect key="frame" x="0.0" y="86" width="1024" height="44"/>
@@ -634,7 +631,7 @@
             </objects>
             <point key="canvasLocation" x="3222" y="1846"/>
         </scene>
-        <!--Log View Controller - Logs-->
+        <!--Logs-->
         <scene sceneID="Zzs-KG-AXi">
             <objects>
                 <tableViewController id="kB7-RT-jXw" customClass="LogViewController" sceneMemberID="viewController">
@@ -642,7 +639,6 @@
                         <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" editingAccessoryType="disclosureIndicator" rowHeight="28" id="2l7-dc-Wiv" customClass="LogEntryCell">
                                 <rect key="frame" x="0.0" y="1" width="1024" height="28"/>
@@ -803,7 +799,6 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
@@ -814,7 +809,7 @@
             </objects>
             <point key="canvasLocation" x="4706" y="3638"/>
         </scene>
-        <!--Google Drive View Controller - Google Drive-->
+        <!--Google Drive-->
         <scene sceneID="ceM-SR-rzg">
             <objects>
                 <viewController id="K0f-HA-uFh" customClass="GoogleDriveViewController" sceneMemberID="viewController">
@@ -842,7 +837,6 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Google Drive" image="googleicon.png" id="yQa-lj-6aL"/>
                     <connections>
@@ -923,7 +917,6 @@
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
@@ -937,7 +930,7 @@
             </objects>
             <point key="canvasLocation" x="3269" y="-18"/>
         </scene>
-        <!--Settings View Controller - Algorithm Settings-->
+        <!--Algorithm Settings-->
         <scene sceneID="aYO-Gk-Isk">
             <objects>
                 <tableViewController title="Algorithm Settings" id="5Zx-1g-Zub" customClass="SettingsViewController" sceneMemberID="viewController">
@@ -945,7 +938,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <sections>
                             <tableViewSection headerTitle="Assay Settings" id="2gI-L3-KWq">
                                 <cells>
@@ -1399,7 +1391,7 @@
             </objects>
             <point key="canvasLocation" x="3222" y="922"/>
         </scene>
-        <!--Edit Slide View Controller - New Slide-->
+        <!--New Slide-->
         <scene sceneID="SlX-jQ-0zE">
             <objects>
                 <viewController id="5wO-4P-xGa" customClass="EditSlideViewController" sceneMemberID="viewController">
@@ -1487,27 +1479,6 @@
                                         <date key="date" timeIntervalSinceReferenceDate="415153765.92006898">
                                             <!--2014-02-27 00:29:25 +0000-->
                                         </date>
-                                        <timeZone key="timeZone" name="America/Los_Angeles">
-                                            <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                        </timeZone>
                                     </datePicker>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1529,7 +1500,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Slide" id="I9e-Pm-eev">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="jMo-i6-fbi">
@@ -1571,7 +1541,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
@@ -1582,7 +1551,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="6532" y="1194"/>
         </scene>
-        <!--Load Sample View Controller - Load Sample Slide-->
+        <!--Load Sample Slide-->
         <scene sceneID="y3i-ma-P7q">
             <objects>
                 <viewController id="26M-Ub-vPW" customClass="LoadSampleViewController" sceneMemberID="viewController">
@@ -1612,7 +1581,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Z3K-SJ-1p2"/>
@@ -1636,7 +1604,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="4253" y="-898"/>
         </scene>
-        <!--Analysis View Controller - Analyzing...-->
+        <!--Analyzing...-->
         <scene sceneID="6CE-Eg-UQV">
             <objects>
                 <viewController storyboardIdentifier="AnalysisViewController" id="fRN-bB-Z9C" customClass="AnalysisViewController" sceneMemberID="viewController">
@@ -1681,7 +1649,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="Analyzing..." id="F9Y-X7-Gm9">
                         <barButtonItem key="backBarButtonItem" title="Re-Analyze" id="ieF-dK-tq8"/>
@@ -1698,7 +1665,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="6479" y="-898"/>
         </scene>
-        <!--Slide Diagnosis View Controller - Results-->
+        <!--Results-->
         <scene sceneID="lpQ-Yq-CwO">
             <objects>
                 <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="MlJ-0M-NbJ" customClass="SlideDiagnosisViewController" sceneMemberID="viewController">
@@ -1706,7 +1673,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <sections>
                             <tableViewSection id="RfA-2E-AK9">
                                 <cells>
@@ -2499,7 +2465,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="8796" y="-646"/>
         </scene>
-        <!--Follow Up View Controller - Follow-Up-->
+        <!--Follow-Up-->
         <scene sceneID="2WC-gj-iJc">
             <objects>
                 <viewController id="4am-Jr-GZh" customClass="FollowUpViewController" sceneMemberID="viewController">
@@ -2839,7 +2805,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Follow-Up" image="followup.png" id="neU-X0-Znn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -2881,7 +2846,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="8796" y="1157"/>
         </scene>
-        <!--Results Tab Bar Controller - Review Slide-->
+        <!--Review Slide-->
         <scene sceneID="aP3-nF-bCL">
             <objects>
                 <tabBarController definesPresentationContext="YES" id="Kin-H2-gdQ" customClass="ResultsTabBarController" sceneMemberID="viewController">
@@ -2909,7 +2874,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="7624" y="-166"/>
         </scene>
-        <!--Image Result View Controller - Image Viewer-->
+        <!--Image Viewer-->
         <scene sceneID="7sP-C7-07m">
             <objects>
                 <viewController storyboardIdentifier="ImageResultViewController" title="Image Viewer" id="HsL-en-YzY" customClass="ImageResultViewController" sceneMemberID="viewController">
@@ -2943,7 +2908,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="77" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="19Q-6P-tEW">
-                                                    <rect key="frame" x="23.000000141718807" y="33" width="20" height="10.000000368916632"/>
+                                                    <rect key="frame" x="23.000000362974745" y="33" width="20" height="10.000000368916632"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2988,7 +2953,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Slide" image="pictureicon.png" id="hyO-Dx-IUV"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -3003,7 +2967,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="8796" y="294"/>
         </scene>
-        <!--Capture View Controller - Capture Images-->
+        <!--Capture Images-->
         <scene sceneID="c7o-qy-avF">
             <objects>
                 <viewController id="102-pc-xxo" customClass="CaptureViewController" sceneMemberID="viewController">
@@ -3260,7 +3224,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="Capture Images" id="5Sn-Z7-Cz3">
                         <barButtonItem key="backBarButtonItem" title="Abort" id="og8-7g-Uki"/>
@@ -3319,7 +3282,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-357" y="-104"/>
         </scene>
-        <!--Main Menu View Controller - Main Menu-->
+        <!--Main Menu-->
         <scene sceneID="RDo-DS-WMm">
             <objects>
                 <viewController title="Main Menu" id="Hwn-Qj-z0B" customClass="MainMenuViewController" sceneMemberID="viewController">
@@ -3406,7 +3369,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Main Menu" id="xau-wY-O7x">

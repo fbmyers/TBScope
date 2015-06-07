@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/20/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Presents all the user-configurable settings to the user.
 
 #import <UIKit/UIKit.h>
 #import "Users.h"

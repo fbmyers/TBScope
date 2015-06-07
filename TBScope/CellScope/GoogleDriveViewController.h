@@ -5,6 +5,8 @@
 //  Created by UC Berkeley Fletcher Lab on 10/20/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Provides the login screen for Google Drive
+
 #import <UIKit/UIKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "GoogleDriveSync.h"

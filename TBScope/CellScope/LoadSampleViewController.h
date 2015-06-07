@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/10/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Displays a video instructing the user on how to prepare and insert the sample into the instrument.
 
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>

@@ -1,23 +1,33 @@
+//this is firmware for the revised custom TB scope board
+
 #include <SPI.h>
 #include <boards.h>
 #include <RBL_nRF8001.h>
 
+#define MICROSTEP1 34
+#define MICROSTEP2 35
+#define MICROSTEP3 36
+#define X_STEP_PIN    22
+#define X_DIR_PIN    23
+#define X_EN_PIN    24
+#define Y_STEP_PIN    25
+#define Y_DIR_PIN    26
+#define Y_EN_PIN    27
+#define Z_STEP_PIN    28
+#define Z_DIR_PIN    29
+#define Z_EN_PIN    30
+#define FL_LED_PWM_PIN 44
+#define FL_LED_EN_PIN 47
+#define BF_LED_PWM_PIN 11
+#define BF_LED_EN_PIN 37
+#define X_LIMIT_PIN A8
+#define Y_LIMIT_PIN A9
+#define Z_LIMIT_PIN A10
 
-#define X_STEP_PIN    6
-#define X_DIR_PIN    4
-#define X_EN_PIN    2
-#define Y_STEP_PIN    7
-#define Y_DIR_PIN    5
-#define Y_EN_PIN    3
-#define Z_STEP_PIN    12
-#define Z_DIR_PIN    0
-#define Z_EN_PIN    1
-#define FL_LED_PIN 10
-#define BF_LED_PIN 11
-#define X_LIMIT_PIN A1
-#define Y_LIMIT_PIN A0
-#define Z_LIMIT_PIN A2
-#define BLE_INDICATOR_PIN 13
+#define GREEN_INDICATOR_PIN 40
+#define RED_INDICATOR_PIN 41
+
+#define KILL_PIN 43
 
 #define X_HOME_DIR 1
 #define Y_HOME_DIR 0
@@ -47,6 +57,8 @@
 #define CMD_SET_SPEED 2
 #define CMD_SPECIAL_POSITION 3
 #define CMD_SET_LIGHT 4
+
+#define LIMIT_SWITCH_THRESHOLD 10
 
 //Servo myservo;
 
@@ -102,7 +114,7 @@ unsigned int move_stage(byte axis, byte dir, unsigned int half_step_interval, bo
   for (i=0;i<num_steps;i++)
   {
     if (stop_on_home && dir==home_dir)
-      if (digitalRead(limit_switch_pin)==0)
+      if (analogRead(limit_switch_pin)<LIMIT_SWITCH_THRESHOLD)
         break;
         
     //step    
@@ -193,11 +205,11 @@ void goto_special_position(byte position) {
 void notify()
 {
   byte buf[3] = {0xFF, 0x00, 0x00};
-  if (digitalRead(X_LIMIT_PIN)==0)
+  if (analogRead(X_LIMIT_PIN)<LIMIT_SWITCH_THRESHOLD)
     buf[1] |= 0b00000100;
-  if (digitalRead(Y_LIMIT_PIN)==0)
+  if (analogRead(Y_LIMIT_PIN)<LIMIT_SWITCH_THRESHOLD)
     buf[1] |= 0b00000010;    
-  if (digitalRead(Z_LIMIT_PIN)==0)
+  if (analogRead(Z_LIMIT_PIN)<LIMIT_SWITCH_THRESHOLD)
     buf[1] |= 0b00000001;        
     
   ble_write_bytes(buf,3);
@@ -206,8 +218,11 @@ void notify()
 void setup()
 {
   Serial.begin(57600);
-  Serial.println("TB Scope Firmware 2014-1-2");
+  Serial.println("TB Scope Firmware 2015-04-28");
    
+  pinMode(MICROSTEP1, OUTPUT);
+  pinMode(MICROSTEP2, OUTPUT);
+  pinMode(MICROSTEP3, OUTPUT);   
   pinMode(X_STEP_PIN, OUTPUT);
   pinMode(X_DIR_PIN, OUTPUT);
   pinMode(X_EN_PIN, OUTPUT);
@@ -219,9 +234,20 @@ void setup()
   pinMode(Z_EN_PIN, OUTPUT);
   pinMode(X_LIMIT_PIN, INPUT);
   pinMode(Y_LIMIT_PIN, INPUT);
-  pinMode(Z_LIMIT_PIN, INPUT_PULLUP);
+  pinMode(Z_LIMIT_PIN, INPUT);
   
-  pinMode(BLE_INDICATOR_PIN, OUTPUT);
+  pinMode(RED_INDICATOR_PIN, OUTPUT);
+  pinMode(GREEN_INDICATOR_PIN, OUTPUT);
+  
+  pinMode(FL_LED_EN_PIN, OUTPUT);
+  pinMode(BF_LED_EN_PIN, OUTPUT);
+  
+  pinMode(KILL_PIN, OUTPUT);
+ 
+  //set microstepping to 1/16 step
+  digitalWrite(MICROSTEP1, HIGH); 
+  digitalWrite(MICROSTEP2, HIGH);   
+  digitalWrite(MICROSTEP3, HIGH); 
   
   digitalWrite(X_STEP_PIN, HIGH); 
   digitalWrite(Y_STEP_PIN, HIGH);   
@@ -232,15 +258,24 @@ void setup()
   digitalWrite(X_EN_PIN, HIGH);   
   digitalWrite(Y_EN_PIN, HIGH);   
   digitalWrite(Z_EN_PIN, HIGH);   
-  digitalWrite(BLE_INDICATOR_PIN, LOW);
   
-  analogWrite(FL_LED_PIN, 0xFF);   
-  analogWrite(BF_LED_PIN, 0xFF);   
-
+  digitalWrite(RED_INDICATOR_PIN, LOW);
+  digitalWrite(GREEN_INDICATOR_PIN, HIGH);
+  
+  digitalWrite(FL_LED_EN_PIN, LOW);
+  analogWrite(FL_LED_PWM_PIN, 0x00); 
+  
+  digitalWrite(BF_LED_EN_PIN, HIGH);   
+  analogWrite(FL_LED_PWM_PIN, 0x00);
+  
+  digitalWrite(KILL_PIN, LOW);
+  
+  Serial.println("start");
+    
   ble_begin();
-  
+
   ble_set_name(device_name);
-  
+
   //goto_special_position(POSITION_LOADING);
 }
 
@@ -293,24 +328,39 @@ void loop()
         break;
         
       case CMD_SET_LIGHT:
-        if (data1==0x01)
-          analogWrite(FL_LED_PIN,0xFF-data2); 
-        else if (data1==0x02)
-          analogWrite(BF_LED_PIN,0xFF-data2); 
+        if (data1==0x01) {
+          analogWrite(FL_LED_PWM_PIN,data2/10); //temp scaling factor
+          if (data2>0)
+            digitalWrite(FL_LED_EN_PIN, HIGH);
+          else
+            digitalWrite(FL_LED_EN_PIN, LOW);
+        }
+        else if (data1==0x02) { 
+          analogWrite(BF_LED_PWM_PIN,0xFF-data2);
+          if (data2>0)
+            digitalWrite(BF_LED_EN_PIN, LOW);
+          else
+            digitalWrite(BF_LED_EN_PIN, HIGH);
+        }
         break;
     }
   }  
     
   if (ble_connected())
   {
-    digitalWrite(BLE_INDICATOR_PIN,LOW); //old FLAMB is active highb
+    digitalWrite(GREEN_INDICATOR_PIN,LOW);
+    digitalWrite(RED_INDICATOR_PIN,HIGH);
+    
   }
   else
   {
+    
     if (sin(2*3.14159*BLE_BLINK_FREQ*millis()/1000.0)>0)
-     digitalWrite(BLE_INDICATOR_PIN,HIGH);
+     digitalWrite(RED_INDICATOR_PIN,HIGH);
     else
-     digitalWrite(BLE_INDICATOR_PIN,LOW); 
+     digitalWrite(RED_INDICATOR_PIN,LOW);
+     
+    digitalWrite(GREEN_INDICATOR_PIN,HIGH);
   }
   
   // Allow BLE Shield to send/receive data

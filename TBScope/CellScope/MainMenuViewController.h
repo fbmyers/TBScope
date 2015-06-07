@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/7/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  The main menu that appears after login.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeData.h"

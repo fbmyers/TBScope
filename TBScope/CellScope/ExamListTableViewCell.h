@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 1/9/14.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  A single cell in the ExamListViewController, representing all the summary data the user needs to be able to select an exam.
 
 #import <UIKit/UIKit.h>
 

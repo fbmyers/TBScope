@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 11/7/13.
 //  Copyright (c) 2013 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Allows the user to specify basic exam information including patient info.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeData.h"

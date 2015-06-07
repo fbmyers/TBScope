@@ -5,6 +5,7 @@
 //  Created by UC Berkeley Fletcher Lab on 9/7/12.
 //  Copyright (c) 2012 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  The entry point into the app, a login screen.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeData.h"

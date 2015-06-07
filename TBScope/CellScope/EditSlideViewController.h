@@ -5,6 +5,7 @@
 //  Created by Frankie Myers on 2/19/14.
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
+//  Allows the user to specify basic info associated with a particular slide including sputum quality, collection date.
 
 #import <UIKit/UIKit.h>
 #import "TBScopeHardware.h"
