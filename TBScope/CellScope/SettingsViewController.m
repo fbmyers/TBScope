@@ -79,6 +79,30 @@
     
     self.bypassDataEntrySwitch.on = [prefs boolForKey:@"BypassDataEntry"];
     self.initialBFFocus.on = [prefs boolForKey:@"AutoScanInitialFocus"];
+    
+    self.maxAFFailures.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"MaxAFFailures"]];
+    self.bfFocusThreshold.text = [[NSString alloc] initWithFormat:@"%2.2f",[prefs floatForKey:@"BFFocusThreshold"]];
+    self.flFocusThreshold.text = [[NSString alloc] initWithFormat:@"%2.2f",[prefs floatForKey:@"FLFocusThreshold"]];
+    self.initialBFStackSize.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"InitialBFFocusStackSize"]];
+    self.initialBFStepHeight.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"InitialBFFocusStepSize"]];
+    self.initialBFRetryAttempts.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"InitialBFFocusRetryAttempts"]];
+    self.initialBFRetryStackMultiplier.text = [[NSString alloc] initWithFormat:@"%2.2f",[prefs floatForKey:@"InitialBFFocusRetryStackMultiplier"]];
+    
+    self.bfRefocusStackSize.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"BFRefocusStackSize"]];
+    self.bfRefocusStepHeight.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"BFRefocusStepSize"]];
+    self.bfRefocusRetryAttempts.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"BFRefocusRetryAttempts"]];
+    self.bfRefocusRetryStackMultiplier.text = [[NSString alloc] initWithFormat:@"%2.2f",[prefs floatForKey:@"BFRefocusRetryStackMultiplier"]];
+    
+    self.flRefocusStackSize.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"FLRefocusStackSize"]];
+    self.flRefocusStepHeight.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"FLRefocusStepSize"]];
+    self.flRefocusRetryAttempts.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"FLRefocusRetryAttempts"]];
+    self.flRefocusRetryStackMultiplier.text = [[NSString alloc] initWithFormat:@"%2.2f",[prefs floatForKey:@"FLRefocusRetryStackMultiplier"]];
+    
+    self.stageSettlingTime.text = [[NSString alloc] initWithFormat:@"%2.3f",[prefs floatForKey:@"StageSettlingTime"]];
+    self.focusSettlingTime.text = [[NSString alloc] initWithFormat:@"%2.3f",[prefs floatForKey:@"FocusSettlingTime"]];
+    self.stageStepDuration.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"StageStepInterval"]];
+    self.focusStepDuration.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"FocusStepInterval"]];
+    
 }
 
 - (void)saveValuesToPreferences
@@ -120,21 +144,36 @@
     [prefs setBool:self.initialBFFocus.on forKey:@"AutoScanInitialFocus"];
     [prefs setBool:self.bypassDataEntrySwitch.on forKey:@"BypassDataEntry"];
     
-    /*
-    self.scanColumns.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanCols"]];
-    self.scanRows.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanRows"]];
-    self.fieldSpacing.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanStepsBetweenFields"]];
-    self.refocusInterval.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanFocusInterval"]];
-    self.bfIntensity.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanBFIntensity"]];
-    self.fluorIntensity.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"AutoScanFluorescentIntensity"]];
-    */
-    
     [prefs setInteger:self.scanColumns.text.integerValue forKey:@"AutoScanCols"];
     [prefs setInteger:self.scanRows.text.integerValue forKey:@"AutoScanRows"];
     [prefs setInteger:self.fieldSpacing.text.integerValue forKey:@"AutoScanStepsBetweenFields"];
     [prefs setInteger:self.refocusInterval.text.integerValue forKey:@"AutoScanFocusInterval"];
     [prefs setInteger:self.bfIntensity.text.integerValue forKey:@"AutoScanBFIntensity"];
     [prefs setInteger:self.fluorIntensity.text.integerValue forKey:@"AutoScanFluorescentIntensity"];
+    
+    [prefs setInteger:self.maxAFFailures.text.integerValue forKey:@"MaxAFFailures"];
+    [prefs setFloat:self.bfFocusThreshold.text.floatValue forKey:@"BFFocusThreshold"];
+    [prefs setFloat:self.flFocusThreshold.text.floatValue forKey:@"FLFocusThreshold"];
+    
+    [prefs setInteger:self.initialBFStackSize.text.integerValue forKey:@"InitialBFFocusStackSize"];
+    [prefs setInteger:self.initialBFStepHeight.text.integerValue forKey:@"InitialBFFocusStepSize"];
+    [prefs setInteger:self.initialBFRetryAttempts.text.integerValue forKey:@"InitialBFFocusRetryAttempts"];
+    [prefs setFloat:self.initialBFRetryStackMultiplier.text.floatValue forKey:@"InitialBFFocusRetryStackMultiplier"];
+    
+    [prefs setInteger:self.bfRefocusStackSize.text.integerValue forKey:@"BFRefocusStackSize"];
+    [prefs setInteger:self.bfRefocusStepHeight.text.integerValue forKey:@"BFRefocusStepSize"];
+    [prefs setInteger:self.bfRefocusRetryAttempts.text.integerValue forKey:@"BFRefocusRetryAttempts"];
+    [prefs setFloat:self.bfRefocusRetryStackMultiplier.text.floatValue forKey:@"BFRefocusRetryStackMultiplier"];
+    
+    [prefs setInteger:self.flRefocusStackSize.text.integerValue forKey:@"FLRefocusStackSize"];
+    [prefs setInteger:self.flRefocusStepHeight.text.integerValue forKey:@"FLRefocusStepSize"];
+    [prefs setInteger:self.flRefocusRetryAttempts.text.integerValue forKey:@"FLRefocusRetryAttempts"];
+    [prefs setFloat:self.flRefocusRetryStackMultiplier.text.floatValue forKey:@"FLRefocusRetryStackMultiplier"];
+    
+    [prefs setInteger:self.focusStepDuration.text.integerValue forKey:@"FocusStepInterval"];
+    [prefs setInteger:self.stageStepDuration.text.integerValue forKey:@"StageStepInterval"];
+    [prefs setFloat:self.focusSettlingTime.text.floatValue forKey:@"FocusSettlingTime"];
+    [prefs setFloat:self.stageSettlingTime.text.floatValue forKey:@"StageSettlingTime"];
     
     
     if ([alertString isEqualToString:@""])

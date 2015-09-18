@@ -107,6 +107,28 @@ CBPeripheral* _tbScopePeripheral;
             
             //[[self delegate] tbScopeStageMoveDidCompleteWithXLimit:xLimit YLimit:yLimit ZLimit:zLimit];
         }
+        else if (data[i] == 0xFE) //battery
+        {
+            float batteryVoltage = ((data[i+1]<<8) | data[i+2])*5.0/1024;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusUpdated" object:nil];
+            NSLog(@"battery = %f",batteryVoltage);
+            self.batteryVoltage = batteryVoltage;
+        }
+        else if (data[i] == 0xFD) //temp
+        {
+            float temperature = ((data[i+1]<<8) | data[i+2])*1.007e-2 - 40.0;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusUpdated" object:nil];
+            NSLog(@"temp = %f",temperature);
+            self.temperature = temperature;
+        }
+        else if (data[i] == 0xFC) //humidity
+        {
+            float humidity = ((data[i+1]<<8) | data[i+2])*6.1e-3;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusUpdated" object:nil];
+            NSLog(@"humidity = %f",humidity);
+            self.humidity = humidity;
+        }
+        
         else
         {
             NSLog(@"unrecognized response from scope");
@@ -213,24 +235,56 @@ CBPeripheral* _tbScopePeripheral;
 
 -(void) disableMotors
 {
-    [self moveStageWithDirection:CSStageDirectionDown StepInterval:100 Steps:0 StopOnLimit:NO DisableAfter:YES];
-    [self moveStageWithDirection:CSStageDirectionLeft StepInterval:100 Steps:0 StopOnLimit:NO DisableAfter:YES];
-    [self moveStageWithDirection:CSStageDirectionFocusUp StepInterval:100 Steps:0 StopOnLimit:NO DisableAfter:YES];
+    [self moveStageWithDirection:CSStageDirectionDown Steps:0 StopOnLimit:NO DisableAfter:YES];
+    [self moveStageWithDirection:CSStageDirectionLeft Steps:0 StopOnLimit:NO DisableAfter:YES];
+    [self moveStageWithDirection:CSStageDirectionFocusUp Steps:0 StopOnLimit:NO DisableAfter:YES];
 
 }
 
+//TODO: would be better to have this automatic
+//also, should fire off a warning message if battery, temp, or humidity out of spec
+- (void) requestStatusUpdate
+{
+    //top 3 bits = opcode (5 for status request)
+    UInt8 buf[3] = {0b10100000, 0x00, 0x00};
+    [ble write:[NSData dataWithBytes:buf length:3]];
+    
+    //this will result in 3 responses, which will fire off 3 separate notifications
+}
+
+- (void) setStepperInterval:(UInt16)stepInterval
+{
+    UInt8 buf[3] = {0x00, 0x00, 0x00};
+    
+    // set speed
+    //   0   1   0   -   -   -   -   -                           {16 bits}
+    // |-----------  ------  --- --- ---||-------------------------||---------------------------|
+    //   move cmd                                  speed (half step interval in ms)
+    
+    buf[0] |= 0b01000000; //move command
+    buf[1] = (UInt8)((stepInterval & 0xFF00) >> 8);
+    buf[2] = (UInt8)(stepInterval & 0x00FF);
+    
+    //send move command
+    [ble write:[NSData dataWithBytes:buf length:3]];
+}
+
 - (void) moveStageWithDirection:(CSStageDirection) dir
-                          StepInterval:(UInt16)stepInterval
                           Steps:(UInt16)steps
                     StopOnLimit:(BOOL)stopOnLimit
                    DisableAfter:(BOOL)disableAfter
 {
+    
+
+    
+    
     //NSLog(@"moving stage");
     _isMoving = YES;
     
     UInt8 buf[3] = {0x00, 0x00, 0x00};
     
     
+    // move stage
     //   0   0   1   A   A   D   L   E                           {16 bits}
     // |-----------  ------  --- --- ---||-------------------------||---------------------------|
     //   move cmd     axis   dir lim en                         # steps

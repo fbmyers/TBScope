@@ -44,6 +44,26 @@
 @property (weak, nonatomic) IBOutlet UISwitch *bypassDataEntrySwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *initialBFFocus;
 
+@property (weak, nonatomic) IBOutlet UITextField *bfFocusThreshold;
+@property (weak, nonatomic) IBOutlet UITextField *flFocusThreshold;
+@property (weak, nonatomic) IBOutlet UITextField *maxAFFailures;
+@property (weak, nonatomic) IBOutlet UITextField *initialBFStackSize;
+@property (weak, nonatomic) IBOutlet UITextField *initialBFStepHeight;
+@property (weak, nonatomic) IBOutlet UITextField *initialBFRetryAttempts;
+@property (weak, nonatomic) IBOutlet UITextField *initialBFRetryStackMultiplier;
+@property (weak, nonatomic) IBOutlet UITextField *bfRefocusStackSize;
+@property (weak, nonatomic) IBOutlet UITextField *bfRefocusStepHeight;
+@property (weak, nonatomic) IBOutlet UITextField *bfRefocusRetryAttempts;
+@property (weak, nonatomic) IBOutlet UITextField *bfRefocusRetryStackMultiplier;
+@property (weak, nonatomic) IBOutlet UITextField *flRefocusStackSize;
+@property (weak, nonatomic) IBOutlet UITextField *flRefocusStepHeight;
+@property (weak, nonatomic) IBOutlet UITextField *flRefocusRetryAttempts;
+@property (weak, nonatomic) IBOutlet UITextField *flRefocusRetryStackMultiplier;
+
+@property (weak, nonatomic) IBOutlet UITextField *focusSettlingTime;
+@property (weak, nonatomic) IBOutlet UITextField *stageSettlingTime;
+@property (weak, nonatomic) IBOutlet UITextField *focusStepDuration;
+@property (weak, nonatomic) IBOutlet UITextField *stageStepDuration;
 
 
 - (IBAction)didPressResetSettings;

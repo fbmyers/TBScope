@@ -29,6 +29,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 
 @property (weak, nonatomic) IBOutlet UILabel* bluetoothIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+
+@property (strong, nonatomic) NSTimer* statusUpdateTimer;
 
 
 - (IBAction)didPressLogout:(id)sender;

@@ -84,6 +84,8 @@
 
 - (IBAction)didPressAutoFocus:(id)sender;
 - (IBAction)didPressAutoScan:(id)sender;
+- (IBAction)didPressStressTest:(id)sender;
+
 - (IBAction)didPressSlideCenter:(id)sender;
 - (IBAction)didPressAbort:(id)sender;
 - (IBAction)didPressManualFocus:(id)sender;

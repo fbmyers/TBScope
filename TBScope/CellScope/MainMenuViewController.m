@@ -36,9 +36,21 @@
                                              selector:@selector(setBTIndicator)
                                                  name:@"BluetoothDisconnected"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setStatusLabel)
+                                                 name:@"StatusUpdated"
+                                               object:nil];
 }
 
-
+- (void)setStatusLabel
+{
+    self.statusLabel.numberOfLines = 0;
+    self.statusLabel.text = [NSString stringWithFormat:@"Battery = %2.2fV\nTemperature = %2.1fC\nHumidity = %2.1f%%",
+                             [[TBScopeHardware sharedHardware] batteryVoltage],
+                             [[TBScopeHardware sharedHardware] temperature],
+                             [[TBScopeHardware sharedHardware] humidity]];
+}
 - (void)setSyncIndicator
 {
     if ([[GoogleDriveSync sharedGDS] isSyncing]) {
@@ -70,7 +82,22 @@
     [self setBTIndicator];
     [self setMenuPermissions];
     
+    self.statusUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getStatusUpdate) userInfo:nil repeats:YES];
+    
 
+    
+
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.statusUpdateTimer invalidate];
+    self.statusUpdateTimer = nil;
+}
+
+- (void)getStatusUpdate
+{
+    [[TBScopeHardware sharedHardware] requestStatusUpdate];
 }
 
 - (void)setMenuPermissions

@@ -2,6 +2,44 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>StageSettlingTime</key>
+	<real>0.1</real>
+	<key>FocusSettlingTime</key>
+	<real>0.075</real>
+	<key>StageStepInterval</key>
+	<integer>100</integer>
+	<key>FocusStepInterval</key>
+	<integer>100</integer>
+	<key>BFFocusThreshold</key>
+	<real>1.2</real>
+	<key>FLFocusThreshold</key>
+	<real>1.1</real>
+	<key>FLRefocusRetryStackMultiplier</key>
+	<real>1.5</real>
+	<key>FLRefocusRetryAttempts</key>
+	<integer>1</integer>
+	<key>FLRefocusStepSize</key>
+	<integer>60</integer>
+	<key>FLRefocusStackSize</key>
+	<integer>10</integer>
+	<key>BFRefocusRetryStackMultiplier</key>
+	<real>1.5</real>
+	<key>BFRefocusRetryAttempts</key>
+	<integer>3</integer>
+	<key>BFRefocusStepSize</key>
+	<integer>100</integer>
+	<key>BFRefocusStackSize</key>
+	<integer>20</integer>
+	<key>InitialBFFocusRetryStackMultiplier</key>
+	<real>1.5</real>
+	<key>InitialBFFocusRetryAttempts</key>
+	<integer>3</integer>
+	<key>InitialBFFocusStepSize</key>
+	<integer>200</integer>
+	<key>InitialBFFocusStackSize</key>
+	<integer>80</integer>
+	<key>MaxAFFailures</key>
+	<integer>3</integer>
 	<key>AddBFWhenManualFocusing</key>
 	<true/>
 	<key>AutoScanInitialFocus</key>
@@ -13,9 +51,9 @@
 	<key>AutoScanFluorescentIntensity</key>
 	<integer>255</integer>
 	<key>AutoScanBFIntensity</key>
-	<integer>2</integer>
+	<integer>5</integer>
 	<key>AutoScanFocusInterval</key>
-	<integer>10</integer>
+	<integer>5</integer>
 	<key>AutoScanStepsBetweenFields</key>
 	<integer>100</integer>
 	<key>AutoScanCols</key>

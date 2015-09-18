@@ -55,6 +55,10 @@ typedef NS_ENUM(int, CSStagePosition)
 
 @property (nonatomic,assign) id <TBScopeHardwareDelegate> delegate;
 
+@property (nonatomic) float batteryVoltage;
+@property (nonatomic) float temperature;
+@property (nonatomic) float humidity;
+
 
 + (id)sharedHardware;
 
@@ -64,9 +68,11 @@ typedef NS_ENUM(int, CSStagePosition)
 
 - (void) disableMotors;
 
+- (void) requestStatusUpdate;
+
+- (void) setStepperInterval:(UInt16)stepInterval;
 
 - (void) moveStageWithDirection:(CSStageDirection) dir
-                          StepInterval:(UInt16)stepInterval
                           Steps:(UInt16)steps
                     StopOnLimit:(BOOL)stopOnLimit
                    DisableAfter:(BOOL)disableAfter;

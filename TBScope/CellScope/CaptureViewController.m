@@ -150,6 +150,7 @@ AVAudioPlayer* _avPlayer;
     
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:0];
+    [[TBScopeHardware sharedHardware] disableMotors];
     
     //[self.previewView stopPreview];
     
@@ -161,7 +162,7 @@ AVAudioPlayer* _avPlayer;
 
 - (void)abortCapture
 {
-    
+
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
@@ -272,8 +273,7 @@ AVAudioPlayer* _avPlayer;
     _manualRefocusStepCounter = _manualRefocusStepCounter - 20;
     
     [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
-                                                StepInterval:500
-                                                       Steps:20
+                                                Steps:20
                                                  StopOnLimit:YES
                                                 DisableAfter:NO];
 }
@@ -282,8 +282,7 @@ AVAudioPlayer* _avPlayer;
 {
     
     [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                StepInterval:500
-                                                       Steps:20
+                                                Steps:20
                                                  StopOnLimit:YES
                                                 DisableAfter:NO];
 }
@@ -293,6 +292,112 @@ AVAudioPlayer* _avPlayer;
     [[TBScopeHardware sharedHardware] disableMotors];
     [NSThread sleepForTimeInterval:0.1];
     _isWaitingForFocusConfirmation = NO;
+}
+
+- (IBAction)didPressStressTest:(id)sender
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        
+        //setup UI
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            self.controlPanelView.hidden = YES;
+            self.leftButton.hidden = YES;
+            self.rightButton.hidden = YES;
+            self.downButton.hidden = YES;
+            self.upButton.hidden = YES;
+            self.intensitySlider.hidden = YES;
+            self.intensityLabel.hidden = YES;
+            self.autoFocusButton.hidden = YES;
+            self.autoScanButton.hidden = YES;
+            self.scanStatusLabel.hidden = NO;
+            self.abortButton.hidden = NO;
+            self.refocusButton.hidden = YES;
+            [[self navigationController] setNavigationBarHidden:YES animated:YES];
+        });
+        
+        int cycleNum = 1;
+        while (!_isAborting) {
+
+            //update label on UI
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                self.scanStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Cycle %d", nil), cycleNum];
+            });
+            
+            //take a picture
+            [self didPressCapture:nil];
+            [NSThread sleepForTimeInterval:0.5];
+            
+            //move stage/focus
+            for (int i=0; i<10; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionLeft
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            for (int i=0; i<10; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionDown
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            for (int i=0; i<10; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionRight
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            for (int i=0; i<10; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionUp
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            for (int i=0; i<10; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            for (int i=0; i<20; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            for (int i=0; i<10; i++) {
+                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
+                                                                   Steps:100
+                                                             StopOnLimit:YES
+                                                            DisableAfter:YES];
+                [[TBScopeHardware sharedHardware] waitForStage];
+            }
+            
+            
+            cycleNum++;
+        }
+        
+        //reset UI controls
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            self.controlPanelView.hidden = NO;
+            self.leftButton.hidden = NO;
+            self.rightButton.hidden = NO;
+            self.downButton.hidden = NO;
+            self.upButton.hidden = NO;
+            self.autoFocusButton.hidden = NO;
+            self.autoScanButton.hidden = NO;
+            self.scanStatusLabel.hidden = YES;
+            self.abortButton.hidden = YES;
+            self.refocusButton.hidden = YES;
+            [[self navigationController] setNavigationBarHidden:NO animated:YES];
+            
+        });
+    });
 }
 
 - (void) toggleBF:(BOOL)on
@@ -462,9 +567,9 @@ AVAudioPlayer* _avPlayer;
     }
     
     if (self.currentSpeed==CSStageSpeedSlow)
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection StepInterval:500 Steps:20 StopOnLimit:YES DisableAfter:NO];
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:20 StopOnLimit:YES DisableAfter:NO];
     else if (self.currentSpeed==CSStageSpeedFast)
-        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection StepInterval:100 Steps:100 StopOnLimit:YES DisableAfter:NO];
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:self.currentDirection Steps:100 StopOnLimit:YES DisableAfter:NO];
     
 }
 
@@ -531,6 +636,11 @@ AVAudioPlayer* _avPlayer;
 successiveIterationsGrowRangeBy:(float)growRangeBy
                       focusMode:(int)focusMode
 {
+    float bfFocusThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"BFFocusThreshold"];
+    float flFocusThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"FLFocusThreshold"];
+    int focusStepInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"FocusStepInterval"];
+    float focusSettlingTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"FocusSettlingTime"];
+    
     int state = 1;
     double maxFocus = 0;
     double minFocus = 999999;
@@ -559,23 +669,23 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 state = 2;
                 break;
             case 2: //backup
+                [[TBScopeHardware sharedHardware] setStepperInterval:focusStepInterval];
+                [NSThread sleepForTimeInterval:0.1];
                 [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                            StepInterval:100 //250
                                                                    Steps:ceil(stepsPerSlice*stackSize/2)
                                                              StopOnLimit:YES
                                                             DisableAfter:NO];
                 [[TBScopeHardware sharedHardware] waitForStage];
-                [NSThread sleepForTimeInterval:0.075]; //0.1 //0.2 //0.4
+                [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2 //0.4
                 state = 3;
                 break;
             case 3: //scan forward
                 [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
-                                                            StepInterval:100 //250
                                                                    Steps:stepsPerSlice
                                                              StopOnLimit:YES
                                                             DisableAfter:NO];
                 [[TBScopeHardware sharedHardware] waitForStage];
-                [NSThread sleepForTimeInterval:0.075]; //0.1 //0.2  //0.4
+                [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2  //0.4
                 if (previewView.currentFocusMetric > maxFocus)
                 {
                     maxFocus = previewView.currentFocusMetric;
@@ -600,19 +710,18 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 //if maxFocus wasn't significantly better than minFocus, go back to original point and do another iteration
                 
                 if (focusMode==AUTOFOCUS_ON_SHARPNESS)
-                    improvement_threshold = FOCUS_IMPROVEMENT_THRESHOLD_SHARPNESS;
+                    improvement_threshold = bfFocusThreshold;
                 else
-                    improvement_threshold = FOCUS_IMPROVEMENT_THRESHOLD_CONTRAST;
+                    improvement_threshold = flFocusThreshold;
                 
                 if ((maxFocus/minFocus)<improvement_threshold) {
                     [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                StepInterval:100 //250
                                                                        Steps:stepsPerSlice*stackSize/2
                                                                  StopOnLimit:YES
                                                                 DisableAfter:NO];
                     
                     [[TBScopeHardware sharedHardware] waitForStage];
-                    [NSThread sleepForTimeInterval:0.075]; //0.1 //0.2 //0.4
+                    [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2 //0.4
                     
                     if (numIterationsRemaining>0) {
                         numIterationsRemaining--;
@@ -629,13 +738,12 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 else //move back to maxfocus position
                 {
                     [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                StepInterval:100 //250
                                                                        Steps:(stepsPerSlice*numCyclesToGoBack)+FOCUS_BACKLASH_CORRECTION
                                                                  StopOnLimit:YES
                                                                 DisableAfter:NO];
                     
                     [[TBScopeHardware sharedHardware] waitForStage];
-                    [NSThread sleepForTimeInterval:0.075]; //0.1 //0.2 //0.4
+                    [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2 //0.4
                     
                     [TBScopeData CSLog:[NSString stringWithFormat:@"Autofocused with minFocus=%lf, maxFocus=%lf, deltaSteps=%d, mode=%d, stepSize=%d, finalStackSize=%d, numIterationsAttempted=%d",minFocus,maxFocus,(stepsPerSlice*numCyclesToGoBack),focusMode,stepsPerSlice,stackSize,(numAttempts-numIterationsRemaining+1)] inCategory:@"CAPTURE"];
                     state = 0; //done
@@ -697,8 +805,29 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
               bfIntensity:(int)bfIntensity
               flIntensity:(int)flIntensity
 {
+
+    //load focusing parameters
+    int maxAFFailures = [[NSUserDefaults standardUserDefaults] integerForKey:@"MaxAFFailures"];
+    int initialBFStackSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"InitialBFFocusStackSize"];
+    int initialBFStepHeight = [[NSUserDefaults standardUserDefaults] integerForKey:@"InitialBFFocusStepSize"];
+    int initialBFRetryAttempts = [[NSUserDefaults standardUserDefaults] integerForKey:@"InitialBFFocusRetryAttempts"];
+    float initialBFRetryStackMultiplier = [[NSUserDefaults standardUserDefaults] floatForKey:@"InitialBFFocusRetryStackMultiplier"];
+    int bfRefocusBFStackSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"BFRefocusStackSize"];
+    int bfRefocusBFStepHeight = [[NSUserDefaults standardUserDefaults] integerForKey:@"BFRefocusStepSize"];
+    int bfRefocusBFRetryAttempts = [[NSUserDefaults standardUserDefaults] integerForKey:@"BFRefocusRetryAttempts"];
+    float bfRefocusBFRetryStackMultiplier = [[NSUserDefaults standardUserDefaults] floatForKey:@"BFRefocusRetryStackMultiplier"];
+    int flRefocusBFStackSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"FLRefocusStackSize"];
+    int flRefocusBFStepHeight = [[NSUserDefaults standardUserDefaults] integerForKey:@"FLRefocusStepSize"];
+    int flRefocusBFRetryAttempts = [[NSUserDefaults standardUserDefaults] integerForKey:@"FLRefocusRetryAttempts"];
+    float flRefocusBFRetryStackMultiplier = [[NSUserDefaults standardUserDefaults] floatForKey:@"FLRefocusRetryStackMultiplier"];
+    
+    //speed parameters
+    int stageStepInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"StageStepInterval"];
+    float stageSettlingTime = [[NSUserDefaults standardUserDefaults] floatForKey:@"StageSettlingTime"];
+    
+    
     static int autoFocusFailCount = 0;
-    autoFocusFailCount = MAX_FLUORESCENCE_AF_FAILURES; //this will ensure that a BF fine focus gets triggered at the beginning
+    autoFocusFailCount = maxAFFailures; //this will ensure that a BF fine focus gets triggered at the beginning
     
     [TBScopeData CSLog:@"Autoscanning..." inCategory:@"CAPTURE"];
     
@@ -743,14 +872,17 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     //check if abort button pressed
     if (_isAborting) { dispatch_async(dispatch_get_main_queue(), ^(void){[self abortCapture];}); return; }
     
+    //set stage speed
+    [[TBScopeHardware sharedHardware] setStepperInterval:stageStepInterval];
+    [NSThread sleepForTimeInterval:0.1];
     
     //move to first position in grid
     //backup in both X and Y by half the row/col distance
     int xSteps = (numCols/2)*stepsBetween;
     int ySteps = (numRows/2)*stepsBetween;
-    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionRight StepInterval:100 Steps:ySteps StopOnLimit:YES DisableAfter:YES];
+    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionRight Steps:ySteps StopOnLimit:YES DisableAfter:YES];
     [[TBScopeHardware sharedHardware] waitForStage];
-    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionUp StepInterval:100 Steps:xSteps StopOnLimit:YES DisableAfter:YES];
+    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionUp Steps:xSteps StopOnLimit:YES DisableAfter:YES];
     [[TBScopeHardware sharedHardware] waitForStage];
     
     //check if abort button pressed
@@ -772,10 +904,10 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
         dispatch_async(dispatch_get_main_queue(), ^(void){
             self.scanStatusLabel.text = NSLocalizedString(@"Initial Focusing...", nil);});
         
-        [self autoFocusWithStackSize:80
-                       stepsPerSlice:200
-                         numAttempts:3
-     successiveIterationsGrowRangeBy:1.5
+        [self autoFocusWithStackSize:initialBFStackSize
+                       stepsPerSlice:initialBFStepHeight
+                         numAttempts:initialBFRetryAttempts
+     successiveIterationsGrowRangeBy:initialBFRetryStackMultiplier
                            focusMode:AUTOFOCUS_ON_SHARPNESS];
         
     }
@@ -798,7 +930,6 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
         
         //backlash compensation
         [[TBScopeHardware sharedHardware] moveStageWithDirection:yDir
-                                                    StepInterval:100
                                                            Steps:BACKLASH_STEPS
                                                      StopOnLimit:YES
                                                     DisableAfter:YES];
@@ -816,7 +947,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 return; }
             
             //re-focus, if necessary
-            if (autoFocusFailCount>=MAX_FLUORESCENCE_AF_FAILURES)
+            if (autoFocusFailCount>=maxAFFailures)
             {
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DoAutoFocus"])
                 {
@@ -838,10 +969,10 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 */
                 focusSuccess1 = YES;
                     
-                focusSuccess2 = [self autoFocusWithStackSize:20 //10
-                                               stepsPerSlice:100 //20
-                                                 numAttempts:3
-                             successiveIterationsGrowRangeBy:1.5
+                focusSuccess2 = [self autoFocusWithStackSize:bfRefocusBFStackSize //10
+                                               stepsPerSlice:bfRefocusBFStepHeight //20
+                                                 numAttempts:bfRefocusBFRetryAttempts
+                             successiveIterationsGrowRangeBy:bfRefocusBFRetryStackMultiplier
                                                    focusMode:AUTOFOCUS_ON_SHARPNESS];
                     
                     
@@ -913,10 +1044,10 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
                 [NSThread sleepForTimeInterval:0.05];
                 
-                BOOL focusSuccess = [self autoFocusWithStackSize:10 //10
-                               stepsPerSlice:60 //10
-                                 numAttempts:1 //1
-             successiveIterationsGrowRangeBy:1.5
+                BOOL focusSuccess = [self autoFocusWithStackSize:flRefocusBFStackSize //10
+                               stepsPerSlice:flRefocusBFStepHeight //10
+                                 numAttempts:flRefocusBFRetryAttempts //1
+             successiveIterationsGrowRangeBy:flRefocusBFRetryStackMultiplier
                                    focusMode:AUTOFOCUS_ON_CONTRAST];
                 
                 //TODO: add ipad autofocusing here? replace?
@@ -943,13 +1074,12 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 self.scanStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Acquiring image %d of %d...", nil),fieldNum+1,numRows*numCols];
                 self.autoScanProgressBar.progress = (float)fieldNum/(numRows*numCols);
             });
-            //[NSThread sleepForTimeInterval:0.2];
+            [NSThread sleepForTimeInterval:stageSettlingTime];
             [self didPressCapture:nil];
             [NSThread sleepForTimeInterval:0.5];
             
             //move stage in y
             [[TBScopeHardware sharedHardware] moveStageWithDirection:yDir
-                                                        StepInterval:100
                                                                Steps:stepsBetween
                                                          StopOnLimit:YES
                                                         DisableAfter:YES];
@@ -959,7 +1089,6 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
         
         //move stage in x (next column)
         [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionDown
-                                                    StepInterval:100
                                                            Steps:stepsBetween
                                                      StopOnLimit:YES
                                                     DisableAfter:YES];
