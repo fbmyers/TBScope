@@ -16,6 +16,9 @@ local.properties
 .settings/
 .loadpath
 
+# Cocoapods
+Pods/
+
 # External tool builders
 .externalToolBuilders/
 
