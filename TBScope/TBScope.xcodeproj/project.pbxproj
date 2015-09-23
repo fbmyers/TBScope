@@ -378,6 +378,7 @@
 		84072C4D196BB403004F8826 /* CoreDataJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataJSONHelper.m; path = CellScope/CoreDataJSONHelper.m; sourceTree = "<group>"; };
 		84072C4F196BB410004F8826 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = CellScope/Reachability.h; sourceTree = "<group>"; };
 		84072C50196BB410004F8826 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = CellScope/Reachability.m; sourceTree = "<group>"; };
+		8A6998811BB31B2E0034AA93 /* CellScope-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CellScope-Prefix.pch"; sourceTree = "<group>"; };
 		9B13455515E28E14009863DF /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		9B6BF0B415E19ACD002834C5 /* TBScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TBScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B6BF0B815E19ACD002834C5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -640,7 +641,6 @@
 		A5CF1A2D187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif; sourceTree = "<group>"; };
 		A5CF1A36187F3EDC00C2C2E1 /* ExamListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamListTableViewCell.h; sourceTree = "<group>"; };
 		A5CF1A37187F3EDC00C2C2E1 /* ExamListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamListTableViewCell.m; sourceTree = "<group>"; };
-		A5D3951B182F559A00E2A323 /* CellScope-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CellScope-Prefix.pch"; sourceTree = "<group>"; };
 		A5FCCCF218B596330004B2F5 /* EditSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSlideViewController.h; sourceTree = "<group>"; };
 		A5FCCCF318B596330004B2F5 /* EditSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSlideViewController.m; sourceTree = "<group>"; };
 		A5FCCD1218B6DC650004B2F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/configuration.png; sourceTree = "<group>"; };
@@ -834,7 +834,7 @@
 				A5B72A911899F88F0013DA9F /* Localizable.strings */,
 				9B6BF0C315E19ACD002834C5 /* InfoPlist.strings */,
 				9B6BF0C615E19ACD002834C5 /* main.m */,
-				A5D3951B182F559A00E2A323 /* CellScope-Prefix.pch */,
+				8A6998811BB31B2E0034AA93 /* CellScope-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			path = CellScope;
