@@ -48,15 +48,18 @@
     NSError* error;
     if ([self.device lockForConfiguration:&error])
     {
-        if (locked)
-            [self.device setFocusMode:AVCaptureFocusModeLocked];
-        else
-            [self.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        AVCaptureFocusMode focusMode = locked ? AVCaptureFocusModeLocked : AVCaptureFocusModeContinuousAutoFocus;
+        if ([self.device isFocusModeSupported:focusMode]) {
+            [self.device setFocusMode:focusMode];
+        } else {
+            NSLog(@"Warning: Device does not support focusMode: %ld", (long)focusMode);
+        }
+
         self.isFocusLocked = locked;
         [self.device unlockForConfiguration];
-    }
-    else
+    } else {
         NSLog(@"Error: %@",error);
+    }
 }
 
 - (void)setExposureLock:(BOOL)locked
@@ -64,16 +67,18 @@
     NSError* error;
     if ([self.device lockForConfiguration:&error])
     {
-        if (locked)
+        AVCaptureExposureMode exposureMode = locked ? AVCaptureExposureModeLocked : AVCaptureExposureModeContinuousAutoExposure;
+        if ([self.device isExposureModeSupported:exposureMode]) {
             [self.device setExposureMode:AVCaptureExposureModeLocked];
-        else
-            [self.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+        } else {
+            NSLog(@"Warning: Device does not support exposureMode: %ld", (long)exposureMode);
+        }
+
         self.isExposureLocked = locked;
         [self.device unlockForConfiguration];
-    }
-    else
+    } else {
         NSLog(@"Error: %@",error);
-    
+    }
 }
 
 @end
