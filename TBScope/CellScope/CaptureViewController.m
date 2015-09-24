@@ -7,6 +7,7 @@
 //
 
 #import "CaptureViewController.h"
+#import "TBScopeCameraService.h"
 
 BOOL _FLOn=NO;
 BOOL _BFOn=NO;
@@ -60,8 +61,9 @@ AVAudioPlayer* _avPlayer;
     
     [previewView setAutoresizesSubviews:NO];  //TODO: necessary?
     
-    [previewView setFocusLock:YES];
-    [previewView setExposureLock:YES];
+    TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
+    [cameraService setExposureLock:YES];
+    [cameraService setFocusLock:YES];
     
     self.analyzeButton.enabled = NO;
     
@@ -413,10 +415,11 @@ AVAudioPlayer* _avPlayer;
         self.intensitySlider.tintColor = [UIColor greenColor];
         self.intensityLabel.textColor = [UIColor greenColor];
         
-        [previewView setExposureLock:NO];
+        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
+        [cameraService setExposureLock:NO];
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
         [NSThread sleepForTimeInterval:2.0];
-        [previewView setExposureLock:YES];
+        [cameraService setExposureLock:YES];
         
         [self.bfButton setTitle:NSLocalizedString(@"BF On",nil) forState:UIControlStateNormal];
         [self.bfButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
@@ -511,15 +514,16 @@ AVAudioPlayer* _avPlayer;
     }
     else if (buttonPressed.tag==9) //AE
     {
+        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
         if (AEOn)
         {
-            [previewView setExposureLock:YES];
+            [cameraService setExposureLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AE Off",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
         else
         {
-            [previewView setExposureLock:NO];
+            [cameraService setExposureLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AE On",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
         }
@@ -527,15 +531,16 @@ AVAudioPlayer* _avPlayer;
     }
     else if (buttonPressed.tag==10) //AF
     {
+        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
         if (AFOn)
         {
-            [previewView setFocusLock:YES];
+            [cameraService setFocusLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AF Off",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
         else
         {
-            [previewView setFocusLock:NO];
+            [cameraService setFocusLock:NO];
             [buttonPressed setTitle:NSLocalizedString(@"AF On",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
         }
@@ -626,7 +631,6 @@ AVAudioPlayer* _avPlayer;
                    flIntensity:[[NSUserDefaults standardUserDefaults] integerForKey:@"AutoScanFluorescentIntensity"]];
     });
 }
-
 
 //this algorithm will go numSteps/2 up, then numSteps down, then back up to a maximum of numSteps+1 (backlash)
 //focusMode 0 = BF, based on tenegrad3 averaged over last 3 frames, focusMode 1 = FL, based on contrast averaged over last 3 frames
@@ -824,7 +828,9 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     //speed parameters
     int stageStepInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"StageStepInterval"];
     float stageSettlingTime = [[NSUserDefaults standardUserDefaults] floatForKey:@"StageSettlingTime"];
-    
+
+    //shared camera service
+    TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
     
     static int autoFocusFailCount = 0;
     autoFocusFailCount = maxAFFailures; //this will ensure that a BF fine focus gets triggered at the beginning
@@ -854,8 +860,8 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     });
     
     //starting conditions
-    [previewView setExposureLock:NO];
-    [previewView setFocusLock:YES];
+    [cameraService setExposureLock:NO];
+    [cameraService setFocusLock:YES];
     [self toggleBF:NO];
     [self toggleFL:NO];
     [NSThread sleepForTimeInterval:0.1];
@@ -893,10 +899,10 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     NSLog(@"auto expose");
     dispatch_async(dispatch_get_main_queue(), ^(void){
         self.scanStatusLabel.text = NSLocalizedString(@"Exposure Calibration...", nil);});
-    [previewView setExposureLock:NO];
+    [cameraService setExposureLock:NO];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:bfIntensity];
     [NSThread sleepForTimeInterval:2.0];
-    [previewView setExposureLock:YES];
+    [cameraService setExposureLock:YES];
     
     //focus in BF with wide range first
     

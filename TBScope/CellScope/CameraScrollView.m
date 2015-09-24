@@ -7,6 +7,7 @@
 //
 
 #import "CameraScrollView.h"
+#import "TBScopeCameraService.h"
 
 
 @implementation CameraScrollView
@@ -30,9 +31,9 @@
         [self setShowsVerticalScrollIndicator:YES];
         [self setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
         
-        [self setExposureLock:NO];
-        [self setFocusLock:NO];
-        
+        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
+        [cameraService setExposureLock:NO];
+        [cameraService setFocusLock:NO];
     }
     return self;
 }
@@ -210,39 +211,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     [self setZoomScale:zoomFactor animated:YES];
     
-}
-
-- (void)setExposureLock:(BOOL)locked
-{
-    NSError* error;
-    if ([self.device lockForConfiguration:&error])
-    {
-        if (locked)
-            [self.device setExposureMode:AVCaptureExposureModeLocked];
-        else
-            [self.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-        self.isExposureLocked = locked;
-        [self.device unlockForConfiguration];
-    }
-    else
-        NSLog(@"Error: %@",error);
-    
-}
-
-- (void)setFocusLock:(BOOL)locked
-{
-    NSError* error;
-    if ([self.device lockForConfiguration:&error])
-    {
-        if (locked)
-            [self.device setFocusMode:AVCaptureFocusModeLocked];
-        else
-            [self.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-        self.isFocusLocked = locked;
-        [self.device unlockForConfiguration];
-    }
-    else
-        NSLog(@"Error: %@",error);
 }
 
 - (void) startPreview

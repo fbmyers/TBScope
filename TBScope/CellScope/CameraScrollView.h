@@ -35,9 +35,6 @@
 
 @property (nonatomic) BOOL previewRunning;
 
-@property (nonatomic) BOOL isFocusLocked;
-@property (nonatomic) BOOL isExposureLocked;
-
 @property (nonatomic) ImageQuality currentImageQuality;
 @property (nonatomic) int focusMode;
 @property (nonatomic) double currentFocusMetric;
@@ -48,9 +45,6 @@
 - (void) startPreview;
 - (void) stopPreview;
 - (void) grabImage;
-
-- (void) setExposureLock:(BOOL)locked;
-- (void) setFocusLock:(BOOL)locked;
 
 
 //for focusing
