@@ -117,14 +117,14 @@
 
 - (void)setBTIndicator
 {
-    self.bluetoothIndicator.hidden = ![[[TBScopeHardware sharedHardware] ble] isConnected];
+    self.bluetoothIndicator.hidden = ![[TBScopeHardware sharedHardware] isConnected];
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
    
     if([identifier isEqualToString:@"ScanSlideSegue"]) {
-        if (![[[TBScopeHardware sharedHardware] ble] isConnected] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"AllowScanWithoutCellScope"]) {
+        if (![[TBScopeHardware sharedHardware] isConnected] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"AllowScanWithoutCellScope"]) {
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CellScope Not Connected", nil)
                                                              message:NSLocalizedString(@"Please ensure Bluetooth is enabled and CellScope is powered on.",nil)
                                                             delegate:self

@@ -6,28 +6,22 @@
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
-#import "TBScopeHardware.h"
+#import "TBScopeHardwareReal.h"
 
 BOOL _isMoving = NO;
 CBPeripheral* _tbScopePeripheral;
 
-@implementation TBScopeHardware
+@implementation TBScopeHardwareReal
 
-@synthesize ble;
+@synthesize batteryVoltage,
+            temperature,
+            humidity,
+            ble,
+            delegate;
 
-+ (id)sharedHardware {
-    static TBScopeHardware *newContext = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        newContext = [[self alloc] init];
-    });
-    return newContext;
-}
-
-- (id)init {
+- (instancetype)init
+{
     if (self = [super init]) {
-
-        
     }
     return self;
 }
@@ -57,6 +51,11 @@ CBPeripheral* _tbScopePeripheral;
     //now connect
     [ble findBLEPeripherals:2];
     [NSTimer scheduledTimerWithTimeInterval:(float)1.0 target:self selector:@selector(connectionTimer:) userInfo:nil repeats:NO];
+}
+
+- (BOOL)isConnected
+{
+    return [self.ble isConnected];
 }
 
 #pragma mark - BLE delegate
