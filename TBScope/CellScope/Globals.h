@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <unordered_map>
 
+#define PATCHSZ 30
+#define CIRCLEMASKRADIUS 15
 
 #if __APPLE__
 #else // Assumed to be windows

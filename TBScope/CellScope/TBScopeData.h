@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 UC Berkeley Fletcher Lab. All rights reserved.
 //
 
+#define PATCHSZ 30
+
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
