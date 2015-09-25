@@ -25,10 +25,6 @@
 
 #define MAX_FLUORESCENCE_AF_FAILURES 3
 
-//todo: redo as enums
-#define AUTOFOCUS_ON_SHARPNESS 0
-#define AUTOFOCUS_ON_CONTRAST 1
-
 @interface CaptureViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate, TBScopeHardwareDelegate>
 
 

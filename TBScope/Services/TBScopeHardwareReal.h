@@ -14,35 +14,8 @@
 #import "TBScopeData.h"
 
 @interface TBScopeHardwareReal : NSObject <TBScopeHardwareDriver, BLEDelegate, UIAlertViewDelegate>
-
 @property (strong, nonatomic) BLE *ble;
 
-@property (nonatomic,assign) id <TBScopeHardwareDelegate> delegate;
-
-
-- (void)setupBLEConnection;
-
-- (void) connectionTimer:(NSTimer *)timer;
-
-- (void) disableMotors;
-
-- (void) requestStatusUpdate;
-
-- (void) setStepperInterval:(UInt16)stepInterval;
-
-- (void) moveStageWithDirection:(CSStageDirection) dir
-                          Steps:(UInt16)steps
-                    StopOnLimit:(BOOL)stopOnLimit
-                   DisableAfter:(BOOL)disableAfter;
-
-- (void) moveToPosition:(CSStagePosition)position;
-
-- (void) waitForStage;
-
-- (void) setMicroscopeLED:(CSLED) led
-                    Level:(Byte) level;
-
--(void) pairBLECellScope;
-
-
+-(void)connectionTimer:(NSTimer *)timer;
+-(void)pairBLECellScope;
 @end

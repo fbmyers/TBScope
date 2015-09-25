@@ -7,7 +7,7 @@
 //
 
 #import "CaptureViewController.h"
-#import "TBScopeCameraService.h"
+#import "TBScopeCamera.h"
 
 BOOL _FLOn=NO;
 BOOL _BFOn=NO;
@@ -45,7 +45,7 @@ AVAudioPlayer* _avPlayer;
     
     
     //setup the camera view
-    [previewView setupCamera];
+    [previewView setUpPreview];
     [previewView setBouncesZoom:NO];
     [previewView setBounces:NO];
     [previewView setMaximumZoomScale:10.0];
@@ -61,9 +61,8 @@ AVAudioPlayer* _avPlayer;
     
     [previewView setAutoresizesSubviews:NO];  //TODO: necessary?
     
-    TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
-    [cameraService setExposureLock:YES];
-    [cameraService setFocusLock:YES];
+    [[TBScopeCamera sharedCamera] setExposureLock:YES];
+    [[TBScopeCamera sharedCamera] setFocusLock:YES];
     
     self.analyzeButton.enabled = NO;
     
@@ -170,16 +169,13 @@ AVAudioPlayer* _avPlayer;
 
 - (void)didPressCapture:(id)sender
 {
-    if (previewView.previewRunning)
+    if ([[TBScopeCamera sharedCamera] isPreviewRunning])
     {
         [previewView grabImage];
-    }
-    else
-    {
-        [previewView startPreview];
+    } else {
+        [[TBScopeCamera sharedCamera] startPreview];
         self.analyzeButton.enabled = NO;
     }
-    
 }
 
 
@@ -189,7 +185,7 @@ AVAudioPlayer* _avPlayer;
     
     [TBScopeData CSLog:@"Snapped an image" inCategory:@"CAPTURE"];
     
-    UIImage* image = previewView.lastCapturedImage; //[self convertImageToGrayScale:previewView.lastCapturedImage];
+    UIImage* image = [[TBScopeCamera sharedCamera] lastCapturedImage]; //[self convertImageToGrayScale:previewView.lastCapturedImage];
     
     //Crop the circle out of it
     //image = [ImageQualityAnalyzer maskCircleFromImage:image];
@@ -199,12 +195,11 @@ AVAudioPlayer* _avPlayer;
     [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
         if (error) {
             [TBScopeData CSLog:@"Error saving image to asset library" inCategory:@"CAPTURE"];
-        }
-        else {
+        } else {
             Images* newImage = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
             newImage.path = assetURL.absoluteString;
             newImage.fieldNumber = self.currentField+1;
-            newImage.metadata = previewView.lastImageMetadata;
+            newImage.metadata = [[TBScopeCamera sharedCamera] lastImageMetadata];
             [self.currentSlide addSlideImagesObject:newImage];
             
             // Commit to core data
@@ -415,11 +410,10 @@ AVAudioPlayer* _avPlayer;
         self.intensitySlider.tintColor = [UIColor greenColor];
         self.intensityLabel.textColor = [UIColor greenColor];
         
-        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
-        [cameraService setExposureLock:NO];
+        [[TBScopeCamera sharedCamera] setExposureLock:NO];
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
         [NSThread sleepForTimeInterval:2.0];
-        [cameraService setExposureLock:YES];
+        [[TBScopeCamera sharedCamera] setExposureLock:YES];
         
         [self.bfButton setTitle:NSLocalizedString(@"BF On",nil) forState:UIControlStateNormal];
         [self.bfButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
@@ -514,16 +508,15 @@ AVAudioPlayer* _avPlayer;
     }
     else if (buttonPressed.tag==9) //AE
     {
-        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
         if (AEOn)
         {
-            [cameraService setExposureLock:YES];
+            [[TBScopeCamera sharedCamera] setExposureLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AE Off",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
         else
         {
-            [cameraService setExposureLock:YES];
+            [[TBScopeCamera sharedCamera] setExposureLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AE On",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
         }
@@ -531,16 +524,15 @@ AVAudioPlayer* _avPlayer;
     }
     else if (buttonPressed.tag==10) //AF
     {
-        TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
         if (AFOn)
         {
-            [cameraService setFocusLock:YES];
+            [[TBScopeCamera sharedCamera] setFocusLock:YES];
             [buttonPressed setTitle:NSLocalizedString(@"AF Off",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
         else
         {
-            [cameraService setFocusLock:NO];
+            [[TBScopeCamera sharedCamera] setFocusLock:NO];
             [buttonPressed setTitle:NSLocalizedString(@"AF On",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
         }
@@ -580,7 +572,8 @@ AVAudioPlayer* _avPlayer;
 
 - (void) didReceiveMemoryWarning
 {
-    self.previewView.lastCapturedImage = nil;
+    [[TBScopeCamera sharedCamera] clearLastCapturedImage];
+
     [TBScopeData CSLog:@"CaptureViewController received memory warning" inCategory:@"MEMORY"];
 }
 
@@ -609,13 +602,13 @@ AVAudioPlayer* _avPlayer;
                        stepsPerSlice:80
                          numAttempts:3
      successiveIterationsGrowRangeBy:1.5
-                           focusMode:AUTOFOCUS_ON_SHARPNESS];
+                           focusMode:TBScopeCameraFocusModeSharpness];
         
         [self autoFocusWithStackSize:10
                        stepsPerSlice:20
                          numAttempts:3
      successiveIterationsGrowRangeBy:1.5
-                           focusMode:AUTOFOCUS_ON_SHARPNESS];
+                           focusMode:TBScopeCameraFocusModeSharpness];
         
     });
 }
@@ -690,17 +683,17 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                                                             DisableAfter:NO];
                 [[TBScopeHardware sharedHardware] waitForStage];
                 [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2  //0.4
-                if (previewView.currentFocusMetric > maxFocus)
+                if ([[TBScopeCamera sharedCamera] currentFocusMetric] > maxFocus)
                 {
-                    maxFocus = previewView.currentFocusMetric;
+                    maxFocus = [[TBScopeCamera sharedCamera] currentFocusMetric];
                     numCyclesToGoBack = 0;
                     //maxPosition = currentPosition;
                 }
                 else
                     numCyclesToGoBack++;
                 
-                if (previewView.currentFocusMetric < minFocus)
-                    minFocus = previewView.currentFocusMetric;
+                if ([[TBScopeCamera sharedCamera] currentFocusMetric] < minFocus)
+                    minFocus = [[TBScopeCamera sharedCamera] currentFocusMetric];
                 
                 currentCycle++;
                 if (currentCycle>=stackSize) {
@@ -713,7 +706,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                 
                 //if maxFocus wasn't significantly better than minFocus, go back to original point and do another iteration
                 
-                if (focusMode==AUTOFOCUS_ON_SHARPNESS)
+                if (focusMode==TBScopeCameraFocusModeSharpness)
                     improvement_threshold = bfFocusThreshold;
                 else
                     improvement_threshold = flFocusThreshold;
@@ -758,7 +751,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
             default:
                 break;
         }
-        NSLog(@"currentCycle=%d currentFocus=%f, maxFocus=%f",currentCycle,previewView.currentFocusMetric,maxFocus);
+        NSLog(@"currentCycle=%d currentFocus=%f, maxFocus=%f", currentCycle, [[TBScopeCamera sharedCamera] currentFocusMetric], maxFocus);
     }
     [[TBScopeHardware sharedHardware] disableMotors];
     return YES;
@@ -829,9 +822,6 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     int stageStepInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"StageStepInterval"];
     float stageSettlingTime = [[NSUserDefaults standardUserDefaults] floatForKey:@"StageSettlingTime"];
 
-    //shared camera service
-    TBScopeCameraService *cameraService = [TBScopeCameraService sharedService];
-    
     static int autoFocusFailCount = 0;
     autoFocusFailCount = maxAFFailures; //this will ensure that a BF fine focus gets triggered at the beginning
     
@@ -860,8 +850,8 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     });
     
     //starting conditions
-    [cameraService setExposureLock:NO];
-    [cameraService setFocusLock:YES];
+    [[TBScopeCamera sharedCamera] setExposureLock:NO];
+    [[TBScopeCamera sharedCamera] setFocusLock:YES];
     [self toggleBF:NO];
     [self toggleFL:NO];
     [NSThread sleepForTimeInterval:0.1];
@@ -899,10 +889,10 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
     NSLog(@"auto expose");
     dispatch_async(dispatch_get_main_queue(), ^(void){
         self.scanStatusLabel.text = NSLocalizedString(@"Exposure Calibration...", nil);});
-    [cameraService setExposureLock:NO];
+    [[TBScopeCamera sharedCamera] setExposureLock:NO];
     [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:bfIntensity];
     [NSThread sleepForTimeInterval:2.0];
-    [cameraService setExposureLock:YES];
+    [[TBScopeCamera sharedCamera] setExposureLock:YES];
     
     //focus in BF with wide range first
     
@@ -914,7 +904,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                        stepsPerSlice:initialBFStepHeight
                          numAttempts:initialBFRetryAttempts
      successiveIterationsGrowRangeBy:initialBFRetryStackMultiplier
-                           focusMode:AUTOFOCUS_ON_SHARPNESS];
+                           focusMode:TBScopeCameraFocusModeSharpness];
         
     }
      
@@ -971,7 +961,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                                                stepsPerSlice:100 //80
                                                  numAttempts:3
                              successiveIterationsGrowRangeBy:1.5
-                                                   focusMode:AUTOFOCUS_ON_SHARPNESS];
+                                                   focusMode:TBScopeCameraFocusModeSharpness];
                 */
                 focusSuccess1 = YES;
                     
@@ -979,7 +969,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                                                stepsPerSlice:bfRefocusBFStepHeight //20
                                                  numAttempts:bfRefocusBFRetryAttempts
                              successiveIterationsGrowRangeBy:bfRefocusBFRetryStackMultiplier
-                                                   focusMode:AUTOFOCUS_ON_SHARPNESS];
+                                                   focusMode:TBScopeCameraFocusModeSharpness];
                     
                     
                 if (!focusSuccess1 || !focusSuccess2)
@@ -1013,13 +1003,13 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                                                    stepsPerSlice:40 //80
                                                      numAttempts:3
                                  successiveIterationsGrowRangeBy:1.5
-                                                       focusMode:AUTOFOCUS_ON_SHARPNESS];
+                                                       focusMode:TBScopeCameraFocusModeSharpness];
                     
                     focusSuccess2 = [self autoFocusWithStackSize:10 //10
                                                    stepsPerSlice:20 //20
                                                      numAttempts:3
                                  successiveIterationsGrowRangeBy:1.5
-                                                       focusMode:AUTOFOCUS_ON_SHARPNESS];
+                                                       focusMode:TBScopeCameraFocusModeSharpness];
                     
                     if (!focusSuccess1 || !focusSuccess2)
                         [self manualFocusWithFL:flIntensity BF:1];
@@ -1054,7 +1044,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
                                stepsPerSlice:flRefocusBFStepHeight //10
                                  numAttempts:flRefocusBFRetryAttempts //1
              successiveIterationsGrowRangeBy:flRefocusBFRetryStackMultiplier
-                                   focusMode:AUTOFOCUS_ON_CONTRAST];
+                                   focusMode:TBScopeCameraFocusModeContrast];
                 
                 //TODO: add ipad autofocusing here? replace?
                 

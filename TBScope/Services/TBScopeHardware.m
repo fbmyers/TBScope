@@ -8,14 +8,14 @@
 
 #import "TBScopeHardware.h"
 
-// If the SIMULATED_HARDWARE environment flag is set to 1 we'll use the HardwareMock
+// If the AllowScanWithoutCellScope flag is set to 1 we'll use the HardwareMock
 // (for testing without a device). Otherwise we'll use the real hardware.
 #import "TBScopeHardwareReal.h"
 #import "TBScopeHardwareMock.h"
 
 @implementation TBScopeHardware
 
-+(id)sharedHardware
++ (id)sharedHardware
 {
     static id<TBScopeHardwareDriver> sharedHardware;
     static dispatch_once_t onceToken;
