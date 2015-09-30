@@ -24,9 +24,10 @@ namespace ImageTools
         double max;
         double min;
         double range;
-        
-        if (image.rows!=1944) { //neilscope
-                    
+
+        if (image.rows == 1944) {
+            cv::minMaxIdx(image, &min, &max, NULL, NULL);
+        } else if (image.rows >= 1800 && image.cols > 1400) { //neilscope
             cv::Mat img_mask(image.rows,image.cols, CV_8UC1);
             img_mask = cv::Scalar(0);
             for (int i = 800; i < 1800; i++)
@@ -39,9 +40,8 @@ namespace ImageTools
 
             cv::minMaxIdx(image, &min, &max, NULL, NULL, img_mask);
             img_mask.release();
-        }
-        else
-        {
+        } else {
+            // Image was smaller than recent iPad resolution; do our best...
             cv::minMaxIdx(image, &min, &max, NULL, NULL);
         }
         
