@@ -289,9 +289,8 @@ float computeShannonEntropy(Mat src)
 
 
 
-+ (ImageQuality) calculateFocusMetric:(CMSampleBufferRef)sampleBuffer
++ (ImageQuality) calculateFocusMetricFromIplImage:(IplImage *)iplImage
 {
-    
     /*
     //generate a cv::mat from sampleBuffer
     CVImageBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -305,11 +304,7 @@ float computeShannonEntropy(Mat src)
     
     ImageQuality iq;
     
-    //TODO: this isn't taking green channel...how do we do that?
-    IplImage* iplimg = [ImageQualityAnalyzer createIplImageFromSampleBuffer:sampleBuffer];
-
-    
-    Mat src = Mat(iplimg);
+    Mat src = Mat(iplImage);
     
     /*
     Mat lap;
@@ -351,7 +346,7 @@ float computeShannonEntropy(Mat src)
 
     src.release();
     //lap.release();
-    cvReleaseImage(&iplimg);
+    cvReleaseImage(&iplImage);
     
     
     

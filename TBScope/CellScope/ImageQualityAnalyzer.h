@@ -28,7 +28,9 @@ typedef struct
 
 @interface ImageQualityAnalyzer : NSObject
 
-+ (ImageQuality) calculateFocusMetric:(CMSampleBufferRef)sampleBuffer;
++ (IplImage *)createIplImageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer;
+
++ (ImageQuality) calculateFocusMetricFromIplImage:(IplImage *)iplImage;
 
 + (UIImage*) maskCircleFromImage:(UIImage*)inputImage;
 

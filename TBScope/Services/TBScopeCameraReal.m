@@ -183,7 +183,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     static double sharpnessAveragingArray[] = {0,0,0};
     static double contrastAveragingArray[] = {0,0,0};
     
-    ImageQuality iq = [ImageQualityAnalyzer calculateFocusMetric:sampleBuffer];
+    IplImage *iplImage = [ImageQualityAnalyzer createIplImageFromSampleBuffer:sampleBuffer];
+    ImageQuality iq = [ImageQualityAnalyzer calculateFocusMetricFromIplImage:iplImage];
+    cvReleaseImage(&iplImage);
     
     // Sharpness
     //why is this crashing w/ back?

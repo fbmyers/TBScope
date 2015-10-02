@@ -16,6 +16,11 @@
 		8A5253FE1BBC7CA6009B29BF /* TBScopeCameraMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5253FD1BBC7CA6009B29BF /* TBScopeCameraMock.m */; };
 		8A5254051BBD6666009B29BF /* bf_mock.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254041BBD6666009B29BF /* bf_mock.jpg */; };
 		8A5254071BBD666E009B29BF /* fl_mock.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254061BBD666E009B29BF /* fl_mock.jpg */; };
+		8A5254451BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5254441BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m */; };
+		8A52546A1BBEBEA6009B29BF /* bf_blurry.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254661BBEBEA6009B29BF /* bf_blurry.jpg */; };
+		8A52546B1BBEBEA6009B29BF /* bf_focused.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254671BBEBEA6009B29BF /* bf_focused.jpg */; };
+		8A52546C1BBEBEA6009B29BF /* fl_blurry.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254681BBEBEA6009B29BF /* fl_blurry.jpg */; };
+		8A52546D1BBEBEA6009B29BF /* fl_focused.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254691BBEBEA6009B29BF /* fl_focused.jpg */; };
 		8A5CDE591BB4489F004E30A3 /* TBScopeHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE581BB4489F004E30A3 /* TBScopeHardware.m */; };
 		8A5CDE5C1BB44A34004E30A3 /* TBScopeHardwareMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE5B1BB44A34004E30A3 /* TBScopeHardwareMock.m */; };
 		8A5CDE5F1BB44BE5004E30A3 /* TBScopeHardwareReal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE5E1BB44BE5004E30A3 /* TBScopeHardwareReal.m */; };
@@ -157,6 +162,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8A5254311BBDA1C0009B29BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B6BF0AB15E19ACD002834C5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B6BF0B315E19ACD002834C5;
+			remoteInfo = TBScope;
+		};
 		ACA1281F16FD241C00E2D03A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
@@ -310,6 +322,13 @@
 		8A5253FD1BBC7CA6009B29BF /* TBScopeCameraMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeCameraMock.m; path = Services/TBScopeCameraMock.m; sourceTree = "<group>"; };
 		8A5254041BBD6666009B29BF /* bf_mock.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bf_mock.jpg; path = CellScope/bf_mock.jpg; sourceTree = "<group>"; };
 		8A5254061BBD666E009B29BF /* fl_mock.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = fl_mock.jpg; path = CellScope/fl_mock.jpg; sourceTree = "<group>"; };
+		8A52542B1BBDA1C0009B29BF /* TBScopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TBScopeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A52542E1BBDA1C0009B29BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A5254441BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageQualityAnalyzerTests.m; sourceTree = "<group>"; };
+		8A5254661BBEBEA6009B29BF /* bf_blurry.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bf_blurry.jpg; sourceTree = "<group>"; };
+		8A5254671BBEBEA6009B29BF /* bf_focused.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bf_focused.jpg; sourceTree = "<group>"; };
+		8A5254681BBEBEA6009B29BF /* fl_blurry.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fl_blurry.jpg; sourceTree = "<group>"; };
+		8A5254691BBEBEA6009B29BF /* fl_focused.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fl_focused.jpg; sourceTree = "<group>"; };
 		8A5CDE571BB4489F004E30A3 /* TBScopeHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeHardware.h; path = Services/TBScopeHardware.h; sourceTree = "<group>"; };
 		8A5CDE581BB4489F004E30A3 /* TBScopeHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeHardware.m; path = Services/TBScopeHardware.m; sourceTree = "<group>"; };
 		8A5CDE5A1BB44A34004E30A3 /* TBScopeHardwareMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeHardwareMock.h; path = Services/TBScopeHardwareMock.h; sourceTree = "<group>"; };
@@ -521,6 +540,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8A5254281BBDA1C0009B29BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B6BF0B115E19ACD002834C5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -562,6 +588,35 @@
 			);
 			name = "Mock Images";
 			path = ../..;
+			sourceTree = "<group>";
+		};
+		8A52542C1BBDA1C0009B29BF /* TBScopeTests */ = {
+			isa = PBXGroup;
+			children = (
+				8A5254441BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m */,
+				8A52542D1BBDA1C0009B29BF /* Supporting Files */,
+			);
+			path = TBScopeTests;
+			sourceTree = "<group>";
+		};
+		8A52542D1BBDA1C0009B29BF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8A5254461BBDAA44009B29BF /* Images */,
+				8A52542E1BBDA1C0009B29BF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8A5254461BBDAA44009B29BF /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8A5254661BBEBEA6009B29BF /* bf_blurry.jpg */,
+				8A5254671BBEBEA6009B29BF /* bf_focused.jpg */,
+				8A5254681BBEBEA6009B29BF /* fl_blurry.jpg */,
+				8A5254691BBEBEA6009B29BF /* fl_focused.jpg */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		8A5CDE3A1BB421F3004E30A3 /* Services */ = {
@@ -606,6 +661,7 @@
 				84072C4D196BB403004F8826 /* CoreDataJSONHelper.m */,
 				84072C4F196BB410004F8826 /* Reachability.h */,
 				84072C50196BB410004F8826 /* Reachability.m */,
+				8A52542C1BBDA1C0009B29BF /* TBScopeTests */,
 				9B6BF0B715E19ACD002834C5 /* Frameworks */,
 				9B6BF0B515E19ACD002834C5 /* Products */,
 				ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */,
@@ -617,6 +673,7 @@
 			isa = PBXGroup;
 			children = (
 				9B6BF0B415E19ACD002834C5 /* TBScope.app */,
+				8A52542B1BBDA1C0009B29BF /* TBScopeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -922,6 +979,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8A52542A1BBDA1C0009B29BF /* TBScopeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A5254431BBDA1C0009B29BF /* Build configuration list for PBXNativeTarget "TBScopeTests" */;
+			buildPhases = (
+				8A5254271BBDA1C0009B29BF /* Sources */,
+				8A5254281BBDA1C0009B29BF /* Frameworks */,
+				8A5254291BBDA1C0009B29BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8A5254321BBDA1C0009B29BF /* PBXTargetDependency */,
+			);
+			name = TBScopeTests;
+			productName = TBScopeTests;
+			productReference = 8A52542B1BBDA1C0009B29BF /* TBScopeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		9B6BF0B315E19ACD002834C5 /* TBScope */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9B6BF0E715E19ACD002834C5 /* Build configuration list for PBXNativeTarget "TBScope" */;
@@ -953,6 +1028,10 @@
 				LastUpgradeCheck = 0440;
 				ORGANIZATIONNAME = "UC Berkeley Fletcher Lab";
 				TargetAttributes = {
+					8A52542A1BBDA1C0009B29BF = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 9B6BF0B315E19ACD002834C5;
+					};
 					9B6BF0B315E19ACD002834C5 = {
 						DevelopmentTeam = 76ANGZ5BJZ;
 					};
@@ -978,6 +1057,7 @@
 			projectRoot = "";
 			targets = (
 				9B6BF0B315E19ACD002834C5 /* TBScope */,
+				8A52542A1BBDA1C0009B29BF /* TBScopeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1098,6 +1178,17 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8A5254291BBDA1C0009B29BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A52546A1BBEBEA6009B29BF /* bf_blurry.jpg in Resources */,
+				8A52546C1BBEBEA6009B29BF /* fl_blurry.jpg in Resources */,
+				8A52546B1BBEBEA6009B29BF /* bf_focused.jpg in Resources */,
+				8A52546D1BBEBEA6009B29BF /* fl_focused.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B6BF0B215E19ACD002834C5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1196,6 +1287,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8A5254271BBDA1C0009B29BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A5254451BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B6BF0B015E19ACD002834C5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1275,6 +1374,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8A5254321BBDA1C0009B29BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B6BF0B315E19ACD002834C5 /* TBScope */;
+			targetProxy = 8A5254311BBDA1C0009B29BF /* PBXContainerItemProxy */;
+		};
 		ACA1287516FEA5A000E2D03A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = opencv_core;
@@ -1349,6 +1453,81 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8A5254331BBDA1C0009B29BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = TBScopeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TBScope.app/TBScope";
+			};
+			name = Debug;
+		};
+		8A5254341BBDA1C0009B29BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = TBScopeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TBScope.app/TBScope";
+			};
+			name = Release;
+		};
 		9B6BF0E515E19ACD002834C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1474,6 +1653,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8A5254431BBDA1C0009B29BF /* Build configuration list for PBXNativeTarget "TBScopeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A5254331BBDA1C0009B29BF /* Debug */,
+				8A5254341BBDA1C0009B29BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9B6BF0AE15E19ACD002834C5 /* Build configuration list for PBXProject "TBScope" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
