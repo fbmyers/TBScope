@@ -17,7 +17,6 @@
 @property (strong,nonatomic) UIView* previewLayerView;
 @property (strong,nonatomic) UILabel* imageQualityLabel;
 @property (nonatomic) float imageRotation;
-@property (nonatomic) int focusMode;
 @property (nonatomic) double currentFocusMetric;
 
 - (void) setUpPreview;

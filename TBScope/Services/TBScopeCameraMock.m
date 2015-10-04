@@ -17,12 +17,13 @@
 @property (nonatomic, strong) NSTimer *imageQualityTimer;
 @property (nonatomic) BOOL isFocusLocked;
 @property (nonatomic) BOOL isExposureLocked;
-@property (nonatomic) NSInteger focusMode;
 @end
 
 @implementation TBScopeCameraMock
 
-@synthesize isPreviewRunning,
+@synthesize currentFocusMetric,
+            focusMode,
+            isPreviewRunning,
             lastCapturedImage,
             lastImageMetadata;
 

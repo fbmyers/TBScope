@@ -11,6 +11,7 @@
 		84072C4B196BB3EA004F8826 /* ImageQualityAnalyzer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84072C4A196BB3EA004F8826 /* ImageQualityAnalyzer.mm */; };
 		84072C4E196BB403004F8826 /* CoreDataJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84072C4D196BB403004F8826 /* CoreDataJSONHelper.m */; };
 		84072C51196BB410004F8826 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 84072C50196BB410004F8826 /* Reachability.m */; };
+		8A2FF9761BC1E20700B99E63 /* TBScopeFocusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2FF9751BC1E20700B99E63 /* TBScopeFocusManager.m */; };
 		8A5253FA1BBC7B75009B29BF /* TBScopeCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5253F71BBC7B75009B29BF /* TBScopeCamera.m */; };
 		8A5253FB1BBC7B75009B29BF /* TBScopeCameraReal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5253F91BBC7B75009B29BF /* TBScopeCameraReal.m */; };
 		8A5253FE1BBC7CA6009B29BF /* TBScopeCameraMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5253FD1BBC7CA6009B29BF /* TBScopeCameraMock.m */; };
@@ -21,6 +22,7 @@
 		8A52546B1BBEBEA6009B29BF /* bf_focused.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254671BBEBEA6009B29BF /* bf_focused.jpg */; };
 		8A52546C1BBEBEA6009B29BF /* fl_blurry.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254681BBEBEA6009B29BF /* fl_blurry.jpg */; };
 		8A52546D1BBEBEA6009B29BF /* fl_focused.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254691BBEBEA6009B29BF /* fl_focused.jpg */; };
+		8A52546F1BBED52A009B29BF /* TBScopeFocusManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A52546E1BBED52A009B29BF /* TBScopeFocusManagerTests.m */; };
 		8A5CDE591BB4489F004E30A3 /* TBScopeHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE581BB4489F004E30A3 /* TBScopeHardware.m */; };
 		8A5CDE5C1BB44A34004E30A3 /* TBScopeHardwareMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE5B1BB44A34004E30A3 /* TBScopeHardwareMock.m */; };
 		8A5CDE5F1BB44BE5004E30A3 /* TBScopeHardwareReal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE5E1BB44BE5004E30A3 /* TBScopeHardwareReal.m */; };
@@ -314,6 +316,8 @@
 		84072C4F196BB410004F8826 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = CellScope/Reachability.h; sourceTree = "<group>"; };
 		84072C50196BB410004F8826 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = CellScope/Reachability.m; sourceTree = "<group>"; };
 		843EF682977FA22DC2DE0F04 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A2FF9741BC1E20700B99E63 /* TBScopeFocusManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeFocusManager.h; path = Services/TBScopeFocusManager.h; sourceTree = "<group>"; };
+		8A2FF9751BC1E20700B99E63 /* TBScopeFocusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeFocusManager.m; path = Services/TBScopeFocusManager.m; sourceTree = "<group>"; };
 		8A5253F61BBC7B75009B29BF /* TBScopeCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeCamera.h; path = Services/TBScopeCamera.h; sourceTree = "<group>"; };
 		8A5253F71BBC7B75009B29BF /* TBScopeCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeCamera.m; path = Services/TBScopeCamera.m; sourceTree = "<group>"; };
 		8A5253F81BBC7B75009B29BF /* TBScopeCameraReal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeCameraReal.h; path = Services/TBScopeCameraReal.h; sourceTree = "<group>"; };
@@ -329,6 +333,7 @@
 		8A5254671BBEBEA6009B29BF /* bf_focused.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bf_focused.jpg; sourceTree = "<group>"; };
 		8A5254681BBEBEA6009B29BF /* fl_blurry.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fl_blurry.jpg; sourceTree = "<group>"; };
 		8A5254691BBEBEA6009B29BF /* fl_focused.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fl_focused.jpg; sourceTree = "<group>"; };
+		8A52546E1BBED52A009B29BF /* TBScopeFocusManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBScopeFocusManagerTests.m; sourceTree = "<group>"; };
 		8A5CDE571BB4489F004E30A3 /* TBScopeHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeHardware.h; path = Services/TBScopeHardware.h; sourceTree = "<group>"; };
 		8A5CDE581BB4489F004E30A3 /* TBScopeHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TBScopeHardware.m; path = Services/TBScopeHardware.m; sourceTree = "<group>"; };
 		8A5CDE5A1BB44A34004E30A3 /* TBScopeHardwareMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TBScopeHardwareMock.h; path = Services/TBScopeHardwareMock.h; sourceTree = "<group>"; };
@@ -593,8 +598,9 @@
 		8A52542C1BBDA1C0009B29BF /* TBScopeTests */ = {
 			isa = PBXGroup;
 			children = (
-				8A5254441BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m */,
 				8A52542D1BBDA1C0009B29BF /* Supporting Files */,
+				8A5254441BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m */,
+				8A52546E1BBED52A009B29BF /* TBScopeFocusManagerTests.m */,
 			);
 			path = TBScopeTests;
 			sourceTree = "<group>";
@@ -634,6 +640,8 @@
 				8A5CDE5E1BB44BE5004E30A3 /* TBScopeHardwareReal.m */,
 				8A5CDE5A1BB44A34004E30A3 /* TBScopeHardwareMock.h */,
 				8A5CDE5B1BB44A34004E30A3 /* TBScopeHardwareMock.m */,
+				8A2FF9741BC1E20700B99E63 /* TBScopeFocusManager.h */,
+				8A2FF9751BC1E20700B99E63 /* TBScopeFocusManager.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1292,6 +1300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A5254451BBDA4D9009B29BF /* ImageQualityAnalyzerTests.m in Sources */,
+				8A52546F1BBED52A009B29BF /* TBScopeFocusManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1310,6 +1319,7 @@
 				9BD352B215FAABE800E331E9 /* CoreDataHelper.m in Sources */,
 				ACFC05AF1698D13500411641 /* TBDiagnoser.mm in Sources */,
 				84072C51196BB410004F8826 /* Reachability.m in Sources */,
+				8A2FF9761BC1E20700B99E63 /* TBScopeFocusManager.m in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
 				A513226619E7857D00B11AEE /* FollowUpData.m in Sources */,
 				A513226219E5FDF900B11AEE /* FollowUpViewController.m in Sources */,
@@ -1455,6 +1465,7 @@
 /* Begin XCBuildConfiguration section */
 		8A5254331BBDA1C0009B29BF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FEAAAED5D3615621492E242 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1482,6 +1493,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
 				INFOPLIST_FILE = TBScopeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1494,6 +1506,7 @@
 		};
 		8A5254341BBDA1C0009B29BF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17851EB9401B7F15F10F345C /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1519,6 +1532,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
 				INFOPLIST_FILE = TBScopeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1575,6 +1589,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"DEBUG=0",
+					"$(inherited)",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1611,6 +1626,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"DEBUG=0",
+					"$(inherited)",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";

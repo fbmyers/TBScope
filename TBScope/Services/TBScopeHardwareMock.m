@@ -9,7 +9,6 @@
 #import "TBScopeHardwareMock.h"
 
 @implementation TBScopeHardwareMock
-
 @synthesize batteryVoltage,
             temperature,
             humidity,
@@ -18,6 +17,9 @@
 - (instancetype)init
 {
     if (self = [super init]) {
+        self.xPosition = 0;
+        self.yPosition = 0;
+        self.zPosition = 0;
     }
     return self;
 }
@@ -80,6 +82,27 @@
                  DisableAfter:(BOOL)disableAfter
 {
     [self _log:@"moveStageWithDirection:Steps:StopOnLimit:DisableAfter"];
+
+    switch (dir) {
+        case CSStageDirectionLeft:
+            self.xPosition -= steps;
+            break;
+        case CSStageDirectionRight:
+            self.xPosition += steps;
+            break;
+        case CSStageDirectionDown:
+            self.yPosition -= steps;
+            break;
+        case CSStageDirectionUp:
+            self.yPosition += steps;
+            break;
+        case CSStageDirectionFocusDown:
+            self.zPosition -= steps;
+            break;
+        case CSStageDirectionFocusUp:
+            self.zPosition += steps;
+            break;
+    }
 }
 
 - (void)waitForStage

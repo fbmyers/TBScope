@@ -10,4 +10,7 @@
 #import "TBScopeHardware.h"
 
 @interface TBScopeHardwareMock : NSObject <TBScopeHardwareDriver>
+@property (nonatomic) float xPosition;  // left (-)      / right (+)
+@property (nonatomic) float yPosition;  // down (-)      / up (+)
+@property (nonatomic) float zPosition;  // focusDown (-) / focusUp (+)
 @end

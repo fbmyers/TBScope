@@ -16,12 +16,13 @@
 @property (nonatomic) ImageQuality currentImageQuality;
 @property (nonatomic) BOOL isFocusLocked;
 @property (nonatomic) BOOL isExposureLocked;
-@property (nonatomic) NSInteger focusMode;
 @end
 
 @implementation TBScopeCameraReal
 
-@synthesize lastImageMetadata,
+@synthesize currentFocusMetric,
+            focusMode,
+            lastImageMetadata,
             lastCapturedImage,
             isPreviewRunning;
 

@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, TBScopeCameraServiceAutofocus) {
 @required
 @property (nonatomic) float currentFocusMetric;
 @property (nonatomic) BOOL isPreviewRunning;
+@property (nonatomic) int focusMode;
 @property (strong,atomic) UIImage* lastCapturedImage;
 @property (strong,atomic) NSString* lastImageMetadata;
 
