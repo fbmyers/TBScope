@@ -43,7 +43,7 @@ CBPeripheral* _tbScopePeripheral;
     //first disconnect from any current connections
     //this is probably not necessary, just start the timer
     if (ble.activePeripheral)
-        if(ble.activePeripheral.isConnected)
+        if(ble.activePeripheral.state == CBPeripheralStateConnected)
         {
             [[ble CM] cancelPeripheralConnection:[ble activePeripheral]];
             return;
@@ -189,7 +189,7 @@ CBPeripheral* _tbScopePeripheral;
     {
         //try connecting again
         if (ble.activePeripheral)
-            if(ble.activePeripheral.isConnected)
+            if(ble.activePeripheral.state == CBPeripheralStateConnected)
             {
                 [[ble CM] cancelPeripheralConnection:[ble activePeripheral]];
                 return;
