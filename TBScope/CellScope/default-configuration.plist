@@ -68,8 +68,6 @@
 	<integer>255</integer>
 	<key>DefaultBFIntensity</key>
 	<integer>5</integer>
-	<key>AllowScanWithoutCellScope</key>
-	<true/>
 	<key>DefaultEmailRecipient</key>
 	<string>fbmyers@gmail.com</string>
 	<key>SyncRetryInterval</key>

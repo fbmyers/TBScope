@@ -20,7 +20,7 @@
     static id<TBScopeCameraDriver> sharedCamera;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        BOOL simulateScope = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowScanWithoutCellScope"];
+        BOOL simulateScope = [[[NSProcessInfo processInfo] arguments] containsObject:@"-AllowScanWithoutCellScope"];
         if (simulateScope) {
             sharedCamera = [[TBScopeCameraMock alloc] init];
         } else {

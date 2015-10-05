@@ -20,7 +20,7 @@
     static id<TBScopeHardwareDriver> sharedHardware;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        BOOL simulateScope = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowScanWithoutCellScope"];
+        BOOL simulateScope = [[[NSProcessInfo processInfo] arguments] containsObject:@"-AllowScanWithoutCellScope"];
         if (simulateScope) {
             sharedHardware = [[TBScopeHardwareMock alloc] init];
         } else {
