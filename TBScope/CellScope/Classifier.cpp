@@ -37,7 +37,9 @@ namespace Classifier
 
 	vector<MatDict > featureDetection(cv::Mat imageBw, cv::Mat original)
 	{
-        
+        int imageRows = imageBw.rows;
+        int imageCols = imageBw.cols;
+
 		ContourContainerType contours;
 		cv::vector<cv::Vec4i> hierarchy;
 		cv::findContours(imageBw, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -62,9 +64,9 @@ namespace Classifier
             int col = (int)pt.y;
 			
 			//bool partial = Features::checkPartialPatch(row, col, imageBw.rows-1, imageBw.cols-1);
-            bool partial = Features::checkPatchOutsideCircle(row, col, imageBw.rows-1, imageBw.cols-1, CIRCLEMASKRADIUS);
+            bool partial = Features::checkPatchOutsideCircle(row, col, imageRows-1, imageCols-1, CIRCLEMASKRADIUS);
 			if (!partial)
-			{
+            {
 				cv::Mat rowMat = cv::Mat(1, 1, CV_32F);
 				cv::Mat colMat = cv::Mat(1, 1, CV_32F);
 				rowMat.at<float>(0, 0) = (float)row;
