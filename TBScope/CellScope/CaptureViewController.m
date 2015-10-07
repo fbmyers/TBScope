@@ -172,7 +172,11 @@ AVAudioPlayer* _avPlayer;
 {
     if ([[TBScopeCamera sharedCamera] isPreviewRunning])
     {
-        [previewView grabImage];
+        // Grab image in background thread; otherwise it may be delayed due
+        // to focusing, etc.
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+            [previewView grabImage];
+        });
     } else {
         [[TBScopeCamera sharedCamera] startPreview];
         self.analyzeButton.enabled = NO;
