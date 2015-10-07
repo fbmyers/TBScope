@@ -192,10 +192,12 @@ AVAudioPlayer* _avPlayer;
     //image = [ImageQualityAnalyzer maskCircleFromImage:image];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    
-    [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
+    __block __weak void (^weakBlock)(NSURL *, NSError *);
+    void (^block)(NSURL *, NSError *) ;
+    weakBlock = block = ^(NSURL *assetURL, NSError *error){
         if (error) {
-            [TBScopeData CSLog:@"Error saving image to asset library" inCategory:@"CAPTURE"];
+            [TBScopeData CSLog:@"Error saving image to asset library, will retry." inCategory:@"CAPTURE"];
+            [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:weakBlock];
         } else {
             Images* newImage = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
             newImage.path = assetURL.absoluteString;
@@ -220,16 +222,16 @@ AVAudioPlayer* _avPlayer;
             }
             
             [TBScopeData CSLog:[NSString stringWithFormat:@"Saved image for %@ - %d-%d, to filename: %@",
-                                               self.currentSlide.exam.examID,
-                                               self.currentSlide.slideNumber,
-                                               newImage.fieldNumber,
-                                               newImage.path]
+                                self.currentSlide.exam.examID,
+                                self.currentSlide.slideNumber,
+                                newImage.fieldNumber,
+                                newImage.path]
                     inCategory:@"CAPTURE"];
             
             
         }
-    }];
-
+    };
+    [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:block];
 }
 
 - (IBAction)didPressSlideCenter:(id)sender
