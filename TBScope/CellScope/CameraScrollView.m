@@ -76,35 +76,12 @@
               ImageQuality iq;
               [iqAsObject getValue:&iq];
               NSString *text = [NSString stringWithFormat:@""
-                  "entropy:       %3.3lf\n"
-                  "maxval:        %3.0lf\n"
-                  "avg sharpness: %3.3lf\n"
-                  "avg contrast:  %3.3lf\n"
-                  "norm gray var: %@ (%3.3f)\n"
-                  "mod lap:       %@ (%3.3f)\n"
-                  "var lap:       %@ (%3.3f)\n"
-                  "tgrad1:        %@ (%3.3f)\n"
-                  "tgrad3:        %@ (%3.3f)\n"
-                  "tgrad9:        %@ (%3.3f)\n"
-                  "contrast:      %@ (%3.3f)\n\n",
-                  iq.entropy,
-                  iq.maxVal,
-                  iq.movingAverageSharpness,
-                  iq.movingAverageContrast,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.normalizedGraylevelVariance/0.08876)) withString: @"|" startingAtIndex:0],
-                  iq.normalizedGraylevelVariance,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.modifiedLaplacian/0.08876)) withString: @"|" startingAtIndex:0],
-                  iq.modifiedLaplacian,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.varianceOfLaplacian/0.625)) withString: @"|" startingAtIndex:0],
-                  iq.varianceOfLaplacian,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad1/10.375)) withString: @"|" startingAtIndex:0],
-                  iq.tenengrad1,
+                  "tgrad3:            %@ (%3.3f)\n"
+                  "greenBlueContrast: %@ (%3.3f)\n\n",
                   [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad3/14.375)) withString: @"|" startingAtIndex:0],
                   iq.tenengrad3,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad9/1000.0)) withString: @"|" startingAtIndex:0],
-                  iq.tenengrad9,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.modifiedLaplacian/0.1275)) withString: @"|" startingAtIndex:0],
-                  iq.modifiedLaplacian
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.greenBlueContrast/0.0875)) withString: @"|" startingAtIndex:0],
+                  iq.greenBlueContrast
               ];
               dispatch_async(dispatch_get_main_queue(), ^{
                   // NSLog(@"Image quality report: %@", text);

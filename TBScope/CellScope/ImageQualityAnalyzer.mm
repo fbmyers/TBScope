@@ -372,14 +372,14 @@ double meanOfVector(std::vector<int> values) {
     double meanLow = meanOfVector(filterByPercentile(pixelValues(greenBlueBrightness), sortFnAsc, 0.25, 0.75));
     double meanHigh = meanOfVector(filterByPercentile(pixelValues(greenBlueBrightness), sortFnAsc, 0.999, 1.0));
 
-    iq.entropy = 0; //computeShannonEntropy(src);
-    iq.normalizedGraylevelVariance = normalizedGraylevelVariance(src);
-    iq.varianceOfLaplacian = varianceOfLaplacian(src);
-    iq.modifiedLaplacian = modifiedLaplacian(src);
-    iq.tenengrad1 = tenengrad(src, 1);
+    iq.entropy = 0;  //computeShannonEntropy(src);
+    iq.normalizedGraylevelVariance = 0;  // normalizedGraylevelVariance(src);
+    iq.varianceOfLaplacian = 0;  // varianceOfLaplacian(src);
+    iq.modifiedLaplacian = 0;  // modifiedLaplacian(src);
+    iq.tenengrad1 = 0;  // tenengrad(src, 1);
     iq.tenengrad3 = tenengrad(src, 3);
-    iq.tenengrad9 = tenengrad(src, 9);
-    iq.maxVal = maxVal;
+    iq.tenengrad9 = 0;  // tenengrad(src, 9);
+    iq.maxVal = 0;  // maxVal;
     iq.contrast = 0;
     iq.greenBlueContrast = meanHigh/MAX(1.0, meanLow);
     //TODO: need a metric for overall image content (if > 20%, throw it out)
