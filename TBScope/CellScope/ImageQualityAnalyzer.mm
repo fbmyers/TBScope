@@ -7,6 +7,10 @@
 //
 
 #import "ImageQualityAnalyzer.h"
+#include <opencv2/imgproc/imgproc.hpp>
+#include <vector>       // std::vector
+#include <algorithm>    // std::sort
+#include <numeric>      // accumulate
 
 @implementation ImageQualityAnalyzer
 
@@ -287,7 +291,42 @@ float computeShannonEntropy(Mat src)
     return entropy;
 }
 
+// Returns a vector of pixel values (0..255) for a grayscale image.
+std::vector<int> pixelValues(Mat srcGray)
+{
+    int rows = srcGray.rows;
+    int cols = srcGray.cols;
+    std::vector<int> values;
+    for (int r=0; r<rows; ++r) {
+        for (int c=0; c<cols; ++c) {
+            values.push_back(srcGray.at<uchar>(r, c));
+        }
+    }
+    return values;
+}
 
+std::vector<int> filterByPercentile(std::vector<int>values, bool (*sortFn)(int a, int b), double minPercentile, double maxPercentile)
+{
+    // Sort the vector according to the specified sort function
+    std::sort(values.begin(), values.end(), sortFn);
+
+    // Return the first N percent of the vector
+    std::vector<int> sliced;
+    int vectorSize = (int)values.size();
+    int indexStart = MAX(0, MIN(vectorSize-1, (int)round(minPercentile*vectorSize)));
+    int indexEnd   = MAX(0, MIN(vectorSize-1, (int)round(maxPercentile*vectorSize)));
+    for (int i=indexStart; i<=indexEnd; ++i) {
+        sliced.push_back(values[i]);
+    }
+    return sliced;
+}
+bool sortFnAsc(int a,int b) { return (a<b); }
+bool sortFnDesc(int a,int b) { return (a>b); }
+
+double meanOfVector(std::vector<int> values) {
+    double sum = std::accumulate(values.begin(), values.end(), 0.0);
+    return sum / values.size();
+}
 
 + (ImageQuality) calculateFocusMetricFromIplImage:(IplImage *)iplImage
 {
@@ -303,8 +342,17 @@ float computeShannonEntropy(Mat src)
      */
     
     ImageQuality iq;
-    
+
+    // Derive a green/blue brightness representation (for contrast calculation)
     Mat src = Mat(iplImage);
+    Mat srcGreenBlue = src.clone();
+    Mat greenBlueBrightness;
+    Mat channels[3];
+    split(srcGreenBlue, channels);
+    channels[2]=Mat::zeros(srcGreenBlue.rows, srcGreenBlue.cols, CV_8UC1); // Set red channel to 0s (NOTE: cv::Mat uses BGR, so channels[2] is red)
+    merge(channels, 3, srcGreenBlue);
+    cv::cvtColor(srcGreenBlue, greenBlueBrightness, CV_BGR2GRAY);
+    srcGreenBlue.release();
     
     /*
     Mat lap;
@@ -313,41 +361,33 @@ float computeShannonEntropy(Mat src)
     
     Laplacian(src, lap, CV_64F);
 */
-    
+
+    // Calculate base metrics (used for contrast etc)
     Scalar mean, stDev;
-    double minVal;
-    double maxVal;
-    
-    
+    double minVal, maxVal;
     meanStdDev(src, mean, stDev);
     minMaxIdx(src, &minVal, &maxVal);
-    
-    
-    
-    iq.normalizedGraylevelVariance = 0; //normalizedGraylevelVariance(src);
-    iq.varianceOfLaplacian = 0; //varianceOfLaplacian(src);
-    iq.modifiedLaplacian = 0; //modifiedLaplacian(src);
-    iq.tenengrad1 = 0; //tenengrad(src, 1);
-    iq.tenengrad3 = tenengrad(src, 3);
-    iq.tenengrad9 = 0; //tenengrad(src, 9);
 
-    iq.maxVal = maxVal;
-    iq.contrast = maxVal/mean.val[0];
-    
-    //maxVal = std::max_element(src.begin<double>(),src.end<double>());
-    
-    
-    //TODO: compute contrast as top 0.01% / bottom 50%?
-    //TODO: need a metric for overall image content (if > 20%, throw it out)
-    
-    //iq.contrast = maxVal/mean.val[0];
+    double meanLow = meanOfVector(filterByPercentile(pixelValues(greenBlueBrightness), sortFnAsc, 0.25, 0.75));
+    double meanHigh = meanOfVector(filterByPercentile(pixelValues(greenBlueBrightness), sortFnAsc, 0.999, 1.0));
+
     iq.entropy = 0; //computeShannonEntropy(src);
-    
+    iq.normalizedGraylevelVariance = normalizedGraylevelVariance(src);
+    iq.varianceOfLaplacian = varianceOfLaplacian(src);
+    iq.modifiedLaplacian = modifiedLaplacian(src);
+    iq.tenengrad1 = tenengrad(src, 1);
+    iq.tenengrad3 = tenengrad(src, 3);
+    iq.tenengrad9 = tenengrad(src, 9);
+    iq.maxVal = maxVal;
+    iq.contrast = 0;
+    iq.greenBlueContrast = meanHigh/MAX(1.0, meanLow);
+    //TODO: need a metric for overall image content (if > 20%, throw it out)
 
     src.release();
+    greenBlueBrightness.release();
+    
     //lap.release();
     cvReleaseImage(&iplImage);
-    
     
     
     return iq;

@@ -141,7 +141,7 @@ successiveIterationsGrowRangeBy:(float)growRangeBy
             default:
                 break;
         }
-        NSLog(@"currentCycle=%d currentFocus=%f, maxFocus=%f", currentCycle, [self currentImageQualityMetric], maxFocus);
+        // NSLog(@"currentCycle=%d currentFocus=%f, maxFocus=%f", currentCycle, [self currentImageQualityMetric], maxFocus);
     }
     [[TBScopeHardware sharedHardware] disableMotors];
     return YES;

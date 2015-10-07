@@ -33,15 +33,69 @@
     XCTAssert(focusedIQ.tenengrad3 > blurryIQ.tenengrad3);
 }
 
-- (void)testThatFocusedFluorescenceImageHasHigherContrastThanBluryFluorescence {
-    ImageQuality focusedIQ = [self _imageQualityForImageNamed:@"fl_focused"];
-    ImageQuality blurryIQ = [self _imageQualityForImageNamed:@"fl_blurry"];
+- (void)testThatFocusedFluorescenceImagesHaveHigherContrastThanBluryFluorescence {
+    // Image set 01
+    NSDecimalNumber *fl_01_01 = [self _contrastForImageNamed:@"fl_01_01"];
+    NSDecimalNumber *fl_01_02 = [self _contrastForImageNamed:@"fl_01_02"];
+    NSDecimalNumber *fl_01_03 = [self _contrastForImageNamed:@"fl_01_03"];
+    NSDecimalNumber *fl_01_04 = [self _contrastForImageNamed:@"fl_01_04"];
+    NSDecimalNumber *fl_01_05 = [self _contrastForImageNamed:@"fl_01_05"];
     
-    // Expect fl_focused contrast > fl_blurry contrast
-    XCTAssert(focusedIQ.contrast > blurryIQ.contrast);
+    // Image set 02
+    NSDecimalNumber *fl_02_01 = [self _contrastForImageNamed:@"fl_02_01"];
+    NSDecimalNumber *fl_02_02 = [self _contrastForImageNamed:@"fl_02_02"];
+    NSDecimalNumber *fl_02_03 = [self _contrastForImageNamed:@"fl_02_03"];
+    NSDecimalNumber *fl_02_04 = [self _contrastForImageNamed:@"fl_02_04"];
+    NSDecimalNumber *fl_02_05 = [self _contrastForImageNamed:@"fl_02_05"];
+    
+    // Image set 03
+    NSDecimalNumber *fl_03_01 = [self _contrastForImageNamed:@"fl_03_01"];
+    NSDecimalNumber *fl_03_02 = [self _contrastForImageNamed:@"fl_03_02"];
+    NSDecimalNumber *fl_03_03 = [self _contrastForImageNamed:@"fl_03_03"];
+    NSDecimalNumber *fl_03_04 = [self _contrastForImageNamed:@"fl_03_04"];
+    NSDecimalNumber *fl_03_05 = [self _contrastForImageNamed:@"fl_03_05"];
+    
+    // Image set 04
+    NSDecimalNumber *fl_04_01 = [self _contrastForImageNamed:@"fl_04_01"];
+    NSDecimalNumber *fl_04_02 = [self _contrastForImageNamed:@"fl_04_02"];
+    NSDecimalNumber *fl_04_03 = [self _contrastForImageNamed:@"fl_04_03"];
+    NSDecimalNumber *fl_04_04 = [self _contrastForImageNamed:@"fl_04_04"];
+    NSDecimalNumber *fl_04_05 = [self _contrastForImageNamed:@"fl_04_05"];
+    
+    NSArray *testCases = @[
+        // Sharper image        Blurrier image
+        @[ fl_01_01,            fl_01_02        ],
+        @[ fl_01_02,            fl_01_03        ],
+        @[ fl_01_03,            fl_01_04        ],
+        @[ fl_01_04,            fl_01_05        ],
+        @[ fl_02_01,            fl_02_02        ],
+        @[ fl_02_02,            fl_02_03        ],
+        @[ fl_02_03,            fl_02_04        ],
+        @[ fl_02_04,            fl_02_05        ],
+        @[ fl_03_01,            fl_03_02        ],
+        @[ fl_03_02,            fl_03_03        ],
+        @[ fl_03_03,            fl_03_04        ],
+        @[ fl_03_04,            fl_03_05        ],
+        @[ fl_04_01,            fl_04_02        ],
+        @[ fl_04_02,            fl_04_03        ],
+        @[ fl_04_03,            fl_04_04        ],
+        @[ fl_04_04,            fl_04_05        ],
+    ];
+    for (NSArray *testCase in testCases) {
+        NSDecimalNumber *sharperContrast = testCase[0];
+        NSDecimalNumber *blurrierContrast = testCase[1];
+        XCTAssertGreaterThan([sharperContrast doubleValue], [blurrierContrast doubleValue]);
+    }
 }
 
 #pragma helper methods
+
+- (NSDecimalNumber *)_contrastForImageNamed:(NSString *)imageName {
+    ImageQuality imageQuality =[self _imageQualityForImageNamed:imageName];
+    double contrast = imageQuality.greenBlueContrast;
+    NSLog(@"Image %@ has greenBlueContrast %3.3f", imageName, contrast);
+    return [[NSDecimalNumber alloc] initWithDouble:contrast];
+}
 
 - (ImageQuality)_imageQualityForImageNamed:(NSString *)imageName {
     // Load up UIImage

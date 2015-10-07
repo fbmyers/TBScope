@@ -24,6 +24,7 @@ typedef struct
         double entropy;
         double maxVal;
         double contrast;
+        double greenBlueContrast;
     } ImageQuality;
 
 @interface ImageQualityAnalyzer : NSObject

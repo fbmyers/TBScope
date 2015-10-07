@@ -75,20 +75,39 @@
               NSValue *iqAsObject = notification.userInfo[@"ImageQuality"];
               ImageQuality iq;
               [iqAsObject getValue:&iq];
-              NSString *text = [NSString stringWithFormat:@"entropy: %3.3lf\nmod lap: %3.3lf\nnorm gray var: %3.3lf\nvar lap: %3.3lf\ntgrad1: %3.3lf\ntgrad3: %3.3lf\ntgrad9: %3.3lf\nmaxval: %3.0lf\ncontrast: %3.3lf\navg sharpness: %3.3lf\navg contrast: %3.3lf",
+              NSString *text = [NSString stringWithFormat:@""
+                  "entropy:       %3.3lf\n"
+                  "maxval:        %3.0lf\n"
+                  "avg sharpness: %3.3lf\n"
+                  "avg contrast:  %3.3lf\n"
+                  "norm gray var: %@ (%3.3f)\n"
+                  "mod lap:       %@ (%3.3f)\n"
+                  "var lap:       %@ (%3.3f)\n"
+                  "tgrad1:        %@ (%3.3f)\n"
+                  "tgrad3:        %@ (%3.3f)\n"
+                  "tgrad9:        %@ (%3.3f)\n"
+                  "contrast:      %@ (%3.3f)\n\n",
                   iq.entropy,
-                  iq.modifiedLaplacian,
-                  iq.normalizedGraylevelVariance,
-                  iq.varianceOfLaplacian,
-                  iq.tenengrad1,
-                  iq.tenengrad3,
-                  iq.tenengrad9,
                   iq.maxVal,
-                  iq.contrast,
                   iq.movingAverageSharpness,
-                  iq.movingAverageContrast];
+                  iq.movingAverageContrast,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.normalizedGraylevelVariance/0.08876)) withString: @"|" startingAtIndex:0],
+                  iq.normalizedGraylevelVariance,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.modifiedLaplacian/0.08876)) withString: @"|" startingAtIndex:0],
+                  iq.modifiedLaplacian,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.varianceOfLaplacian/0.625)) withString: @"|" startingAtIndex:0],
+                  iq.varianceOfLaplacian,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad1/10.375)) withString: @"|" startingAtIndex:0],
+                  iq.tenengrad1,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad3/14.375)) withString: @"|" startingAtIndex:0],
+                  iq.tenengrad3,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad9/1000.0)) withString: @"|" startingAtIndex:0],
+                  iq.tenengrad9,
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.modifiedLaplacian/0.1275)) withString: @"|" startingAtIndex:0],
+                  iq.modifiedLaplacian
+              ];
               dispatch_async(dispatch_get_main_queue(), ^{
-                  NSLog(@"Image quality report: %@", text);
+                  // NSLog(@"Image quality report: %@", text);
                   [weakSelf.imageQualityLabel setText:text];
               });
           }
