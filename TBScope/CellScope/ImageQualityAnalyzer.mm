@@ -33,19 +33,17 @@ using namespace cv;
         
         // create IplImage
         if (bufferBaseAddress) {
-            iplimage = cvCreateImage(cvSize(bufferWidth, bufferHeight), IPL_DEPTH_8U, 1);
-            iplimage->imageData = (char*)bufferBaseAddress;
+            iplimage = cvCreateImage(cvSize((int)bufferWidth, (int)bufferHeight), IPL_DEPTH_8U, 4);
+            memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
             
             //crop it
             cvSetImageROI(iplimage, cvRect(iplimage->width/2-(CROP_WINDOW_SIZE/2), iplimage->height/2-(CROP_WINDOW_SIZE/2), CROP_WINDOW_SIZE, CROP_WINDOW_SIZE));
             cropped = cvCreateImage(cvGetSize(iplimage),
                                     iplimage->depth,
                                     iplimage->nChannels);
-            
+
             cvCopy(iplimage, cropped, NULL);
             cvResetImageROI(iplimage);
-            
-            //memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
         }
         
         // release memory
@@ -345,12 +343,15 @@ double meanOfVector(std::vector<int> values) {
 
     // Derive a green/blue brightness representation (for contrast calculation)
     Mat src = Mat(iplImage);
+    src.convertTo(src, CV_8U);
+    // TODO: consider using green channel ONLY
     Mat srcGreenBlue = src.clone();
-    Mat greenBlueBrightness;
+    srcGreenBlue.convertTo(srcGreenBlue, CV_8U);
     Mat channels[3];
     split(srcGreenBlue, channels);
-    channels[2]=Mat::zeros(srcGreenBlue.rows, srcGreenBlue.cols, CV_8UC1); // Set red channel to 0s (NOTE: cv::Mat uses BGR, so channels[2] is red)
+    channels[2]=Mat::zeros(srcGreenBlue.rows, srcGreenBlue.cols, CV_8U); // Set red channel to 0s (NOTE: cv::Mat uses BGR, so channels[2] is red)
     merge(channels, 3, srcGreenBlue);
+    Mat greenBlueBrightness;
     cv::cvtColor(srcGreenBlue, greenBlueBrightness, CV_BGR2GRAY);
     srcGreenBlue.release();
     

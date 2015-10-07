@@ -54,16 +54,20 @@
     [self.session addOutput:self.stillOutput];
     
     // focus preview stuff
-    AVCaptureVideoDataOutput *dataOutput = [AVCaptureVideoDataOutput new];
-    dataOutput.videoSettings = [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] forKey:(NSString *)kCVPixelBufferPixelFormatTypeKey];
+    AVCaptureVideoDataOutput *dataOutput = [[AVCaptureVideoDataOutput alloc] init];
     [dataOutput setAlwaysDiscardsLateVideoFrames:YES];
-    
-    if ([self.session canAddOutput:dataOutput]) {
-        [self.session addOutput:dataOutput];
-    }
     
     dispatch_queue_t queue = dispatch_queue_create("VideoQueue", DISPATCH_QUEUE_SERIAL);
     [dataOutput setSampleBufferDelegate:self queue:queue];
+
+    // Set the video output format
+    NSString* key = (NSString*)kCVPixelBufferPixelFormatTypeKey;
+    NSNumber* value = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA];
+    NSDictionary* videoSettings = [NSDictionary dictionaryWithObject:value forKey:key];
+    [dataOutput setVideoSettings:videoSettings];
+    if ([self.session canAddOutput:dataOutput]) {
+        [self.session addOutput:dataOutput];
+    }
     
     [self startPreview];
 }
