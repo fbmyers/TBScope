@@ -75,7 +75,7 @@
               NSValue *iqAsObject = notification.userInfo[@"ImageQuality"];
               ImageQuality iq;
               [iqAsObject getValue:&iq];
-              NSString *text = [NSString stringWithFormat:@""
+              NSString *text = [NSString stringWithFormat:@"\n"
                   "tgrad3:            %@ (%3.3f)\n"
                   "greenBlueContrast: %@ (%3.3f)\n\n",
                   [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad3/14.375)) withString: @"|" startingAtIndex:0],
@@ -84,7 +84,7 @@
                   iq.greenBlueContrast
               ];
               dispatch_async(dispatch_get_main_queue(), ^{
-                  // NSLog(@"Image quality report: %@", text);
+                  NSLog(@"Image quality report: %@", text);
                   [weakSelf.imageQualityLabel setText:text];
               });
           }
