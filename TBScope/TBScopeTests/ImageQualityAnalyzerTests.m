@@ -92,8 +92,8 @@
 
 - (NSDecimalNumber *)_contrastForImageNamed:(NSString *)imageName {
     ImageQuality imageQuality =[self _imageQualityForImageNamed:imageName];
-    double contrast = imageQuality.greenBlueContrast;
-    NSLog(@"Image %@ has greenBlueContrast %3.3f", imageName, contrast);
+    double contrast = imageQuality.greenContrast;
+    NSLog(@"Image %@ has greenContrast %3.3f", imageName, contrast);
     return [[NSDecimalNumber alloc] initWithDouble:contrast];
 }
 
@@ -107,8 +107,8 @@
     ImageQuality iq = [ImageQualityAnalyzer calculateFocusMetricFromIplImage:iplImage];
 
     // Release an nullify iplImage
-    // cvReleaseImage(&iplImage);  // Not sure why this line crashes
-    iplImage = nil;
+    // cvReleaseImage(&iplImage);  // not sure why this crashes
+    iplImage = NULL;
 
     return iq;
 }
@@ -138,11 +138,21 @@
     CGColorSpaceRelease(colorSpace);
     
     // Creating result IplImage
-    IplImage *ret = cvCreateImage(cvGetSize(iplImage), IPL_DEPTH_8U, 3);
-    cvCvtColor(iplImage, ret, CV_RGBA2BGR);
+    IplImage *converted = cvCreateImage(cvGetSize(iplImage), IPL_DEPTH_8U, 3);
+    cvCvtColor(iplImage, converted, CV_RGBA2BGR);
     cvReleaseImage(&iplImage);
+
+    // Crop IplImage
+    int cropDim = 250;  // see ImageQualityAnalyzer::CROP_WINDOW_SIZE
+    IplImage *cropped = 0;
+    cvSetImageROI(converted, cvRect(converted->width/2-(cropDim/2), converted->height/2-(cropDim/2), cropDim, cropDim));
+    cropped = cvCreateImage(cvGetSize(converted),
+                            converted->depth,
+                            converted->nChannels);
+    cvCopy(converted, cropped, NULL);
+    cvReleaseImage(&converted);
     
-    return ret;
+    return cropped;
 }
 
 @end

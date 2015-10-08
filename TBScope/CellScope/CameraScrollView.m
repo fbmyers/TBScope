@@ -76,12 +76,12 @@
               ImageQuality iq;
               [iqAsObject getValue:&iq];
               NSString *text = [NSString stringWithFormat:@"\n"
-                  "tgrad3:            %@ (%3.3f)\n"
-                  "greenBlueContrast: %@ (%3.3f)\n\n",
+                  "tgrad3:        %@ (%3.3f)\n"
+                  "greenContrast: %@ (%3.3f)\n\n",
                   [@"" stringByPaddingToLength:(int)MIN(80, (iq.tenengrad3/14.375)) withString: @"|" startingAtIndex:0],
                   iq.tenengrad3,
-                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.greenBlueContrast/0.0875)) withString: @"|" startingAtIndex:0],
-                  iq.greenBlueContrast
+                  [@"" stringByPaddingToLength:(int)MIN(80, (iq.greenContrast/0.0875)) withString: @"|" startingAtIndex:0],
+                  iq.greenContrast
               ];
               dispatch_async(dispatch_get_main_queue(), ^{
                   NSLog(@"Image quality report: %@", text);

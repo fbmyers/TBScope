@@ -16,7 +16,7 @@
 
 using namespace cv;
 
-#define CROP_WINDOW_SIZE 700
+#define CROP_WINDOW_SIZE 250  // Had to reduce this (from 700) to get 10+ frames/sec
 
 +(IplImage *)createIplImageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     IplImage *iplimage = 0;
@@ -33,7 +33,7 @@ using namespace cv;
         
         // create IplImage
         if (bufferBaseAddress) {
-            iplimage = cvCreateImage(cvSize((int)bufferWidth, (int)bufferHeight), IPL_DEPTH_8U, 4);
+            iplimage = cvCreateImage(cvSize((int)bufferWidth, (int)bufferHeight), IPL_DEPTH_8U, 3);
             memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
             
             //crop it
@@ -346,16 +346,11 @@ double meanOfVector(std::vector<int> values) {
     // Derive a green/blue brightness representation (for contrast calculation)
     Mat src = Mat(iplImage);
     src.convertTo(src, CV_8U);
-    // TODO: consider using green channel ONLY
-    Mat srcGreenBlue = src.clone();
-    srcGreenBlue.convertTo(srcGreenBlue, CV_8U);
-    Mat channels[4];
-    split(srcGreenBlue, channels);
-    channels[2]=Mat::zeros(srcGreenBlue.rows, srcGreenBlue.cols, CV_8U); // Set red channel to 0s (NOTE: cv::Mat uses BGR, so channels[2] is red)
-    merge(channels, 3, srcGreenBlue);
-    Mat greenBlueBrightness;
-    cv::cvtColor(srcGreenBlue, greenBlueBrightness, CV_BGR2GRAY);
-    srcGreenBlue.release();
+    Mat channels[3];
+    split(src, channels);
+    Mat green = channels[1];
+    channels[0].release();
+    channels[2].release();
     
     /*
     Mat lap;
@@ -371,9 +366,9 @@ double meanOfVector(std::vector<int> values) {
     meanStdDev(src, mean, stDev);
     minMaxIdx(src, &minVal, &maxVal);
 
-    std::vector<int> pixelVals = sortValues(pixelValues(greenBlueBrightness), sortFnAsc);
+    std::vector<int> pixelVals = sortValues(pixelValues(green), sortFnAsc);
     double meanLow = meanOfVector(filterByPercentile(pixelVals, 0.25, 0.75));
-    double meanHigh = meanOfVector(filterByPercentile(pixelVals, 0.999, 1.0));
+    double meanHigh = meanOfVector(filterByPercentile(pixelVals, 0.995, 1.0));
 
     iq.entropy = 0;  //computeShannonEntropy(src);
     iq.normalizedGraylevelVariance = 0;  // normalizedGraylevelVariance(src);
@@ -384,11 +379,11 @@ double meanOfVector(std::vector<int> values) {
     iq.tenengrad9 = 0;  // tenengrad(src, 9);
     iq.maxVal = 0;  // maxVal;
     iq.contrast = 0;
-    iq.greenBlueContrast = meanHigh/MAX(1.0, meanLow);
+    iq.greenContrast = meanHigh/MAX(1.0, meanLow);
     //TODO: need a metric for overall image content (if > 20%, throw it out)
 
     src.release();
-    greenBlueBrightness.release();
+    green.release();
     
     //lap.release();
     cvReleaseImage(&iplImage);
