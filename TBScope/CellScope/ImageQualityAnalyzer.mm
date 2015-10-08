@@ -303,12 +303,8 @@ std::vector<int> pixelValues(Mat srcGray)
     return values;
 }
 
-std::vector<int> filterByPercentile(std::vector<int>values, bool (*sortFn)(int a, int b), double minPercentile, double maxPercentile)
+std::vector<int> filterByPercentile(std::vector<int>values, double minPercentile, double maxPercentile)
 {
-    // Sort the vector according to the specified sort function
-    std::sort(values.begin(), values.end(), sortFn);
-
-    // Return the first N percent of the vector
     std::vector<int> sliced;
     int vectorSize = (int)values.size();
     int indexStart = MAX(0, MIN(vectorSize-1, (int)round(minPercentile*vectorSize)));
@@ -317,6 +313,12 @@ std::vector<int> filterByPercentile(std::vector<int>values, bool (*sortFn)(int a
         sliced.push_back(values[i]);
     }
     return sliced;
+}
+
+std::vector<int> sortValues(std::vector<int>values, bool (*sortFn)(int a, int b))
+{
+    std::sort(values.begin(), values.end(), sortFn);
+    return values;
 }
 bool sortFnAsc(int a,int b) { return (a<b); }
 bool sortFnDesc(int a,int b) { return (a>b); }
@@ -369,8 +371,9 @@ double meanOfVector(std::vector<int> values) {
     meanStdDev(src, mean, stDev);
     minMaxIdx(src, &minVal, &maxVal);
 
-    double meanLow = meanOfVector(filterByPercentile(pixelValues(greenBlueBrightness), sortFnAsc, 0.25, 0.75));
-    double meanHigh = meanOfVector(filterByPercentile(pixelValues(greenBlueBrightness), sortFnAsc, 0.999, 1.0));
+    std::vector<int> pixelVals = sortValues(pixelValues(greenBlueBrightness), sortFnAsc);
+    double meanLow = meanOfVector(filterByPercentile(pixelVals, 0.25, 0.75));
+    double meanHigh = meanOfVector(filterByPercentile(pixelVals, 0.999, 1.0));
 
     iq.entropy = 0;  //computeShannonEntropy(src);
     iq.normalizedGraylevelVariance = 0;  // normalizedGraylevelVariance(src);
