@@ -140,8 +140,6 @@ AVAudioPlayer* _avPlayer;
         
         //draw it back in (after user removes slide)
         [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionHome];
-    
-        
     }
 }
 

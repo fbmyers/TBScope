@@ -46,6 +46,9 @@
         
         //draw tray in
         [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionHome];
+
+        //home z
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionZHome];
     }
     else
         [self performSegueWithIdentifier:@"ScanSlideSegue" sender:self];

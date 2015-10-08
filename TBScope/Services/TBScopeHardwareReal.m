@@ -354,6 +354,9 @@ CBPeripheral* _tbScopePeripheral;
         case CSStagePositionLoading:
             buf[1] = 0x03;
             break;
+        case CSStagePositionZHome:
+            buf[1] = 0x04;
+            break;
     }
     
     

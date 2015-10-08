@@ -36,7 +36,8 @@ typedef NS_ENUM(int, CSStagePosition)
     CSStagePositionLoading,
     CSStagePositionHome,
     CSStagePositionTestTarget,
-    CSStagePositionSlideCenter
+    CSStagePositionSlideCenter,
+    CSStagePositionZHome
 };
 
 @protocol TBScopeHardwareDelegate
