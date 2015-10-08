@@ -347,7 +347,7 @@ double meanOfVector(std::vector<int> values) {
     // TODO: consider using green channel ONLY
     Mat srcGreenBlue = src.clone();
     srcGreenBlue.convertTo(srcGreenBlue, CV_8U);
-    Mat channels[3];
+    Mat channels[4];
     split(srcGreenBlue, channels);
     channels[2]=Mat::zeros(srcGreenBlue.rows, srcGreenBlue.cols, CV_8U); // Set red channel to 0s (NOTE: cv::Mat uses BGR, so channels[2] is red)
     merge(channels, 3, srcGreenBlue);
