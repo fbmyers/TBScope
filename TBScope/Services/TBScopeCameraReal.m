@@ -42,6 +42,14 @@
     self.session.sessionPreset = AVCaptureSessionPresetPhoto;
     self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     self.input = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:nil];
+
+    // Set custom white balance/iso
+    [self setExposureLock:YES];
+    [self setWhiteBalanceRed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceRedGain"]
+                       Green:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceGreenGain"]
+                        Blue:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceBlueGain"]];
+    [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDuration"]
+                     ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeed"]];
     
     // Setup still image output
     self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
@@ -110,6 +118,49 @@
     }
 }
 
+- (void)setExposureDuration:(int)milliseconds
+                   ISOSpeed:(int)isoSpeed
+{
+    // I think it unlocks/locks exposure when you set it manually
+    // if (self.isExposureLocked) [self setExposureLock:NO];
+
+    NSError* error;
+    if ([self.device lockForConfiguration:&error])
+    {
+        CMTime exposureDuration = CMTimeMake(milliseconds, 1e3);
+        __block TBScopeCameraReal *weakSelf = self;
+        [self.device setExposureModeCustomWithDuration:exposureDuration
+                                                   ISO:isoSpeed
+                                     completionHandler:^(CMTime cmTime){
+                                         [weakSelf.device unlockForConfiguration];
+                                         // [weakSelf setExposureLock:YES];
+                                     }];
+    } else {
+        NSLog(@"Error: %@",error);
+    }
+}
+
+-(void)setWhiteBalanceRed:(int)redGain
+                    Green:(int)greenGain
+                     Blue:(int)blueGain
+{
+    NSError* error;
+    if ([self.device lockForConfiguration:&error])
+    {
+        AVCaptureWhiteBalanceGains gains;
+        gains.redGain = redGain;
+        gains.greenGain = greenGain;
+        gains.blueGain = blueGain;
+        __block TBScopeCameraReal *weakSelf = self;
+        [self.device setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:gains
+                                                        completionHandler:^(CMTime cmTime){
+                                                            [weakSelf.device unlockForConfiguration];
+                                                        }];
+    } else {
+        NSLog(@"Error: %@",error);
+    }
+}
+
 - (void)captureImage
 {
     // necessary to loop like this? seems kludgy
@@ -130,7 +181,6 @@
     self.lastCapturedImage = nil;
     self.lastImageMetadata = nil;
     
-    NSLog(@"about to request a capture from: %@", self.stillOutput);
     [self.stillOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
          CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
@@ -185,6 +235,11 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
 {
+    // This is a dirty hack to get iOS to keep the ISO and
+    // Exposure Duration constant. :-/
+    if (rand() % 30 == 0) [self _setExposureAndISOFromUserDefaults];
+    [self _sendExposureReport];
+
     static double sharpnessAveragingArray[] = {0,0,0};
     static double contrastAveragingArray[] = {0,0,0};
     
@@ -226,6 +281,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     AVCaptureVideoDataOutput* output = (AVCaptureVideoDataOutput*)[self.session.outputs objectAtIndex:0];
     [self.session removeOutput:output];
     self.session = nil;
+}
+
+- (void)_setExposureAndISOFromUserDefaults
+{
+    [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDuration"]
+                     ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeed"]];
+}
+
+- (void)_sendExposureReport
+{
+    // NSLog(@"Exposure duration: %3.3f; ISO speed: %3.3f", CMTimeGetSeconds(self.device.exposureDuration), self.device.ISO);
 }
 
 @end

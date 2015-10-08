@@ -523,7 +523,7 @@ AVAudioPlayer* _avPlayer;
         }
         else
         {
-            [[TBScopeCamera sharedCamera] setExposureLock:YES];
+            [[TBScopeCamera sharedCamera] setExposureLock:NO];
             [buttonPressed setTitle:NSLocalizedString(@"AE On",nil) forState:UIControlStateNormal];
             [buttonPressed setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
         }

@@ -110,5 +110,15 @@
 	<real>0.5</real>
 	<key>NumPatchesToAverage</key>
 	<integer>3</integer>
+	<key>CameraExposureDuration</key>
+	<integer>200</integer>
+	<key>CameraISOSpeed</key>
+	<integer>200</integer>
+	<key>CameraWhiteBalanceBlueGain</key>
+	<integer>2</integer>
+	<key>CameraWhiteBalanceGreenGain</key>
+	<integer>1</integer>
+	<key>CameraWhiteBalanceRedGain</key>
+	<integer>2</integer>
 </dict>
 </plist>

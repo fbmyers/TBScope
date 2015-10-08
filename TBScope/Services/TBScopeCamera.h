@@ -26,6 +26,11 @@ typedef NS_ENUM(NSInteger, TBScopeCameraServiceAutofocus) {
 -(void)setUpCamera;
 -(void)setFocusLock:(BOOL)locked;
 -(void)setExposureLock:(BOOL)locked;
+-(void)setExposureDuration:(int)milliseconds
+                  ISOSpeed:(int)isoSpeed;
+-(void)setWhiteBalanceRed:(int)redGain
+                    Green:(int)greenGain
+                     Blue:(int)blueGain;
 -(void)captureImage;
 -(void)clearLastCapturedImage;
 -(AVCaptureVideoPreviewLayer *)captureVideoPreviewLayer;

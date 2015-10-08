@@ -92,6 +92,19 @@
     self.isExposureLocked = locked;
 }
 
+- (void)setExposureDuration:(int)milliseconds
+                   ISOSpeed:(int)isoSpeed
+{
+    [self _log:@"setExposureDuration:ISOSpeed:"];
+}
+
+-(void)setWhiteBalanceRed:(int)redGain
+                    Green:(int)greenGain
+                     Blue:(int)blueGain
+{
+    [self _log:@"setWhiteBalanceRed:Green:Blue:"];
+}
+
 - (void)captureImage
 {
     [self _log:@"captureImage"];
