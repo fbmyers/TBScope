@@ -85,11 +85,11 @@
     NSError* error;
     if ([self.device lockForConfiguration:&error])
     {
-        AVCaptureFocusMode focusMode = locked ? AVCaptureFocusModeLocked : AVCaptureFocusModeContinuousAutoFocus;
-        if ([self.device isFocusModeSupported:focusMode]) {
-            [self.device setFocusMode:focusMode];
+        AVCaptureFocusMode mode = locked ? AVCaptureFocusModeLocked : AVCaptureFocusModeContinuousAutoFocus;
+        if ([self.device isFocusModeSupported:mode]) {
+            [self.device setFocusMode:mode];
         } else {
-            NSLog(@"Warning: Device does not support focusMode: %ld", (long)focusMode);
+            NSLog(@"Warning: Device does not support focusMode: %ld", (long)mode);
         }
         
         self.isFocusLocked = locked;
