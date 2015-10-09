@@ -13,15 +13,26 @@ CBPeripheral* _tbScopePeripheral;
 
 @implementation TBScopeHardwareReal
 
+const int MIN_Z_POSITION = 0;
+const int MAX_Z_POSITION = 50000;  //  50,000 is safely clear of the tray
+                                   // 107,500 is starting to make weird noises against the base
+                                   // 109,200 is absolute bottom
+
 @synthesize batteryVoltage,
             temperature,
             humidity,
             ble,
-            delegate;
+            delegate,
+            xPosition,
+            yPosition,
+            zPosition;
 
 - (instancetype)init
 {
     if (self = [super init]) {
+        self.xPosition = 0;
+        self.yPosition = 0;
+        self.zPosition = 0;
     }
     return self;
 }
@@ -273,15 +284,7 @@ CBPeripheral* _tbScopePeripheral;
                     StopOnLimit:(BOOL)stopOnLimit
                    DisableAfter:(BOOL)disableAfter
 {
-    
-
-    
-    
-    //NSLog(@"moving stage");
-    _isMoving = YES;
-    
     UInt8 buf[3] = {0x00, 0x00, 0x00};
-    
     
     // move stage
     //   0   0   1   A   A   D   L   E                           {16 bits}
@@ -292,21 +295,33 @@ CBPeripheral* _tbScopePeripheral;
     
     switch (dir) {
         case CSStageDirectionUp:
+            self.yPosition += steps;
             buf[0] |= 0b00001100;
             break;
         case CSStageDirectionDown:
+            self.yPosition -= steps;
             buf[0] |= 0b00001000;
             break;
         case CSStageDirectionLeft:
+            self.xPosition -= steps;
             buf[0] |= 0b00010000;
             break;
         case CSStageDirectionRight:
+            self.xPosition += steps;
             buf[0] |= 0b00010100;
             break;
         case CSStageDirectionFocusUp:
+            if (self.zPosition-steps < MIN_Z_POSITION) { // Don't move past limit
+                steps = self.zPosition - MIN_Z_POSITION;
+            }
+            self.zPosition -= steps;  // zPosition is distance from origin which is (counter-intuitively) at the top
             buf[0] |= 0b00011000;
             break;
         case CSStageDirectionFocusDown:
+            if (self.zPosition+steps > MAX_Z_POSITION) { // Don't move past limit
+                steps = MAX_Z_POSITION - self.zPosition;
+            }
+            self.zPosition += steps;  // zPosition is distance from origin which is (counter-intuitively) at the top
             buf[0] |= 0b00011100;
             break;
     }
@@ -320,20 +335,9 @@ CBPeripheral* _tbScopePeripheral;
     buf[2] = (UInt8)(steps & 0x00FF);
     
     //send move command
+    _isMoving = YES;
     [ble write:[NSData dataWithBytes:buf length:3]];
-    
-
-    //disable
-    /*
-    if (disableAfter)
-    {
-        buf[0] = (UInt8)((buf[0] & 0x0F) | 0x30);
-        buf[1] = (UInt8)0x00;
-        buf[2] = (UInt8)0x00;
-        [ble write:[NSData dataWithBytes:buf length:3]];
-    }
-    */
-    
+    NSLog(@"moved to (%d, %d, %d)", self.xPosition, self.yPosition, self.zPosition);
 }
 
 - (void) moveToPosition:(CSStagePosition) position
@@ -343,24 +347,86 @@ CBPeripheral* _tbScopePeripheral;
     
     switch (position) {
         case CSStagePositionHome:
+            self.xPosition = 0;
+            self.yPosition = 0;
             buf[1] = 0x00;
             break;
         case CSStagePositionTestTarget:
+            // What to do here?
             buf[1] = 0x01;
             break;
         case CSStagePositionSlideCenter:
+            // What to do here?
             buf[1] = 0x02;
             break;
         case CSStagePositionLoading:
+            // What to do here?
             buf[1] = 0x03;
             break;
         case CSStagePositionZHome:
+            self.zPosition = 0;
             buf[1] = 0x04;
             break;
     }
     
     
     [ble write:[NSData dataWithBytes:buf length:3]];
+}
+
+- (void)moveToX:(int)x Y:(int)y Z:(int)z
+{
+    if (x >= 0) {
+        int xSteps = (int)x - self.xPosition;
+        if (xSteps > 0) {
+            [self moveStageWithDirection:CSStageDirectionRight
+                                   Steps:xSteps
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        } else if (xSteps < 0) {
+            [self moveStageWithDirection:CSStageDirectionLeft
+                                   Steps:ABS(xSteps)
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        }
+    }
+
+    if (y >= 0) {
+        int ySteps = (int)y - self.yPosition;
+        if (ySteps > 0) {
+            [self moveStageWithDirection:CSStageDirectionUp
+                                   Steps:ySteps
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        } else if (ySteps < 0) {
+            [self moveStageWithDirection:CSStageDirectionDown
+                                   Steps:ABS(ySteps)
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        }
+    }
+
+    if (z >= 0) {
+        int zSteps = (int)z - self.zPosition;
+        if (zSteps > 0) {
+            [self moveStageWithDirection:CSStageDirectionFocusDown
+                                   Steps:zSteps
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        } else if (zSteps < 0) {
+            [self moveStageWithDirection:CSStageDirectionFocusUp
+                                   Steps:ABS(zSteps)
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        }
+    }
+
+    [[TBScopeHardware sharedHardware] disableMotors];
 }
 
 - (void) waitForStage

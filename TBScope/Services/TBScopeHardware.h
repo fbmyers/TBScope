@@ -53,8 +53,12 @@ typedef NS_ENUM(int, CSStagePosition)
 @property (nonatomic) float batteryVoltage;
 @property (nonatomic) float temperature;
 @property (nonatomic) float humidity;
+@property (nonatomic) int xPosition;  // left (-)      / right (+)
+@property (nonatomic) int yPosition;  // down (-)      / up (+)
+@property (nonatomic) int zPosition;  // focusDown (-) / focusUp (+)
 
 -(void)moveToPosition:(CSStagePosition)position;
+-(void)moveToX:(int)x Y:(int)y Z:(int)z;
 -(void)setupBLEConnection;
 -(void)requestStatusUpdate;
 -(BOOL)isConnected;

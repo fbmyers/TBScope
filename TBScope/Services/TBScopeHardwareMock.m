@@ -12,7 +12,10 @@
 @synthesize batteryVoltage,
             temperature,
             humidity,
-            delegate;
+            delegate,
+            xPosition,
+            yPosition,
+            zPosition;
 
 - (instancetype)init
 {
@@ -27,6 +30,81 @@
 - (void) moveToPosition:(CSStagePosition)position
 {
     [self _log:@"moveToPosition"];
+
+    switch (position) {
+        case CSStagePositionHome:
+            self.xPosition = 0;
+            self.yPosition = 0;
+            break;
+        case CSStagePositionZHome:
+            self.zPosition = 0;
+            break;
+        case CSStagePositionLoading:
+            // What to do here?
+            break;
+        case CSStagePositionSlideCenter:
+            // What to do here?
+            break;
+        case CSStagePositionTestTarget:
+            // What to do here?
+            break;
+    }
+}
+
+- (void)moveToX:(int)x Y:(int)y Z:(int)z
+{
+    if (x >= 0) {
+        int xSteps = (int)x - self.xPosition;
+        if (xSteps > 0) {
+            [self moveStageWithDirection:CSStageDirectionRight
+                                   Steps:xSteps
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        } else if (xSteps < 0) {
+            [self moveStageWithDirection:CSStageDirectionLeft
+                                   Steps:ABS(xSteps)
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        }
+    }
+
+    if (y >= 0) {
+        int ySteps = (int)y - self.yPosition;
+        if (ySteps > 0) {
+            [self moveStageWithDirection:CSStageDirectionUp
+                                   Steps:ySteps
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        } else if (ySteps < 0) {
+            [self moveStageWithDirection:CSStageDirectionDown
+                                   Steps:ABS(ySteps)
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        }
+    }
+
+    if (z >= 0) {
+        int zSteps = (int)z - self.zPosition;
+        if (zSteps > 0) {
+            [self moveStageWithDirection:CSStageDirectionFocusDown
+                                   Steps:zSteps
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        } else if (zSteps < 0) {
+            [self moveStageWithDirection:CSStageDirectionFocusUp
+                                   Steps:ABS(zSteps)
+                             StopOnLimit:YES
+                            DisableAfter:NO];
+            [self waitForStage];
+        }
+    }
+
+    [[TBScopeHardware sharedHardware] disableMotors];
 }
 
 - (void)setupBLEConnection
@@ -85,30 +163,32 @@
 
     switch (dir) {
         case CSStageDirectionLeft:
-            self.xPosition -= steps;
+            self.xPosition = self.xPosition - steps;
             break;
         case CSStageDirectionRight:
-            self.xPosition += steps;
+            self.xPosition = self.xPosition + steps;
             break;
         case CSStageDirectionDown:
-            self.yPosition -= steps;
+            self.yPosition = self.yPosition - steps;
             break;
         case CSStageDirectionUp:
-            self.yPosition += steps;
+            self.yPosition = self.yPosition + steps;
             break;
         case CSStageDirectionFocusDown:
-            self.zPosition -= steps;
+            self.zPosition = self.zPosition + steps;
             break;
         case CSStageDirectionFocusUp:
-            self.zPosition += steps;
+            self.zPosition = self.zPosition - steps;
             break;
     }
+
+    NSLog(@"Position changed to (%d, %d, %d).", self.xPosition, self.yPosition, self.zPosition);
 }
 
 - (void)waitForStage
 {
     [self _log:@"waitForStage"];
-    [NSThread sleepForTimeInterval:0.1];
+    [NSThread sleepForTimeInterval:0.001];  // really short so tests go fast
 }
 
 - (void)setStepperInterval:(UInt16)stepInterval

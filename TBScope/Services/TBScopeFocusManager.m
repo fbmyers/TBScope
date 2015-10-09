@@ -9,147 +9,277 @@
 #import "TBScopeFocusManager.h"
 #import "TBScopeCamera.h"
 #import "TBScopeHardware.h"
-#import "TBScopeData.h"
+
+@interface TBScopeFocusManager ()
+@property (nonatomic) int currentIterationBestPosition;
+@property (nonatomic) float currentIterationBestMetric;
+@end
 
 @implementation TBScopeFocusManager
+
+@synthesize lastGoodPosition;
 
 - (instancetype)init
 {
     if (self = [super init]) {
         // Do additional setup here
+        self.lastGoodPosition = -1;
     }
     return self;
 }
 
-// This algorithm will go numSteps/2 up, then numSteps down, then
-// back up to a maximum of numSteps+1 (backlash)
-// focusMode 0 = BF, based on tenegrad3 averaged over last 3 frames
-// focusMode 1 = FL, based on contrast averaged over last 3 frames
-- (BOOL) autoFocusWithStackSize:(int)stackSize
-                  stepsPerSlice:(int)stepsPerSlice
-                    numAttempts:(int)numAttempts
-successiveIterationsGrowRangeBy:(float)growRangeBy
-                      focusMode:(int)focusMode
+- (int)zPositionBroadSweepStepsPerSlice
 {
-    float bfFocusThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"BFFocusThreshold"];
-    float flFocusThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"FLFocusThreshold"];
-    int focusStepInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"FocusStepInterval"];
-    float focusSettlingTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"FocusSettlingTime"];
-    
-    int state = 1;
-    double maxFocus = 0;
-    double minFocus = 999999;
-    double improvement_threshold;
-    
-    int currentCycle = 0;
-    int numCyclesToGoBack = 0;
-    int numIterationsRemaining = numAttempts;
-    
-    [TBScopeCamera sharedCamera].focusMode = focusMode;
-    
-    [NSThread sleepForTimeInterval:0.1];
-    
-    while (state!=0) {
-        switch (state) {
-            case 1: //reset
-                state = 0;
-                maxFocus = 0;
-                minFocus = 999999;
-                currentCycle = 0;
-                numCyclesToGoBack = 0;
-                state = 2;
-                break;
-            case 2: //backup
-                [[TBScopeHardware sharedHardware] setStepperInterval:focusStepInterval];
-                [NSThread sleepForTimeInterval:0.1];
-                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                   Steps:ceil(stepsPerSlice*stackSize/2)
-                                                             StopOnLimit:YES
-                                                            DisableAfter:NO];
-                [[TBScopeHardware sharedHardware] waitForStage];
-                [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2 //0.4
-                state = 3;
-                break;
-            case 3: //scan forward
-                [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
-                                                                   Steps:stepsPerSlice
-                                                             StopOnLimit:YES
-                                                            DisableAfter:NO];
-                [[TBScopeHardware sharedHardware] waitForStage];
-                [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2  //0.4
-                if ([self currentImageQualityMetric] > maxFocus) {
-                    maxFocus = [self currentImageQualityMetric];
-                    numCyclesToGoBack = 0;
-                    //maxPosition = currentPosition;
-                } else {
-                    numCyclesToGoBack++;
-                }
-                
-                if ([self currentImageQualityMetric] < minFocus)
-                    minFocus = [self currentImageQualityMetric];
-                
-                currentCycle++;
-                if (currentCycle>=stackSize) {
-                    currentCycle = 0;
-                    state = 4;
-                }
-                break;
-            case 4: //move back to maxfocus position
-                //if maxFocus wasn't significantly better than minFocus, go back to original point and do another iteration
-                if (focusMode==TBScopeCameraFocusModeSharpness)
-                    improvement_threshold = bfFocusThreshold;
-                else
-                    improvement_threshold = flFocusThreshold;
-                
-                if ((maxFocus/minFocus)<improvement_threshold) {
-                    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                       Steps:stepsPerSlice*stackSize/2
-                                                                 StopOnLimit:YES
-                                                                DisableAfter:NO];
-                    
-                    [[TBScopeHardware sharedHardware] waitForStage];
-                    [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2 //0.4
-                    
-                    if (numIterationsRemaining>0) {
-                        numIterationsRemaining--;
-                        stackSize = ceil(stackSize*growRangeBy);
-                        [TBScopeData CSLog:[NSString stringWithFormat:@"Could not auto focus, retrying with expanded stack. minFocus=%lf, maxFocus=%lf, mode=%d, stepSize=%d, newStackSize=%d, numIterationsAttempted=%d",minFocus,maxFocus,focusMode,stepsPerSlice,stackSize,(numAttempts-numIterationsRemaining+1)] inCategory:@"CAPTURE"];
-                        state = 1;
-                    }
-                    else {
-                        [TBScopeData CSLog:[NSString stringWithFormat:@"Could not auto focus, giving up. minFocus=%lf, maxFocus=%lf, mode=%d, stepSize=%d, finalStackSize=%d, numIterationsAttempted=%d",minFocus,maxFocus,focusMode,stepsPerSlice,stackSize,(numAttempts-numIterationsRemaining+1)] inCategory:@"CAPTURE"];
-                        [[TBScopeHardware sharedHardware] disableMotors];
-                        return NO;
-                    }
-                }
-                else //move back to maxfocus position
-                {
-                    [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusUp
-                                                                       Steps:(stepsPerSlice*numCyclesToGoBack)+FOCUS_BACKLASH_CORRECTION
-                                                                 StopOnLimit:YES
-                                                                DisableAfter:NO];
-                    
-                    [[TBScopeHardware sharedHardware] waitForStage];
-                    [NSThread sleepForTimeInterval:focusSettlingTime]; //0.1 //0.2 //0.4
-                    
-                    [TBScopeData CSLog:[NSString stringWithFormat:@"Autofocused with minFocus=%lf, maxFocus=%lf, deltaSteps=%d, mode=%d, stepSize=%d, finalStackSize=%d, numIterationsAttempted=%d",minFocus,maxFocus,(stepsPerSlice*numCyclesToGoBack),focusMode,stepsPerSlice,stackSize,(numAttempts-numIterationsRemaining+1)] inCategory:@"CAPTURE"];
-                    state = 0; //done
-                    [[TBScopeHardware sharedHardware] disableMotors];
-                    return YES;
-                }
-                break;
-            default:
-                break;
-        }
-        // NSLog(@"currentCycle=%d currentFocus=%f, maxFocus=%f", currentCycle, [self currentImageQualityMetric], maxFocus);
-    }
-    [[TBScopeHardware sharedHardware] disableMotors];
-    return YES;
+    return 500;  // steps
+}
+
+- (int)zPositionBroadSweepMax
+{
+    return 23000;  // steps
+}
+
+- (int)zPositionBroadSweepMin
+{
+    return 13000;  // steps
 }
 
 - (float)currentImageQualityMetric
 {
     return [[TBScopeCamera sharedCamera] currentFocusMetric];
+}
+
+- (TBScopeFocusManagerResult)autoFocus
+{
+    // Set up
+    [self _resetCurrentIterationStats];
+    int startingZPosition = [[TBScopeHardware sharedHardware] zPosition];
+
+    // If we have a lastGoodPosition
+    if (self.lastGoodPosition >= 0) {
+        if ([self _fineFocus] == TBScopeFocusManagerResultSuccess) {
+            [self _updateLastGoodPositionAndMetric];
+            [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:self.currentIterationBestPosition];
+            [[TBScopeHardware sharedHardware] waitForStage];
+            return TBScopeFocusManagerResultSuccess;
+        }
+    }
+
+    // Otherwise start from a very coarse focus and work our way finer
+    if ([self _coarseFocus] == TBScopeFocusManagerResultSuccess) {
+        [self _fineFocus];
+        [self _updateLastGoodPositionAndMetric];
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:self.currentIterationBestPosition];
+        [[TBScopeHardware sharedHardware] waitForStage];
+        return TBScopeFocusManagerResultSuccess;
+    } else if (self.lastGoodPosition >= 0) {
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:self.lastGoodPosition];
+        [[TBScopeHardware sharedHardware] waitForStage];
+        return TBScopeFocusManagerResultReturn;
+    }
+
+    // Utter failure to focus, return to starting position
+    [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:startingZPosition];
+    [[TBScopeHardware sharedHardware] waitForStage];
+    return TBScopeFocusManagerResultFailure;
+}
+
+- (TBScopeFocusManagerResult)_coarseFocus
+{
+    // Start at zPositionBroadSweepMin
+    [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:[self zPositionBroadSweepMin]];
+    [[TBScopeHardware sharedHardware] waitForStage];
+
+    // For each slice to zPositionBroadSweepMax...
+    int stepsPerSlice = [self zPositionBroadSweepStepsPerSlice];
+    NSMutableArray *samples = [[NSMutableArray alloc] init];
+    int bestPositionSoFar = -1;
+    int bestMetricSoFar = -1;
+    for (int position=[self zPositionBroadSweepMin]; position <= [self zPositionBroadSweepMax]; position+=stepsPerSlice)
+    {
+        // Move into position
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:position];
+        [[TBScopeHardware sharedHardware] waitForStage];
+        [self pauseForSettling];  // does this help reduce blurring?
+
+        // Gather metric
+        float metric = [self currentImageQualityMetric];
+        if (metric > bestMetricSoFar) {
+            bestMetricSoFar = metric;
+            bestPositionSoFar = position;
+        }
+        [samples addObject:[NSNumber numberWithFloat:metric]];
+    }
+
+    // If best metric is more than N stdev from mean, go there and return success
+    float mean = [self _mean:samples];
+    float stdev = [self _stdev:samples];
+    if (bestMetricSoFar > mean+2*stdev) {
+        [self _recordNewCurrentIterationPosition:bestPositionSoFar Metric:bestMetricSoFar];
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:bestPositionSoFar];
+        [[TBScopeHardware sharedHardware] waitForStage];
+        return TBScopeFocusManagerResultSuccess;
+    } else {
+        return TBScopeFocusManagerResultFailure;
+    }
+}
+
+// Focus within a 2000 step range using hill climbing (resolution 20 steps)
+- (TBScopeFocusManagerResult)_fineFocus
+{
+    // Calculate min and max positions
+    int currentPosition = [[TBScopeHardware sharedHardware] zPosition];
+    int minPosition = currentPosition - 1000;
+    int maxPosition = currentPosition + 1000;
+
+    // Hill climb
+    return [self _hillClimbInSlicesOf:20
+                   slicesPerIteration:5
+                          inDirection:0
+                      withMinPosition:minPosition
+                          maxPosition:maxPosition];
+}
+
+- (TBScopeFocusManagerResult)_hillClimbInSlicesOf:(int)stepsPerSlice
+                               slicesPerIteration:(int)slicesPerIteration
+                                      inDirection:(int)direction  // -1 is down, 0 is not sure, 1 is up
+                                  withMinPosition:(int)minPosition
+                                      maxPosition:(int)maxPosition
+{
+    // If we're outside min/max position, return failure
+    int startZPosition = [[TBScopeHardware sharedHardware] zPosition];
+    if (startZPosition < minPosition || startZPosition+stepsPerSlice*slicesPerIteration > maxPosition) {
+        return TBScopeFocusManagerResultFailure;
+    }
+    
+    // Gather slicesPerIteration successive points starting at start point
+    int bestPositionSoFar = -1;
+    int bestMetricSoFar = -1;
+    NSMutableArray *samples = [NSMutableArray arrayWithArray:@[]];
+    for (int i=0; i<slicesPerIteration; ++i) {
+        // Move to position
+        int targetZPosition = startZPosition + i*stepsPerSlice;
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:targetZPosition];
+        [[TBScopeHardware sharedHardware] waitForStage];
+        [self pauseForSettling];  // does this help reduce blurring?
+
+        // Gather metric
+        float metric = [self currentImageQualityMetric];
+        if (metric > bestMetricSoFar) {
+            bestMetricSoFar = metric;
+            bestPositionSoFar = targetZPosition;
+        }
+        [samples addObject:[NSNumber numberWithFloat:metric]];
+        [self _recordNewCurrentIterationPosition:targetZPosition Metric:metric];
+    }
+
+    // Calculate slope of best-fit
+    float sumY = 0.0;
+    float sumX = 0.0;
+    float sumXY = 0.0;
+    float sumX2 = 0.0;
+    float sumY2 = 0.0;
+    for (int i=0; i<[samples count]; ++i) {
+        float value = [[samples objectAtIndex:i] floatValue];
+        sumX = sumX + i;
+        sumY = sumY + value;
+        sumXY = sumXY + (i * value);
+        sumX2 = sumX2 + (i * i);
+        sumY2 = sumY2 + (value * value);
+    }
+    float slope = (([samples count] * sumXY) - (sumX * sumY)) / (([samples count] * sumX2) - (sumX * sumX));
+
+    // If slope is 0, move to best position and return success
+    if (slope == 0.0) {
+        return TBScopeFocusManagerResultSuccess;
+    }
+
+    // If direction is 0, set direction based on slope
+    if (direction == 0) {
+        if (slope > 0.0) {
+            direction = 1;
+        } else {
+            direction = -1;
+        }
+    }
+
+    // If we're climbing up and slope is decreasing
+    if (direction > 0 && slope < 0) {
+        return TBScopeFocusManagerResultSuccess;
+    }
+
+    // If we're climbing down and slope is increasing
+    if (direction < 0 && slope > 0) {
+        return TBScopeFocusManagerResultSuccess;
+    }
+
+    // Record lastGoodMetric/position and continue climbing
+    if (direction > 0) {  // If we're climbing up
+        // Move stepsPerSlice steps up
+        int targetZPosition = startZPosition + slicesPerIteration*stepsPerSlice;
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:targetZPosition];
+        [[TBScopeHardware sharedHardware] waitForStage];
+    } else {  // If we're climbing down
+        // Move stepsPerSlice steps down
+        int targetZPosition = startZPosition - slicesPerIteration*stepsPerSlice;
+        [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:targetZPosition];
+        [[TBScopeHardware sharedHardware] waitForStage];
+    }
+    return [self _hillClimbInSlicesOf:stepsPerSlice
+                   slicesPerIteration:slicesPerIteration
+                          inDirection:direction
+                      withMinPosition:minPosition
+                          maxPosition:maxPosition];
+}
+
+- (void)_recordNewCurrentIterationPosition:(int)position Metric:(float)metric
+{
+    // Propagate to currentIterationBestPosition/Metric if applicable
+    if (metric > self.currentIterationBestMetric) {
+        self.currentIterationBestMetric = metric;
+        self.currentIterationBestPosition = position;
+    }
+}
+
+- (void)_resetCurrentIterationStats
+{
+    self.currentIterationBestPosition = -1;
+    self.currentIterationBestMetric = -1.0;
+}
+
+- (void)_updateLastGoodPositionAndMetric
+{
+    self.lastGoodPosition = self.currentIterationBestPosition;
+    self.lastGoodMetric = self.currentIterationBestMetric;
+}
+
+- (float)_mean:(NSArray *)array
+{
+    float total = 0.0;
+    for (NSNumber *value in array) {
+        total = total + [value floatValue];
+    }
+    return total / [array count];
+}
+
+- (float)_stdev:(NSArray *)array
+{
+    float mean = [self _mean:array];
+    float sumOfSquaredDifferences = 0.0;
+    for(NSNumber *value in array)
+    {
+        float difference = [value floatValue] - mean;
+        sumOfSquaredDifferences += difference * difference;
+    }
+    return sqrt(sumOfSquaredDifferences / [array count]);
+}
+
+// Not sure whether pausing briefly after moving the lens up/down helps
+// get a less noisy image quality metric. We'll set it arbitrarily for
+// now, but would be worth some investigation later.
+- (void)pauseForSettling
+{
+    float focusSettlingTime = 0.5;
+    [NSThread sleepForTimeInterval:focusSettlingTime];
 }
 
 @end

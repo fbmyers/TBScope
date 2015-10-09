@@ -605,23 +605,9 @@ AVAudioPlayer* _avPlayer;
 
 - (IBAction)didPressAutoFocus:(id)sender;
 {
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-
-        // Coarse adjustment
-        [focusManager autoFocusWithStackSize:20
-                               stepsPerSlice:80
-                                 numAttempts:3
-             successiveIterationsGrowRangeBy:1.5
-                                   focusMode:TBScopeCameraFocusModeSharpness];
-
-        // Fine adjustment
-        [focusManager autoFocusWithStackSize:10
-                               stepsPerSlice:20
-                                 numAttempts:3
-             successiveIterationsGrowRangeBy:1.5
-                                   focusMode:TBScopeCameraFocusModeSharpness];
+        [focusManager autoFocus];
     });
 }
 
@@ -782,11 +768,7 @@ AVAudioPlayer* _avPlayer;
         });
 
         TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-        [focusManager autoFocusWithStackSize:initialBFStackSize
-                               stepsPerSlice:initialBFStepHeight
-                                 numAttempts:initialBFRetryAttempts
-             successiveIterationsGrowRangeBy:initialBFRetryStackMultiplier
-                                   focusMode:TBScopeCameraFocusModeSharpness];
+        [focusManager autoFocus];
     }
      
     [TBScopeData CSLog:@"Initial exposure calibration and BF focusing completed" inCategory:@"CAPTURE"];
@@ -837,29 +819,15 @@ AVAudioPlayer* _avPlayer;
                 
                 [NSThread sleepForTimeInterval:0.1];
                 
-                BOOL focusSuccess1; BOOL focusSuccess2;
                 TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-                // focusSuccess1 = [focusManager autoFocusWithStackSize:40 //20
-                //                                        stepsPerSlice:100 //80
-                //                                          numAttempts:3
-                //                      successiveIterationsGrowRangeBy:1.5
-                //                                            focusMode:TBScopeCameraFocusModeSharpness];
-                focusSuccess1 = YES;
-                focusSuccess2 = [focusManager autoFocusWithStackSize:bfRefocusBFStackSize //10
-                                                       stepsPerSlice:bfRefocusBFStepHeight //20
-                                                         numAttempts:bfRefocusBFRetryAttempts
-                                     successiveIterationsGrowRangeBy:bfRefocusBFRetryStackMultiplier
-                                                           focusMode:TBScopeCameraFocusModeSharpness];
-                    
-                if (!focusSuccess1 || !focusSuccess2)
+                TBScopeFocusManagerResult focusResult = [focusManager autoFocus];
+
+                if (focusResult == TBScopeFocusManagerResultFailure)
                     [self manualFocusWithFL:flIntensity BF:1];
-                }
-                else
-                {
+                } else {
                     [self manualFocusWithFL:flIntensity BF:1];
                 }
                 autoFocusFailCount = 0;
-
             }
             
             /*
@@ -921,19 +889,15 @@ AVAudioPlayer* _avPlayer;
                 [NSThread sleepForTimeInterval:0.05];
                 
                 TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-                BOOL focusSuccess = [focusManager autoFocusWithStackSize:flRefocusBFStackSize //10
-                                                           stepsPerSlice:flRefocusBFStepHeight //10
-                                                             numAttempts:flRefocusBFRetryAttempts //1
-                                         successiveIterationsGrowRangeBy:flRefocusBFRetryStackMultiplier
-                                                               focusMode:TBScopeCameraFocusModeContrast];
+                TBScopeFocusManagerResult focusResult = [focusManager autoFocus];
                 
                 //TODO: add ipad autofocusing here? replace?
                 
-                if (focusSuccess)
-                    autoFocusFailCount = 0;
-                else
+                if (focusResult == TBScopeFocusManagerResultFailure) {
                     autoFocusFailCount++;
-            
+                } else {
+                    autoFocusFailCount = 0;
+                }
             }
             
             if (_didPressManualFocus) {
