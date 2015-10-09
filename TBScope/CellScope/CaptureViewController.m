@@ -613,8 +613,7 @@ AVAudioPlayer* _avPlayer;
 - (IBAction)didPressAutoFocus:(id)sender;
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-        [focusManager autoFocus];
+        [[TBScopeFocusManager sharedFocusManager] autoFocus];
     });
 }
 
@@ -774,8 +773,7 @@ AVAudioPlayer* _avPlayer;
             self.scanStatusLabel.text = NSLocalizedString(@"Initial Focusing...", nil);
         });
 
-        TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-        [focusManager autoFocus];
+        [[TBScopeFocusManager sharedFocusManager] autoFocus];
     }
      
     [TBScopeData CSLog:@"Initial exposure calibration and BF focusing completed" inCategory:@"CAPTURE"];
@@ -826,8 +824,7 @@ AVAudioPlayer* _avPlayer;
                 
                 [NSThread sleepForTimeInterval:0.1];
                 
-                TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-                TBScopeFocusManagerResult focusResult = [focusManager autoFocus];
+                TBScopeFocusManagerResult focusResult = [[TBScopeFocusManager sharedFocusManager] autoFocus];
 
                 if (focusResult == TBScopeFocusManagerResultFailure)
                     [self manualFocusWithFL:flIntensity BF:1];
@@ -895,8 +892,7 @@ AVAudioPlayer* _avPlayer;
                 [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:0];
                 [NSThread sleepForTimeInterval:0.05];
                 
-                TBScopeFocusManager *focusManager = [[TBScopeFocusManager alloc] init];
-                TBScopeFocusManagerResult focusResult = [focusManager autoFocus];
+                TBScopeFocusManagerResult focusResult = [[TBScopeFocusManager sharedFocusManager] autoFocus];
                 
                 //TODO: add ipad autofocusing here? replace?
                 

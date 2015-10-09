@@ -21,7 +21,9 @@ typedef NS_ENUM(int, TBScopeFocusManagerResult)
 #define FOCUS_BACKLASH_CORRECTION 0 //TODO: make this a config setting
 
 @interface TBScopeFocusManager : NSObject
++(instancetype)sharedFocusManager;
 -(TBScopeFocusManagerResult)autoFocus;
+-(void)clearLastGoodPositionAndMetric;
 -(int)zPositionBroadSweepMin;
 -(int)zPositionBroadSweepMax;
 -(float)currentImageQualityMetric;

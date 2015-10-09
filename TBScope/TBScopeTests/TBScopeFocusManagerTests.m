@@ -30,8 +30,8 @@
     [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionZHome];
 
     // Set up focusManager
-    self.focusManager = [[TBScopeFocusManager alloc] init];
-    self.focusManager.lastGoodPosition = -1;
+    self.focusManager = [TBScopeFocusManager sharedFocusManager];
+    [self.focusManager clearLastGoodPositionAndMetric];
     [self _toggleFocusManagerPauseForSettlingSwizzling];
 }
 

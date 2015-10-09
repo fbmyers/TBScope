@@ -19,11 +19,27 @@
 
 @synthesize lastGoodPosition;
 
++ (id)sharedFocusManager
+{
+    static TBScopeFocusManager *sharedFocusManager;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedFocusManager = [[TBScopeFocusManager alloc] initPrivate];
+    });
+    return sharedFocusManager;
+}
+
 - (instancetype)init
+{
+    [NSException raise:@"Singleton" format:@"Use +[TBScopeFocusManager sharedFocusManager]"];
+    return nil;
+}
+
+- (instancetype)initPrivate
 {
     if (self = [super init]) {
         // Do additional setup here
-        self.lastGoodPosition = -1;
+        [self clearLastGoodPositionAndMetric];
     }
     return self;
 }
@@ -46,6 +62,12 @@
 - (float)currentImageQualityMetric
 {
     return [[TBScopeCamera sharedCamera] currentFocusMetric];
+}
+
+- (void)clearLastGoodPositionAndMetric
+{
+    self.lastGoodPosition = -1;
+    self.lastGoodMetric = 0.0;
 }
 
 - (TBScopeFocusManagerResult)autoFocus
