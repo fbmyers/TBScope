@@ -113,7 +113,7 @@
 	<key>CameraExposureDuration</key>
 	<integer>200</integer>
 	<key>CameraISOSpeed</key>
-	<integer>200</integer>
+	<integer>300</integer>
 	<key>CameraWhiteBalanceBlueGain</key>
 	<integer>2</integer>
 	<key>CameraWhiteBalanceGreenGain</key>

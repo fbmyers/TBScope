@@ -84,7 +84,7 @@
                   iq.greenContrast
               ];
               dispatch_async(dispatch_get_main_queue(), ^{
-                  NSLog(@"Image quality report: %@", text);
+                  // NSLog(@"Image quality report: %@", text);
                   [weakSelf.imageQualityLabel setText:text];
               });
           }

@@ -33,7 +33,7 @@ using namespace cv;
         
         // create IplImage
         if (bufferBaseAddress) {
-            iplimage = cvCreateImage(cvSize((int)bufferWidth, (int)bufferHeight), IPL_DEPTH_8U, 3);
+            iplimage = cvCreateImage(cvSize((int)bufferWidth, (int)bufferHeight), IPL_DEPTH_8U, 4);
             memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
             
             //crop it
@@ -235,11 +235,12 @@ double varianceOfLaplacian(const cv::Mat& src)
 }
 
 // OpenCV port of 'TENG' algorithm (Krotkov86)
+// NOTE: src is a single-channel Mat
 double tenengrad(const cv::Mat& src, int ksize)
 {
     cv::Mat Gx, Gy;
-    cv::Sobel(src, Gx, CV_64F, 1, 0, ksize);
-    cv::Sobel(src, Gy, CV_64F, 0, 1, ksize);
+    cv::Sobel(src, Gx, CV_8U, 1, 0, ksize);
+    cv::Sobel(src, Gy, CV_8U, 0, 1, ksize);
     
     cv::Mat FM = Gx.mul(Gx) + Gy.mul(Gy);
     
@@ -330,6 +331,23 @@ double meanOfVector(std::vector<int> values) {
 
 + (ImageQuality) calculateFocusMetricFromIplImage:(IplImage *)iplImage
 {
+//    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+//    NSData *data = [NSData dataWithBytes:iplImage->imageData length:iplImage->imageSize];
+//    CGDataProviderRef provider = CGDataProviderCreateWithCFData((CFDataRef)data);
+//    CGImageRef imageRef = CGImageCreate(
+//                                        iplImage->width, iplImage->height,
+//                                        iplImage->depth, iplImage->depth * iplImage->nChannels, iplImage->widthStep,
+//                                        colorSpace, kCGImageAlphaNone|kCGBitmapByteOrderDefault,
+//                                        provider, NULL, false, kCGRenderingIntentDefault
+//                                        );
+//    UIImage *uiImg = [UIImage imageWithCGImage:imageRef];
+//    CGImageRelease(imageRef);
+//    CGDataProviderRelease(provider);
+//    CGColorSpaceRelease(colorSpace);
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"output-docs.png"];
+//    [UIImagePNGRepresentation(uiImg) writeToFile:filePath atomically:YES];
+    
     /*
     //generate a cv::mat from sampleBuffer
     CVImageBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -345,12 +363,13 @@ double meanOfVector(std::vector<int> values) {
 
     // Derive a green/blue brightness representation (for contrast calculation)
     Mat src = Mat(iplImage);
-    src.convertTo(src, CV_8U);
-    Mat channels[3];
+    src.convertTo(src, CV_8UC3);
+    Mat channels[4];
     split(src, channels);
     Mat green = channels[1];
     channels[0].release();
     channels[2].release();
+    channels[3].release();
     
     /*
     Mat lap;
@@ -369,13 +388,21 @@ double meanOfVector(std::vector<int> values) {
     std::vector<int> pixelVals = sortValues(pixelValues(green), sortFnAsc);
     double meanLow = meanOfVector(filterByPercentile(pixelVals, 0.25, 0.75));
     double meanHigh = meanOfVector(filterByPercentile(pixelVals, 0.995, 1.0));
+    // std::vector<int> low = filterByPercentile(pixelVals, 0.25, 0.75);
+    // std::vector<int> high = filterByPercentile(pixelVals, 0.99, 1.0);
+    // NSLog(@"low: %d-%d  high: %d-%d", low.front(), low.back(), high.front(), high.back());
+    // NSLog(@"Histogram:\n");
+    // for (int i=0; i<=255; i++) {
+    //     int numItems = (int)std::count_if(pixelVals.begin(), pixelVals.end(), [i](int j) { return j == i;});
+    //     NSLog(@"%3.0f | %d\n", (float)i, numItems);
+    // }
 
     iq.entropy = 0;  //computeShannonEntropy(src);
     iq.normalizedGraylevelVariance = 0;  // normalizedGraylevelVariance(src);
     iq.varianceOfLaplacian = 0;  // varianceOfLaplacian(src);
     iq.modifiedLaplacian = 0;  // modifiedLaplacian(src);
     iq.tenengrad1 = 0;  // tenengrad(src, 1);
-    iq.tenengrad3 = tenengrad(src, 3);
+    iq.tenengrad3 = tenengrad(green, 3);
     iq.tenengrad9 = 0;  // tenengrad(src, 9);
     iq.maxVal = 0;  // maxVal;
     iq.contrast = 0;

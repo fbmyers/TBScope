@@ -419,6 +419,8 @@ AVAudioPlayer* _avPlayer;
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDBrightfield Level:intensity];
         [NSThread sleepForTimeInterval:2.0];
         [[TBScopeCamera sharedCamera] setExposureLock:YES];
+
+        [[TBScopeCamera sharedCamera] setFocusMode:TBScopeCameraFocusModeSharpness];
         
         [self.bfButton setTitle:NSLocalizedString(@"BF On",nil) forState:UIControlStateNormal];
         [self.bfButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
@@ -453,6 +455,8 @@ AVAudioPlayer* _avPlayer;
         [[TBScopeHardware sharedHardware] setMicroscopeLED:CSLEDFluorescent Level:intensity];
         [self.flButton setTitle:NSLocalizedString(@"FL On",nil) forState:UIControlStateNormal];
         [self.flButton setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
+
+        [[TBScopeCamera sharedCamera] setFocusMode:TBScopeCameraFocusModeContrast];
     }
     else
     {

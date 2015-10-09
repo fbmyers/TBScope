@@ -256,7 +256,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     // Contrast
     contrastAveragingArray[2] = contrastAveragingArray[1];
     contrastAveragingArray[1] = contrastAveragingArray[0];
-    contrastAveragingArray[0] = iq.contrast;
+    contrastAveragingArray[0] = iq.greenContrast;
     iq.movingAverageContrast = (contrastAveragingArray[0] + contrastAveragingArray[1] + contrastAveragingArray[2])/3.0;
     
     self.currentImageQuality = iq;
@@ -264,7 +264,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     if (self.focusMode == TBScopeCameraFocusModeSharpness) {
         self.currentFocusMetric = iq.tenengrad3; //iq.movingAverageSharpness;
     } else if (self.focusMode == TBScopeCameraFocusModeContrast) {
-        self.currentFocusMetric = iq.contrast; //iq.movingAverageContrast;
+        self.currentFocusMetric = iq.greenContrast; //iq.movingAverageContrast;
     }
     
     NSValue *iqAsObject = [NSValue valueWithBytes:&iq objCType:@encode(ImageQuality)];
