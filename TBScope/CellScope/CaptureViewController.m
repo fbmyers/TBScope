@@ -103,6 +103,13 @@ AVAudioPlayer* _avPlayer;
     else
     {
         [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionSlideCenter];
+        for (int i=0; i<18500; i+=1000) {
+            [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
+                                                               Steps:1000
+                                                         StopOnLimit:YES
+                                                        DisableAfter:YES];
+            [NSThread sleepForTimeInterval:0.1];
+        }
     }
 }
 
