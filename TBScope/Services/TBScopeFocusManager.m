@@ -78,6 +78,8 @@
 
     // If we have a lastGoodPosition
     if (self.lastGoodPosition >= 0) {
+        // TODO: we should probably make this a wider hill climb because it's
+        // possible we're off by a good margin here
         if ([self _fineFocus] == TBScopeFocusManagerResultSuccess) {
             [self _updateLastGoodPositionAndMetric];
             [[TBScopeHardware sharedHardware] moveToX:-1 Y:-1 Z:self.currentIterationBestPosition];
@@ -155,7 +157,7 @@
 
     // Hill climb
     return [self _hillClimbInSlicesOf:20
-                   slicesPerIteration:5
+                   slicesPerIteration:10
                           inDirection:0
                       withMinPosition:minPosition
                           maxPosition:maxPosition];
@@ -300,7 +302,7 @@
 // now, but would be worth some investigation later.
 - (void)pauseForSettling
 {
-    float focusSettlingTime = 0.5;
+    float focusSettlingTime = 0.3;
     [NSThread sleepForTimeInterval:focusSettlingTime];
 }
 
