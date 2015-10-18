@@ -60,6 +60,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *flRefocusRetryAttempts;
 @property (weak, nonatomic) IBOutlet UITextField *flRefocusRetryStackMultiplier;
 
+@property (weak, nonatomic) IBOutlet UITextField *cameraExposureDuration;
+@property (weak, nonatomic) IBOutlet UITextField *cameraISOSpeed;
+@property (weak, nonatomic) IBOutlet UITextField *cameraWhiteBalanceRedGain;
+@property (weak, nonatomic) IBOutlet UITextField *cameraWhiteBalanceGreenGain;
+@property (weak, nonatomic) IBOutlet UITextField *cameraWhiteBalanceBlueGain;
+
 @property (weak, nonatomic) IBOutlet UITextField *focusSettlingTime;
 @property (weak, nonatomic) IBOutlet UITextField *stageSettlingTime;
 @property (weak, nonatomic) IBOutlet UITextField *focusStepDuration;

@@ -20,14 +20,9 @@
 #define FOCUS_IMPROVEMENT_THRESHOLD_SHARPNESS 1.2
 #define FOCUS_IMPROVEMENT_THRESHOLD_CONTRAST 1.1
 
-#define BACKLASH_STEPS 500
-#define FOCUS_BACKLASH_CORRECTION 10 //TODO: make this a config setting (stage backlash too)
+#define BACKLASH_STEPS 500  // TODO: make this a config setting
 
 #define MAX_FLUORESCENCE_AF_FAILURES 3
-
-//todo: redo as enums
-#define AUTOFOCUS_ON_SHARPNESS 0
-#define AUTOFOCUS_ON_CONTRAST 1
 
 @interface CaptureViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate, TBScopeHardwareDelegate>
 
@@ -95,9 +90,6 @@
 - (IBAction)didPressManualFocusDown:(id)sender;
 - (IBAction)didPressManualFocusOk:(id)sender;
 
-
-- (BOOL) autoFocusWithStackSize:(int)stackSize
-                  stepsPerSlice:(int)stepsPerSlice;
 
 - (void) autoscanWithCols:(int)numCols
                      Rows:(int)numRows

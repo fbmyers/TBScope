@@ -16,6 +16,9 @@ local.properties
 .settings/
 .loadpath
 
+# Cocoapods
+Pods/
+
 # External tool builders
 .externalToolBuilders/
 
@@ -59,7 +62,6 @@ build/
 *.ilk
 *.meta
 *.obj
-*.pch
 *.pdb
 *.pgc
 *.pgd

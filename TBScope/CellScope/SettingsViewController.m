@@ -97,7 +97,13 @@
     self.flRefocusStepHeight.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"FLRefocusStepSize"]];
     self.flRefocusRetryAttempts.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"FLRefocusRetryAttempts"]];
     self.flRefocusRetryStackMultiplier.text = [[NSString alloc] initWithFormat:@"%2.2f",[prefs floatForKey:@"FLRefocusRetryStackMultiplier"]];
-    
+
+    self.cameraExposureDuration.text      = [[NSString alloc] initWithFormat:@"%d", (int)[prefs floatForKey:@"CameraExposureDuration"]];
+    self.cameraISOSpeed.text              = [[NSString alloc] initWithFormat:@"%d", (int)[prefs floatForKey:@"CameraISOSpeed"]];
+    self.cameraWhiteBalanceRedGain.text   = [[NSString alloc] initWithFormat:@"%d", (int)[prefs floatForKey:@"CameraWhiteBalanceRedGain"]];
+    self.cameraWhiteBalanceGreenGain.text = [[NSString alloc] initWithFormat:@"%d", (int)[prefs floatForKey:@"CameraWhiteBalanceGreenGain"]];
+    self.cameraWhiteBalanceBlueGain.text  = [[NSString alloc] initWithFormat:@"%d", (int)[prefs floatForKey:@"CameraWhiteBalanceBlueGain"]];
+
     self.stageSettlingTime.text = [[NSString alloc] initWithFormat:@"%2.3f",[prefs floatForKey:@"StageSettlingTime"]];
     self.focusSettlingTime.text = [[NSString alloc] initWithFormat:@"%2.3f",[prefs floatForKey:@"FocusSettlingTime"]];
     self.stageStepDuration.text = [[NSString alloc] initWithFormat:@"%d",[prefs integerForKey:@"StageStepInterval"]];
@@ -169,6 +175,12 @@
     [prefs setInteger:self.flRefocusStepHeight.text.integerValue forKey:@"FLRefocusStepSize"];
     [prefs setInteger:self.flRefocusRetryAttempts.text.integerValue forKey:@"FLRefocusRetryAttempts"];
     [prefs setFloat:self.flRefocusRetryStackMultiplier.text.floatValue forKey:@"FLRefocusRetryStackMultiplier"];
+
+    [prefs setInteger:self.cameraExposureDuration.text.integerValue forKey:@"CameraExposureDuration"];
+    [prefs setInteger:self.cameraISOSpeed.text.integerValue forKey:@"CameraISOSpeed"];
+    [prefs setInteger:self.cameraWhiteBalanceRedGain.text.integerValue forKey:@"CameraWhiteBalanceRedGain"];
+    [prefs setInteger:self.cameraWhiteBalanceGreenGain.text.integerValue forKey:@"CameraWhiteBalanceGreenGain"];
+    [prefs setInteger:self.cameraWhiteBalanceBlueGain.text.integerValue forKey:@"CameraWhiteBalanceBlueGain"];
     
     [prefs setInteger:self.focusStepDuration.text.integerValue forKey:@"FocusStepInterval"];
     [prefs setInteger:self.stageStepDuration.text.integerValue forKey:@"StageStepInterval"];

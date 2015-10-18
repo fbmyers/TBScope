@@ -37,7 +37,9 @@ namespace Classifier
 
 	vector<MatDict > featureDetection(cv::Mat imageBw, cv::Mat original)
 	{
-        
+        int imageRows = imageBw.rows;
+        int imageCols = imageBw.cols;
+
 		ContourContainerType contours;
 		cv::vector<cv::Vec4i> hierarchy;
 		cv::findContours(imageBw, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -62,9 +64,9 @@ namespace Classifier
             int col = (int)pt.y;
 			
 			//bool partial = Features::checkPartialPatch(row, col, imageBw.rows-1, imageBw.cols-1);
-            bool partial = Features::checkPatchOutsideCircle(row, col, imageBw.rows-1, imageBw.cols-1, CIRCLEMASKRADIUS);
+            bool partial = Features::checkPatchOutsideCircle(row, col, imageRows-1, imageCols-1, CIRCLEMASKRADIUS);
 			if (!partial)
-			{
+            {
 				cv::Mat rowMat = cv::Mat(1, 1, CV_32F);
 				cv::Mat colMat = cv::Mat(1, 1, CV_32F);
 				rowMat.at<float>(0, 0) = (float)row;
@@ -137,38 +139,32 @@ namespace Classifier
       svm_model *model = nullptr;
       Mat train_max;
       Mat train_min;
-      if (DEBUG) {
-        model = svm_load_model(MODEL_PATH);
-        train_max = loadCSV(TRAIN_MAX_PATH);
-        train_min = loadCSV(TRAIN_MIN_PATH);
-      } else {
-        CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                     CFSTR("model_out"), CFSTR("txt"),
-                                                     NULL);
-        CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                   CFSTR("train_max"), CFSTR("csv"),
-                                                   NULL);
-        CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                   CFSTR("train_min"), CFSTR("csv"),
-                                                   NULL);
-        
-        char model_path[1024];
-        char max_path[1024];
-        char min_path[1024];
-        
-        CFURLGetFileSystemRepresentation(model_url, true, (UInt8*)model_path, sizeof(model_path));
-        CFURLGetFileSystemRepresentation(max_url, true, (UInt8*)max_path, sizeof(max_path));
-        CFURLGetFileSystemRepresentation(min_url, true, (UInt8*)min_path, sizeof(min_path));
 
-        CFRelease(model_url);
-        CFRelease(max_url);
-        CFRelease(min_url);
-        
-        model = svm_load_model(model_path);
-        train_max = loadCSV(max_path);
-        train_min = loadCSV(min_path);
-        
-      }
+      CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                   CFSTR("model_out"), CFSTR("txt"),
+                                                   NULL);
+      CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                 CFSTR("train_max"), CFSTR("csv"),
+                                                 NULL);
+      CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                 CFSTR("train_min"), CFSTR("csv"),
+                                                 NULL);
+      
+      char model_path[1024];
+      char max_path[1024];
+      char min_path[1024];
+      
+      CFURLGetFileSystemRepresentation(model_url, true, (UInt8*)model_path, sizeof(model_path));
+      CFURLGetFileSystemRepresentation(max_url, true, (UInt8*)max_path, sizeof(max_path));
+      CFURLGetFileSystemRepresentation(min_url, true, (UInt8*)min_path, sizeof(min_path));
+
+      CFRelease(model_url);
+      CFRelease(max_url);
+      CFRelease(min_url);
+      
+      model = svm_load_model(model_path);
+      train_max = loadCSV(max_path);
+      train_min = loadCSV(min_path);
       
       vector<double> prob_results;
       try {

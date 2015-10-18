@@ -7,12 +7,16 @@
 //
 
 #import "ImageQualityAnalyzer.h"
+#include <opencv2/imgproc/imgproc.hpp>
+#include <vector>       // std::vector
+#include <algorithm>    // std::sort
+#include <numeric>      // accumulate
 
 @implementation ImageQualityAnalyzer
 
 using namespace cv;
 
-#define CROP_WINDOW_SIZE 700
+#define CROP_WINDOW_SIZE 250  // Had to reduce this (from 700) to get 10+ frames/sec
 
 +(IplImage *)createIplImageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     IplImage *iplimage = 0;
@@ -29,19 +33,17 @@ using namespace cv;
         
         // create IplImage
         if (bufferBaseAddress) {
-            iplimage = cvCreateImage(cvSize(bufferWidth, bufferHeight), IPL_DEPTH_8U, 1);
-            iplimage->imageData = (char*)bufferBaseAddress;
+            iplimage = cvCreateImage(cvSize((int)bufferWidth, (int)bufferHeight), IPL_DEPTH_8U, 4);
+            memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
             
             //crop it
             cvSetImageROI(iplimage, cvRect(iplimage->width/2-(CROP_WINDOW_SIZE/2), iplimage->height/2-(CROP_WINDOW_SIZE/2), CROP_WINDOW_SIZE, CROP_WINDOW_SIZE));
             cropped = cvCreateImage(cvGetSize(iplimage),
                                     iplimage->depth,
                                     iplimage->nChannels);
-            
+
             cvCopy(iplimage, cropped, NULL);
             cvResetImageROI(iplimage);
-            
-            //memcpy(iplimage->imageData, (char*)bufferBaseAddress, iplimage->imageSize);
         }
         
         // release memory
@@ -233,11 +235,12 @@ double varianceOfLaplacian(const cv::Mat& src)
 }
 
 // OpenCV port of 'TENG' algorithm (Krotkov86)
+// NOTE: src is a single-channel Mat
 double tenengrad(const cv::Mat& src, int ksize)
 {
     cv::Mat Gx, Gy;
-    cv::Sobel(src, Gx, CV_64F, 1, 0, ksize);
-    cv::Sobel(src, Gy, CV_64F, 0, 1, ksize);
+    cv::Sobel(src, Gx, CV_8U, 1, 0, ksize);
+    cv::Sobel(src, Gy, CV_8U, 0, 1, ksize);
     
     cv::Mat FM = Gx.mul(Gx) + Gy.mul(Gy);
     
@@ -287,10 +290,63 @@ float computeShannonEntropy(Mat src)
     return entropy;
 }
 
-
-
-+ (ImageQuality) calculateFocusMetric:(CMSampleBufferRef)sampleBuffer
+// Returns a vector of pixel values (0..255) for a grayscale image.
+std::vector<int> pixelValues(Mat srcGray)
 {
+    int rows = srcGray.rows;
+    int cols = srcGray.cols;
+    std::vector<int> values;
+    for (int r=0; r<rows; ++r) {
+        for (int c=0; c<cols; ++c) {
+            values.push_back(srcGray.at<uchar>(r, c));
+        }
+    }
+    return values;
+}
+
+std::vector<int> filterByPercentile(std::vector<int>values, double minPercentile, double maxPercentile)
+{
+    std::vector<int> sliced;
+    int vectorSize = (int)values.size();
+    int indexStart = MAX(0, MIN(vectorSize-1, (int)round(minPercentile*vectorSize)));
+    int indexEnd   = MAX(0, MIN(vectorSize-1, (int)round(maxPercentile*vectorSize)));
+    for (int i=indexStart; i<=indexEnd; ++i) {
+        sliced.push_back(values[i]);
+    }
+    return sliced;
+}
+
+std::vector<int> sortValues(std::vector<int>values, bool (*sortFn)(int a, int b))
+{
+    std::sort(values.begin(), values.end(), sortFn);
+    return values;
+}
+bool sortFnAsc(int a,int b) { return (a<b); }
+bool sortFnDesc(int a,int b) { return (a>b); }
+
+double meanOfVector(std::vector<int> values) {
+    double sum = std::accumulate(values.begin(), values.end(), 0.0);
+    return sum / values.size();
+}
+
++ (ImageQuality) calculateFocusMetricFromIplImage:(IplImage *)iplImage
+{
+//    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+//    NSData *data = [NSData dataWithBytes:iplImage->imageData length:iplImage->imageSize];
+//    CGDataProviderRef provider = CGDataProviderCreateWithCFData((CFDataRef)data);
+//    CGImageRef imageRef = CGImageCreate(
+//                                        iplImage->width, iplImage->height,
+//                                        iplImage->depth, iplImage->depth * iplImage->nChannels, iplImage->widthStep,
+//                                        colorSpace, kCGImageAlphaNone|kCGBitmapByteOrderDefault,
+//                                        provider, NULL, false, kCGRenderingIntentDefault
+//                                        );
+//    UIImage *uiImg = [UIImage imageWithCGImage:imageRef];
+//    CGImageRelease(imageRef);
+//    CGDataProviderRelease(provider);
+//    CGColorSpaceRelease(colorSpace);
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"output-docs.png"];
+//    [UIImagePNGRepresentation(uiImg) writeToFile:filePath atomically:YES];
     
     /*
     //generate a cv::mat from sampleBuffer
@@ -304,12 +360,16 @@ float computeShannonEntropy(Mat src)
      */
     
     ImageQuality iq;
-    
-    //TODO: this isn't taking green channel...how do we do that?
-    IplImage* iplimg = [ImageQualityAnalyzer createIplImageFromSampleBuffer:sampleBuffer];
 
-    
-    Mat src = Mat(iplimg);
+    // Derive a green/blue brightness representation (for contrast calculation)
+    Mat src = Mat(iplImage);
+    src.convertTo(src, CV_8UC3);
+    Mat channels[4];
+    split(src, channels);
+    Mat green = channels[1];
+    channels[0].release();
+    channels[2].release();
+    channels[3].release();
     
     /*
     Mat lap;
@@ -318,41 +378,42 @@ float computeShannonEntropy(Mat src)
     
     Laplacian(src, lap, CV_64F);
 */
-    
+
+    // Calculate base metrics (used for contrast etc)
     Scalar mean, stDev;
-    double minVal;
-    double maxVal;
-    
-    
+    double minVal, maxVal;
     meanStdDev(src, mean, stDev);
     minMaxIdx(src, &minVal, &maxVal);
-    
-    
-    
-    iq.normalizedGraylevelVariance = 0; //normalizedGraylevelVariance(src);
-    iq.varianceOfLaplacian = 0; //varianceOfLaplacian(src);
-    iq.modifiedLaplacian = 0; //modifiedLaplacian(src);
-    iq.tenengrad1 = 0; //tenengrad(src, 1);
-    iq.tenengrad3 = tenengrad(src, 3);
-    iq.tenengrad9 = 0; //tenengrad(src, 9);
 
-    iq.maxVal = maxVal;
-    iq.contrast = maxVal/mean.val[0];
-    
-    //maxVal = std::max_element(src.begin<double>(),src.end<double>());
-    
-    
-    //TODO: compute contrast as top 0.01% / bottom 50%?
+    std::vector<int> pixelVals = sortValues(pixelValues(green), sortFnAsc);
+    double meanLow = meanOfVector(filterByPercentile(pixelVals, 0.25, 0.75));
+    double meanHigh = meanOfVector(filterByPercentile(pixelVals, 0.995, 1.0));
+    // std::vector<int> low = filterByPercentile(pixelVals, 0.25, 0.75);
+    // std::vector<int> high = filterByPercentile(pixelVals, 0.99, 1.0);
+    // NSLog(@"low: %d-%d  high: %d-%d", low.front(), low.back(), high.front(), high.back());
+    // NSLog(@"Histogram:\n");
+    // for (int i=0; i<=255; i++) {
+    //     int numItems = (int)std::count_if(pixelVals.begin(), pixelVals.end(), [i](int j) { return j == i;});
+    //     NSLog(@"%3.0f | %d\n", (float)i, numItems);
+    // }
+
+    iq.entropy = 0;  //computeShannonEntropy(src);
+    iq.normalizedGraylevelVariance = 0;  // normalizedGraylevelVariance(src);
+    iq.varianceOfLaplacian = 0;  // varianceOfLaplacian(src);
+    iq.modifiedLaplacian = 0;  // modifiedLaplacian(src);
+    iq.tenengrad1 = 0;  // tenengrad(src, 1);
+    iq.tenengrad3 = tenengrad(green, 3);
+    iq.tenengrad9 = 0;  // tenengrad(src, 9);
+    iq.maxVal = 0;  // maxVal;
+    iq.contrast = 0;
+    iq.greenContrast = meanHigh/MAX(1.0, meanLow);
     //TODO: need a metric for overall image content (if > 20%, throw it out)
-    
-    //iq.contrast = maxVal/mean.val[0];
-    iq.entropy = 0; //computeShannonEntropy(src);
-    
 
     src.release();
-    //lap.release();
-    cvReleaseImage(&iplimg);
+    green.release();
     
+    //lap.release();
+    cvReleaseImage(&iplImage);
     
     
     return iq;

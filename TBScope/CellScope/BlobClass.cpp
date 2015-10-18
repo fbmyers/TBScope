@@ -69,8 +69,10 @@ namespace BlobClass
         
         //TODO: bring all these parameters out to settings
         //TODO: image mask
-        if (!neilscope)
+        if (neilscope)
         {
+            cv::meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference);
+        } else if (image.rows >= 1800 && image.cols >= 1400) {
             cv::Mat img_mask(image.rows,image.cols, CV_8UC1);
             img_mask = cv::Scalar(0);
             for (int i = 800; i < 1800; i++) {
@@ -83,11 +85,11 @@ namespace BlobClass
             
             cv::meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference, img_mask);
             img_mask.release();
-        }
-        else
-        {
+        } else {
+            // Image was smaller than recent iPad resolution; do our best...
             cv::meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference);
         }
+
         // Find mean and std dev of background-subtracted image
         //threshold for binarization is mean + 3*std_dev
 
