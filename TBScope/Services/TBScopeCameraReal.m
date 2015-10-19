@@ -13,6 +13,7 @@
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) AVCaptureDeviceInput *input;
 @property (nonatomic, strong) AVCaptureStillImageOutput *stillOutput;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic) ImageQuality currentImageQuality;
 @property (nonatomic) BOOL isFocusLocked;
 @property (nonatomic) BOOL isExposureLocked;
@@ -56,7 +57,10 @@
     //NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, @1.0, AVVideoQualityKey, nil];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [self.stillOutput setOutputSettings:outputSettings];
-    
+
+    // Set up the preview layer
+    self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+
     // Add session input and output
     [self.session addInput:self.input];
     [self.session addOutput:self.stillOutput];
@@ -210,7 +214,7 @@
 
 -(AVCaptureVideoPreviewLayer *)captureVideoPreviewLayer
 {
-    return [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    return self.previewLayer;
 }
 
 - (void)startPreview
@@ -276,11 +280,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (void)takeDownCamera
 {
     [self stopPreview];
-    AVCaptureInput* input2 = [self.session.inputs objectAtIndex:0];
-    [self.session removeInput:input2];
-    AVCaptureVideoDataOutput* output = (AVCaptureVideoDataOutput*)[self.session.outputs objectAtIndex:0];
-    [self.session removeOutput:output];
+    for(AVCaptureInput *input1 in self.session.inputs) {
+        [self.session removeInput:input1];
+    }
+    for(AVCaptureOutput *output1 in self.session.outputs) {
+        [self.session removeOutput:output1];
+    }
     self.session = nil;
+    self.device = nil;
+    self.input = nil;
+    self.previewLayer = nil;
+    self.stillOutput = nil;
 }
 
 - (void)_setExposureAndISOFromUserDefaults
