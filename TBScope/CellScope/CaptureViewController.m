@@ -164,7 +164,8 @@ AVAudioPlayer* _avPlayer;
     [self.previewView takeDownCamera];
     
     //[self.previewView.session stopRunning];
-    
+
+    [super viewWillDisappear:animated];
 }
 
 - (void)abortCapture

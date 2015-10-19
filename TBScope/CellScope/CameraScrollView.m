@@ -93,8 +93,10 @@
 
 - (void)takeDownCamera
 {
-    [[TBScopeCamera sharedCamera] takeDownCamera];
+    [self.previewLayerView removeFromSuperview];
     [self.previewLayerView.layer removeFromSuperlayer];
+    self.previewLayerView = nil;
+    [[TBScopeCamera sharedCamera] takeDownCamera];
 }
 
 
