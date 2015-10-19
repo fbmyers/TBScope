@@ -46,11 +46,8 @@
 
     // Set custom white balance/iso
     [self setExposureLock:YES];
-    [self setWhiteBalanceRed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceRedGain"]
-                       Green:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceGreenGain"]
-                        Blue:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceBlueGain"]];
-    [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDuration"]
-                     ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeed"]];
+    [self _setWhiteBalanceGainsFromUserDefaults];
+    [self _setExposureAndISOFromUserDefaults];
     
     // Setup still image output
     self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
@@ -293,10 +290,22 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     self.stillOutput = nil;
 }
 
+- (void)_setWhiteBalanceGainsFromUserDefaults
+{
+    [self setWhiteBalanceRed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceRedGain"]
+                       Green:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceGreenGain"]
+                        Blue:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceBlueGain"]];
+}
+
 - (void)_setExposureAndISOFromUserDefaults
 {
-    [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDuration"]
-                     ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeed"]];
+    if (self.focusMode == TBScopeCameraFocusModeSharpness) {  // brightfield
+      [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationBF"]
+                       ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedBF"]];
+    } else {  // fluorescence
+      [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationFL"]
+                       ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedFL"]];
+    }
 }
 
 - (void)_sendExposureReport
