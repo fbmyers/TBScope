@@ -7,6 +7,7 @@
 //
 
 #import "TBScopeCameraMock.h"
+#import "TBScopeHardware.h"
 
 @interface TBScopeCameraMock ()
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -71,7 +72,7 @@
     [self startPreview];
 
     // Fire off periodic image quality reports
-    self.imageQualityTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+    self.imageQualityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
                                                               target:self
                                                             selector:@selector(_fireImageQualityReport)
                                                             userInfo:nil
@@ -174,18 +175,23 @@
 
 - (void)_fireImageQualityReport
 {
+    int focusedZPosition = 18120;
+    int currentZPosition = [[TBScopeHardware sharedHardware] zPosition];
+    double currentFocus = MAX(0.0, ABS(focusedZPosition - currentZPosition)*-1.0+1000.0);
+
     ImageQuality iq;
-    iq.normalizedGraylevelVariance = 50.0;
-    iq.varianceOfLaplacian = 50.0;
-    iq.modifiedLaplacian = 50.0;
-    iq.tenengrad1 = 50.0;
-    iq.tenengrad3 = 50.0;
-    iq.tenengrad9 = 50.0;
-    iq.movingAverageSharpness = 50.0;
-    iq.movingAverageContrast = 50.0;
-    iq.entropy = 50.0;
-    iq.maxVal = 50.0;
-    iq.contrast = 50.0;
+    iq.normalizedGraylevelVariance = 0;
+    iq.varianceOfLaplacian = 0;
+    iq.modifiedLaplacian = 0;
+    iq.tenengrad1 = 0;
+    iq.tenengrad3 = currentFocus;
+    iq.tenengrad9 = 0;
+    iq.movingAverageSharpness = 0;
+    iq.movingAverageContrast = 0;
+    iq.entropy = 0;
+    iq.maxVal = 0;
+    iq.contrast = 0;
+    iq.greenContrast = currentFocus;
 
     self.currentImageQuality = iq;
     if (self.focusMode == TBScopeCameraFocusModeSharpness) {
