@@ -111,11 +111,16 @@
     [self _log:@"captureImage"];
 
     // Update lastCapturedImage with mock images
+    NSString *fileName;
     if (self.focusMode == TBScopeCameraFocusModeSharpness) {  // BF
-        self.lastCapturedImage = [UIImage imageNamed:@"bf_mock.jpg"];
+        fileName = @"bf_mock";
     } else {  // FL
-        self.lastCapturedImage = [UIImage imageNamed:@"fl_mock.jpg"];
+        fileName = @"fl_mock";
     }
+    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:fileName ofType:@"jpg"];
+    self.lastCapturedImage = [UIImage imageWithContentsOfFile:filePath];
+
+    // Post notification
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ImageCaptured" object:nil];
 }
 
