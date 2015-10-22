@@ -241,13 +241,15 @@ AVAudioPlayer* _avPlayer;
     interiorBlock = block = ^(NSURL *assetURL, NSError *error){
         if (error) {
             NSLog(@"Image save failure %@", blockImage);
-            [TBScopeData CSLog:@"Error saving image to asset library, will retry." inCategory:@"CAPTURE"];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-                [library writeImageToSavedPhotosAlbum:blockImage.CGImage orientation:(ALAssetOrientation)[blockImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
-                    NSLog(@"Image save retry %@", blockImage);
-                    interiorBlock(assetURL, error);
-                }];
-            });
+            if ([error code] == ALAssetsLibraryWriteBusyError) {
+                [TBScopeData CSLog:@"Error saving image to asset library, will retry." inCategory:@"CAPTURE"];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+                    [library writeImageToSavedPhotosAlbum:blockImage.CGImage orientation:(ALAssetOrientation)[blockImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
+                        NSLog(@"Image save retry %@", blockImage);
+                        interiorBlock(assetURL, error);
+                    }];
+                });
+            }
         } else {
             NSLog(@"Image save success %@", blockImage);
             
