@@ -299,13 +299,20 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void)_setExposureAndISOFromUserDefaults
 {
+    int isoSpeed, exposureDuration;
     if (self.focusMode == TBScopeCameraFocusModeSharpness) {  // brightfield
-      [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationBF"]
-                       ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedBF"]];
+        exposureDuration = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationBF"];
+        isoSpeed = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedBF"];
     } else {  // fluorescence
-      [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationFL"]
-                       ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedFL"]];
+        exposureDuration = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationFL"];
+        isoSpeed = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedFL"];
     }
+
+    // Limit ISO speed to camera's range
+    isoSpeed = MAX(isoSpeed, self.device.activeFormat.minISO);
+    isoSpeed = MIN(isoSpeed, self.device.activeFormat.maxISO);
+    [self setExposureDuration:exposureDuration
+                     ISOSpeed:isoSpeed];
 }
 
 - (void)_sendExposureReport
