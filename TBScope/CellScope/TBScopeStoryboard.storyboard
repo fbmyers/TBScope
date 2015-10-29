@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="dAw-As-dS7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="dAw-As-dS7">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -113,7 +113,7 @@
                             <tableViewSection id="PyW-we-yFe">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="305" id="VO2-tY-zbe">
-                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="305"/>
+                                        <rect key="frame" x="0.0" y="64" width="1024" height="305"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="VO2-tY-zbe" id="GNW-1P-3eR">
                                             <rect key="frame" x="0.0" y="0.0" width="1024" height="305"/>
@@ -411,7 +411,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="Cell" id="RAn-Io-Ood" customClass="ExamListTableViewCell">
-                                <rect key="frame" x="0.0" y="33" width="1024" height="50"/>
+                                <rect key="frame" x="0.0" y="97" width="1024" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RAn-Io-Ood" id="Uhk-MD-akk">
                                     <rect key="frame" x="0.0" y="0.0" width="1024" height="49"/>
@@ -611,7 +611,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="C5q-H7-o6I">
-                                <rect key="frame" x="0.0" y="22" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C5q-H7-o6I" id="VgB-qq-SgM">
                                     <rect key="frame" x="0.0" y="0.0" width="1024" height="43"/>
@@ -3792,6 +3792,13 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TBScope 0.0.0 (abc123)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nIR-xU-2O8">
+                                <rect key="frame" x="20" y="144" width="253" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -3831,6 +3838,7 @@
                         <outlet property="statusLabel" destination="XWr-Tn-fk6" id="rMA-1d-hpy"/>
                         <outlet property="syncLabel" destination="tGy-e5-uM7" id="sR3-KM-Zcb"/>
                         <outlet property="syncSpinner" destination="Ndz-uN-sYT" id="N6l-b5-i5p"/>
+                        <outlet property="versionLabel" destination="nIR-xU-2O8" id="vQh-vY-K3r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nV3-Bg-64I" userLabel="First Responder" sceneMemberID="firstResponder"/>

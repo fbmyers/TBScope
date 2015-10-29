@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *syncLabel;
 @property (weak, nonatomic) IBOutlet UILabel *cellscopeIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *scanSlideButton;
 @property (weak, nonatomic) IBOutlet UIButton *reviewResultsButton;

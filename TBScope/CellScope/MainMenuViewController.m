@@ -75,6 +75,9 @@
     
     self.cellscopeIDLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"CellScopeID"];
     self.locationLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultLocation"];
+    NSString *versionNumber = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+    NSString *buildId = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
+    self.versionLabel.text = [NSString stringWithFormat:@"TBScope %@ (%@)", versionNumber, buildId];
 
     [TBScopeData CSLog:@"Main menu screen presented" inCategory:@"USER"];
     
