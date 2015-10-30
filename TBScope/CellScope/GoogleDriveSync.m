@@ -366,30 +366,31 @@ BOOL _hasAttemptedLogUpload;
 // Uploads a photo to Google Drive and sets the local googleFileID to the fileID provided by google
 - (void)uploadImage:(Images*)image completionHandler:(void(^)(NSError*))completionBlock
 {
-    if (image.googleDriveFileID==nil) {
-        [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading image %d-%d for exam %@",image.slide.slideNumber,image.fieldNumber,image.slide.exam.examID]
+    NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
+
+    // Create a temporary copy of image belonging to this NSManagedObjectContext
+    NSError *tmpImageError;
+    Images *tmpImage = [tmpMOC existingObjectWithID:[image objectID] error:&tmpImageError];
+
+    if (tmpImage.googleDriveFileID==nil) {
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading image %d-%d for exam %@", tmpImage.slide.slideNumber, tmpImage.fieldNumber, tmpImage.slide.exam.examID]
                 inCategory:@"SYNC"];
 
         //load the image
-        NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
         [tmpMOC performBlock:^{
-            [TBScopeData getImage:image resultBlock:^(UIImage* im, NSError* error) {
+            [TBScopeData getImage:tmpImage resultBlock:^(UIImage* im, NSError* error) {
                 if (error==nil) {
-                    // Create a temporary copy of image belonging to this NSManagedObjectContext
-                    NSError *tmpImageError;
-                    Images *tmpImage = [tmpMOC existingObjectWithID:[image objectID] error:&tmpImageError];
-
                     //create a google file object from this image
                     GTLDriveFile *file = [GTLDriveFile object];
                     file.title = [NSString stringWithFormat:@"%@ - %@ - %d-%d.jpg",
-                                   image.slide.exam.cellscopeID,
-                                   image.slide.exam.examID,
-                                   image.slide.slideNumber,
-                                   image.fieldNumber];
+                                   tmpImage.slide.exam.cellscopeID,
+                                   tmpImage.slide.exam.examID,
+                                   tmpImage.slide.slideNumber,
+                                   tmpImage.fieldNumber];
                     file.descriptionProperty = @"Uploaded from CellScope";
                     file.mimeType = @"image/jpeg";
-                    file.modifiedDate = [GTLDateTime dateTimeWithRFC3339String:image.slide.exam.dateModified];
+                    file.modifiedDate = [GTLDateTime dateTimeWithRFC3339String:tmpImage.slide.exam.dateModified];
                     NSData *data = UIImageJPEGRepresentation((UIImage *)im,1.0);
                     GTLUploadParameters *uploadParameters = [GTLUploadParameters uploadParametersWithData:data
                                                                                                  MIMEType:file.mimeType];
@@ -421,9 +422,7 @@ BOOL _hasAttemptedLogUpload;
                 }
             }];
         }];
-    }
-    else
-    {
+    } else {
         [TBScopeData CSLog:@"This image has already been uploaded." inCategory:@"SYNC"];
         
         completionBlock(nil);
@@ -434,39 +433,45 @@ BOOL _hasAttemptedLogUpload;
 //upload an exam (either new or modified) to google drive
 - (void)uploadExam:(Exams*)exam completionHandler:(void(^)(NSError*))completionBlock
 {
+    NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
+
+    // Create a temporary copy of exam belonging to this NSManagedObjectContext
+    NSError *tmpExamError;
+    Exams *tmpExam = [tmpMOC existingObjectWithID:[exam objectID] error:&tmpExamError];
+
     //first check to make sure this exam has had all images uploaded (and therefore has google file IDs associated with each)
     BOOL allImagesUploaded = YES;
-    for (Slides* sl in exam.examSlides)
+    for (Slides* sl in tmpExam.examSlides)
         for (Images* im in sl.slideImages)
             if (im.googleDriveFileID==nil)
                 allImagesUploaded = NO;
     if (allImagesUploaded)
     {
-        [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading exam: %@",exam.examID] inCategory:@"SYNC"];
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Uploading exam: %@", tmpExam.examID] inCategory:@"SYNC"];
         
         //create a google file object from this exam
         GTLDriveFile* file = [GTLDriveFile object];
         file.title = [NSString stringWithFormat:@"%@ - %@.json",
-                      exam.cellscopeID,
-                      exam.examID];
+                      tmpExam.cellscopeID,
+                      tmpExam.examID];
         file.descriptionProperty = @"Uploaded from CellScope";
         file.mimeType = @"application/json";
-        file.modifiedDate = [GTLDateTime dateTimeWithRFC3339String:exam.dateModified];
-        NSArray* arrayToSerialize = [NSArray arrayWithObjects:exam,nil];
+        file.modifiedDate = [GTLDateTime dateTimeWithRFC3339String:tmpExam.dateModified];
+        NSArray* arrayToSerialize = [NSArray arrayWithObjects:tmpExam,nil];
         NSData* data = [CoreDataJSONHelper jsonStructureFromManagedObjects:arrayToSerialize];
         
         //create query
         GTLUploadParameters *uploadParameters = [GTLUploadParameters uploadParametersWithData:data MIMEType:file.mimeType];
         GTLQueryDrive* query;
-        if (exam.googleDriveFileID==nil) {
+        if (tmpExam.googleDriveFileID==nil) {
             [TBScopeData CSLog:@"This is a new file in Google Drive" inCategory:@"SYNC"];
             query = [GTLQueryDrive queryForFilesInsertWithObject:file
                                                 uploadParameters:uploadParameters];
-        }
-        else { //this file exists in google, so we are updating
+        } else {  // this file exists in google, so we are updating
             [TBScopeData CSLog:@"File exists in Google Drive, will update." inCategory:@"SYNC"];
             query = [GTLQueryDrive queryForFilesUpdateWithObject:file
-                                                          fileId:exam.googleDriveFileID
+                                                          fileId:tmpExam.googleDriveFileID
                                                 uploadParameters:uploadParameters];
         }
         query.setModifiedDate = YES;
@@ -475,26 +480,31 @@ BOOL _hasAttemptedLogUpload;
         [self executeQueryWithTimeout:query
                       completionHandler:^(GTLServiceTicket *ticket,
                                           GTLDriveFile *insertedFile, NSError *error) {
-
                           if (error == nil)
                           {
                               //save this fileID to CD, but don't change modified date of exam
-                              exam.googleDriveFileID = insertedFile.identifier;
-                              exam.synced = YES;
+                              tmpExam.googleDriveFileID = insertedFile.identifier;
+                              tmpExam.synced = YES;
+
+                              // Save
+                              NSError *error;
+                              if (![tmpMOC save:&error]) {
+                                  NSLog(@"Error saving temporary managed object context.");
+                              }
                               [[TBScopeData sharedData] saveCoreData];
                               
                               [TBScopeData CSLog:[NSString stringWithFormat:@"Uploaded exam with file name: %@ (ID: %@)", insertedFile.title, insertedFile.identifier] inCategory:@"SYNC"];
                           }
                           completionBlock(error);
                       }
-                         errorHandler:^(NSError* error){
-                             completionBlock(error);
-                         }];
-        
+                      errorHandler:^(NSError* error){
+                          completionBlock(error);
+                      }
+         ];
     }
     else
     {
-        [TBScopeData CSLog:[NSString stringWithFormat:@"Exam %@ does not yet have all images uploaded and will be skipped.",exam.examID] inCategory:@"SYNC"];
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Exam %@ does not yet have all images uploaded and will be skipped.", tmpExam.examID] inCategory:@"SYNC"];
         completionBlock(nil);
     }
 
@@ -580,13 +590,20 @@ BOOL _hasAttemptedLogUpload;
 
 - (void)downloadImage:(Images*)image completionHandler:(void(^)(NSError*))completionBlock
 {
+    NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
+
+    // Create a temporary copy of image belonging to this NSManagedObjectContext
+    NSError *tmpImageError;
+    Images *tmpImage = [tmpMOC existingObjectWithID:[image objectID] error:&tmpImageError];
+
     //double check to make sure it hasn't already been downloaded
-    if (image.path==nil)
+    if (tmpImage.path==nil)
     {
-        [TBScopeData CSLog:[NSString stringWithFormat:@"Downloading image %d-%d of exam %@ from Google file ID: %@",image.slide.slideNumber,image.fieldNumber,image.slide.exam.examID,image.googleDriveFileID] inCategory:@"SYNC"];
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Downloading image %d-%d of exam %@ from Google file ID: %@", tmpImage.slide.slideNumber, tmpImage.fieldNumber, tmpImage.slide.exam.examID, tmpImage.googleDriveFileID] inCategory:@"SYNC"];
         
         //get the image file metadata
-        GTLQuery* query = [GTLQueryDrive queryForFilesGetWithFileId:image.googleDriveFileID];
+        GTLQuery* query = [GTLQueryDrive queryForFilesGetWithFileId:tmpImage.googleDriveFileID];
         [self executeQueryWithTimeout:query
                       completionHandler:^(GTLServiceTicket *ticket,
                                           GTLDriveFile *file, NSError *error) {
@@ -595,12 +612,7 @@ BOOL _hasAttemptedLogUpload;
                               fetcher.authorizer = self.driveService.authorizer;
                               [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
                                   if (error==nil) {
-                                      NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-                                      tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
                                       [tmpMOC performBlock:^{
-                                          NSError *tmpImageError;
-                                          Images *tmpImage = [tmpMOC existingObjectWithID:[image objectID] error:&tmpImageError];
-
                                           //there's an issue with this: if the analysis is rerun on the same image, this won't ever update
                                           //populate the ROI images in CD
                                           //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -634,7 +646,7 @@ BOOL _hasAttemptedLogUpload;
                                                       }
                                                       [[TBScopeData sharedData] saveCoreData];
                                                       
-                                                      [TBScopeData CSLog:[NSString stringWithFormat:@"Downloaded image to path: %@", image.path]
+                                                      [TBScopeData CSLog:[NSString stringWithFormat:@"Downloaded image to path: %@", tmpImage.path]
                                                               inCategory:@"SYNC"];
                                                   }
                                                   

@@ -388,15 +388,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 
 + (void)getImage:(Images*)currentImage resultBlock:(void (^)(UIImage* image, NSError* err))resultBlock
 {
-    // currentImage doesn't belong to a ManagedObjectContext, so we load it
-    // into a new child MOC here.
-    // TODO: maybe move this to where getImage is called?
-    NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
-    NSError *imageError;
-    Images *tmpImage = [tmpMOC existingObjectWithID:[currentImage objectID] error:&imageError];
-
-    NSURL *aURL = [NSURL URLWithString:tmpImage.path];
+    NSURL *aURL = [NSURL URLWithString:currentImage.path];
     if ([[aURL scheme] isEqualToString:@"assets-library"])
     {
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
@@ -432,7 +424,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     }
     else //this is a file in the bundle (only necessary for demo images)
     {
-       UIImage* image = [UIImage imageNamed:tmpImage.path];
+       UIImage* image = [UIImage imageNamed:currentImage.path];
        resultBlock(image,nil);
     }
     
