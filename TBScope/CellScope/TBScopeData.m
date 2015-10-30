@@ -303,9 +303,6 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 
 + (void)CSLog:(NSString*)entry inCategory:(NSString*)cat
 {
-    if (![[NSThread currentThread] isMainThread]) {
-        NSLog(@"Logging, but not on main thread");
-    }
     NSLog(@"%@",[NSString stringWithFormat:@"%@>> %@",cat,entry]);
 
     NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
