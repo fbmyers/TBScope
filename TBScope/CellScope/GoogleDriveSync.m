@@ -263,7 +263,7 @@ BOOL _hasAttemptedLogUpload;
         // Start processing queues. We wait to dispatch this for 5s because we want
         // to make sure the server has a chance to respond to the requests made
         // above (and all the queues become populated)
-        [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(processTransferQueues) userInfo:nil repeats:NO];
+        [self processTransferQueues];
     }];
 }
 
