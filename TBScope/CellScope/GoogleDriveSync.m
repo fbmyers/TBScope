@@ -371,11 +371,11 @@ BOOL _hasAttemptedLogUpload;
                 inCategory:@"SYNC"];
 
         //load the image
-        [TBScopeData getImage:image resultBlock:^(UIImage* im, NSError* error) {
-            if (error==nil) {
-                NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-                tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
-                [tmpMOC performBlock:^{
+        NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
+        [tmpMOC performBlock:^{
+            [TBScopeData getImage:image resultBlock:^(UIImage* im, NSError* error) {
+                if (error==nil) {
                     // Create a temporary copy of image belonging to this NSManagedObjectContext
                     NSError *tmpImageError;
                     Images *tmpImage = [tmpMOC existingObjectWithID:[image objectID] error:&tmpImageError];
@@ -416,10 +416,10 @@ BOOL _hasAttemptedLogUpload;
                                     completionBlock(error);
                                 }
                     ];
-                 }];
-             } else {
-                 completionBlock(error); //likely local file not found
-             }
+                } else {
+                    completionBlock(error); //likely local file not found
+                }
+            }];
         }];
     }
     else
