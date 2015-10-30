@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F27" minimumToolsVersion="Xcode 4.3">
     <entity name="Exams" representedClassName="Exams" syncable="YES">
         <attribute name="bluetoothUUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="cellscopeID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="dateModified" attributeType="String" syncable="YES"/>
+        <attribute name="dateModified" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="diagnosisNotes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="examID" attributeType="String" syncable="YES"/>
         <attribute name="googleDriveFileID" optional="YES" attributeType="String" syncable="YES"/>
@@ -44,7 +44,7 @@
     </entity>
     <entity name="Images" representedClassName="Images" syncable="YES">
         <attribute name="fieldNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="googleDriveFileID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="googleDriveFileID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="imageContentMetrics" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageFocusMetrics" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="metadata" optional="YES" attributeType="String" syncable="YES"/>
