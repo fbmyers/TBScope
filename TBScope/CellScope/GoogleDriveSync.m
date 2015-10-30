@@ -262,23 +262,21 @@ BOOL _hasAttemptedLogUpload;
                 //pull images
                 //search CD for images with empty path
                 [TBScopeData CSLog:@"Fetching new images from Google Drive." inCategory:@"SYNC"];
-                
-                pred = [NSPredicate predicateWithFormat:@"(path = nil) && (googleDriveFileID != nil)"];
-                results = [CoreDataHelper searchObjectsForEntity:@"Images" withPredicate:pred andSortKey:nil andSortAscending:YES andContext:[[TBScopeData sharedData] managedObjectContext]];
-                for (Images* im in results)
-                {
-                    if ([self.imageDownloadQueue indexOfObject:im]==NSNotFound)
-                    {
-                        [TBScopeData CSLog:[NSString stringWithFormat:@"Adding image #%d from slide #%d from exam %@ to download queue",im.fieldNumber,im.slide.slideNumber,im.slide.exam.examID]
-                                inCategory:@"SYNC"];
+                NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+                tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
+                [tmpMOC performBlock:^{
+                    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(path = nil) && (googleDriveFileID != nil)"];
+                    NSArray *results = [CoreDataHelper searchObjectsForEntity:@"Images" withPredicate:pred andSortKey:nil andSortAscending:YES andContext:tmpMOC];
+                    for (Images* im in results) {
+                        if ([self.imageDownloadQueue indexOfObject:im]==NSNotFound) {
+                            [TBScopeData CSLog:[NSString stringWithFormat:@"Adding image #%d from slide #%d from exam %@ to download queue",im.fieldNumber,im.slide.slideNumber,im.slide.exam.examID]
+                                    inCategory:@"SYNC"];
 
-                        [self.imageDownloadQueue addObject:im];
-                        //previousSyncHadNoChanges = NO;
+                            [self.imageDownloadQueue addObject:im];
+                            //previousSyncHadNoChanges = NO;
+                        }
                     }
-                }
-                
-                
-    
+                }];
     
     //start processing queues. this will start 5s later because we want to make sure the server has a chance to respond to the requests made above (and all the queues become populated)
     [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(processTransferQueues) userInfo:nil repeats:NO];
