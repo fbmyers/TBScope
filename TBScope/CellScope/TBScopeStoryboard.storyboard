@@ -624,7 +624,7 @@
                             <outlet property="delegate" destination="JVa-Vk-BpK" id="veE-Qd-Ka4"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Users" image="usericon.png" id="g85-yy-IxS"/>
+                    <tabBarItem key="tabBarItem" title="Users" image="user.png" selectedImage="user.png" id="g85-yy-IxS"/>
                     <navigationItem key="navigationItem" id="80a-92-NEV"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B3Q-7c-vOq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -689,7 +689,7 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Logs" id="bF0-5Y-yGG"/>
+                    <tabBarItem key="tabBarItem" title="Logs" image="notebook.png" selectedImage="notebook.png" id="bF0-5Y-yGG"/>
                     <navigationItem key="navigationItem" id="Eod-JJ-j13">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="OQl-yf-pis">
@@ -838,7 +838,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Google Drive" image="googleicon.png" id="yQa-lj-6aL"/>
+                    <tabBarItem key="tabBarItem" title="Google Drive" image="drive.png" selectedImage="drive.png" id="yQa-lj-6aL"/>
                     <connections>
                         <outlet property="loginButton" destination="RLY-Xs-3T6" id="jpq-Hx-Srm"/>
                         <outlet property="usernameLabel" destination="zyl-49-skK" id="ZFr-ab-euh"/>
@@ -1737,7 +1737,7 @@
                             <outlet property="delegate" destination="5Zx-1g-Zub" id="66p-SH-mvf"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Settings" image="configicon.png" id="YVw-oO-jHJ"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear.png" selectedImage="gear.png" id="YVw-oO-jHJ"/>
                     <connections>
                         <outlet property="autoFocusSwitch" destination="yGY-rW-TLo" id="s6a-lc-eVj"/>
                         <outlet property="autoLoadSwitch" destination="jRD-2h-LnP" id="BZj-tC-ORK"/>
@@ -3848,14 +3848,15 @@
     </scenes>
     <resources>
         <image name="cellscope_logo_1600-bkgd.png" width="1600" height="800"/>
-        <image name="configicon.png" width="25" height="25"/>
         <image name="configuration.png" width="400" height="80"/>
         <image name="disclosureicon.png" width="1600" height="800"/>
         <image name="down.png" width="100" height="80"/>
+        <image name="drive.png" width="24" height="24"/>
         <image name="followup.png" width="30" height="30"/>
-        <image name="googleicon.png" width="25" height="25"/>
+        <image name="gear.png" width="24" height="24"/>
         <image name="left.png" width="100" height="80"/>
         <image name="logout.png" width="400" height="80"/>
+        <image name="notebook.png" width="24" height="24"/>
         <image name="pictureicon.png" width="25" height="25"/>
         <image name="resultsicon.png" width="30" height="30"/>
         <image name="reviewresults.png" width="400" height="80"/>
@@ -3864,7 +3865,7 @@
         <image name="scanslide.png" width="400" height="80"/>
         <image name="snap.png" width="100" height="80"/>
         <image name="up.png" width="100" height="80"/>
-        <image name="usericon.png" width="25" height="25"/>
+        <image name="user.png" width="24" height="24"/>
         <image name="zdown.png" width="100" height="80"/>
         <image name="zup.png" width="100" height="80"/>
     </resources>
