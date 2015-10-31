@@ -126,16 +126,16 @@ BOOL _hasAttemptedLogUpload;
         [TBScopeData CSLog:@"Fetching new images from core data." inCategory:@"SYNC"];
         pred = [NSPredicate predicateWithFormat:@"(googleDriveFileID = nil) && (path != nil)"];
         results = [CoreDataHelper searchObjectsForEntity:@"Images" withPredicate:pred andSortKey:nil andSortAscending:YES andContext:tmpMOC];
+        int imageUploadsEnqueued = 0;
         for (Images* im in results) {
             if ([self.imageUploadQueue indexOfObject:im]==NSNotFound) {  //if it's not already in the queue
-                [TBScopeData CSLog:[NSString stringWithFormat:@"Adding image #%d from slide #%d from exam %@ to upload queue",im.fieldNumber,im.slide.slideNumber,im.slide.exam.examID]
-                        inCategory:@"SYNC"];
-                
-                //NSLog(@"adding image #%d from slide #%d from exam %@ to upload queue",im.fieldNumber,im.slide.slideNumber,im.slide.exam.examID);
+                NSLog(@"Adding image #%d from slide #%d from exam %@ to upload queue", im.fieldNumber, im.slide.slideNumber, im.slide.exam.examID);
                 [self.imageUploadQueue addObject:im];
+                imageUploadsEnqueued++;
                 //previousSyncHadNoChanges = NO;
             }
         }
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Added %d images to upload queue.", imageUploadsEnqueued] inCategory:@"SYNC"];
 
         /////////////////////////
         // push exams
@@ -143,13 +143,13 @@ BOOL _hasAttemptedLogUpload;
         //TODO: it probably makes more sense to just store a "hasUpdates" flag in CD. this gets set whenever exam changes, reset when its uploaded. then can do away w/ previousSyncHadNoChanges
         pred = [NSPredicate predicateWithFormat:@"(synced == NO) || (googleDriveFileID = nil)"];
         results = [CoreDataHelper searchObjectsForEntity:@"Exams" withPredicate:pred andSortKey:@"dateModified" andSortAscending:YES andContext:tmpMOC];
+        int examUploadsEnqueued = 0;
         for (Exams* ex in results) {
             if ([self.examUploadQueue indexOfObject:ex]==NSNotFound) {  //if it's not already in the queue
                 if (ex.googleDriveFileID==nil) {
-                    [TBScopeData CSLog:[NSString stringWithFormat:@"Adding new exam %@ to upload queue. local timestamp: %@",ex.examID,ex.dateModified]
-                            inCategory:@"SYNC"];
-
+                    NSLog(@"Adding new exam %@ to upload queue. local timestamp: %@", ex.examID, ex.dateModified);
                     [self.examUploadQueue addObject:ex];
+                    examUploadsEnqueued++;
                     // previousSyncHadNoChanges = NO;
                 } else {  // exam exists on both client and server, so check dates
                     // Google Drive queries must be run on the main thread
@@ -159,8 +159,7 @@ BOOL _hasAttemptedLogUpload;
                         [self executeQueryWithTimeout:query completionHandler:^(GTLServiceTicket *ticket, GTLDriveFile *file, NSError *error) {
                             if (error==nil) {
                                 if ([[TBScopeData dateFromString:ex.dateModified] timeIntervalSinceDate:file.modifiedDate.date]>0) {
-                                    [TBScopeData CSLog:[NSString stringWithFormat:@"Adding modified exam %@ to upload queue. server timestamp: %@, local timestamp: %@",ex.examID,[TBScopeData stringFromDate:file.modifiedDate.date],ex.dateModified]
-                                            inCategory:@"SYNC"];
+                                    NSLog(@"Adding modified exam %@ to upload queue. server timestamp: %@, local timestamp: %@", ex.examID, [TBScopeData stringFromDate:file.modifiedDate.date], ex.dateModified);
                                     [self.examUploadQueue addObject:ex];
                                     previousSyncHadNoChanges = NO;
                                 }
@@ -196,6 +195,7 @@ BOOL _hasAttemptedLogUpload;
                 }
             } //next exam
         }
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Added %d new exams to upload queue.", examUploadsEnqueued] inCategory:@"SYNC"];
 
         /////////////////////////
         // pull exams
@@ -218,31 +218,32 @@ BOOL _hasAttemptedLogUpload;
                             inCategory:@"SYNC"];
 
                     [tmpMOC performBlock:^{
+                        int examDownloadsEnqueued = 0;
                         for (GTLDriveFile* file in files) {
                             if ([self.examDownloadQueue indexOfObject:file]==NSNotFound) {  //not already in the queue
                                 // check if there is a corresponding record in CD for this googleFileID
                                 NSPredicate* pred = [NSPredicate predicateWithFormat:@"(googleDriveFileID == %@)", file.identifier];
                                 NSArray* result = [CoreDataHelper searchObjectsForEntity:@"Exams" withPredicate:pred andSortKey:@"dateModified" andSortAscending:YES andContext:tmpMOC];
                                 if (result.count==0) {
-                                    [TBScopeData CSLog:[NSString stringWithFormat:@"Adding new exam %@ to download queue. server timestamp: %@",file.title,file.modifiedDate.date]
-                                            inCategory:@"SYNC"];
+                                    NSLog(@"Adding new exam %@ to download queue. server timestamp: %@", file.title, file.modifiedDate.date);
                                     [self.examDownloadQueue addObject:file];
+                                    examDownloadsEnqueued++;
                                     // previousSyncHadNoChanges = NO;
                                 } else {
                                     Exams* ex = (Exams*)result[0];
                                     if ([[TBScopeData dateFromString:ex.dateModified] timeIntervalSinceDate:file.modifiedDate.date]<0) {
-                                        [TBScopeData CSLog:[NSString stringWithFormat:@"Adding modified exam %@ to download queue. server timestamp: %@, local timestamp: %@",file.title,[TBScopeData stringFromDate:file.modifiedDate.date],ex.dateModified]
-                                                inCategory:@"SYNC"];
-
+                                        NSLog(@"Adding modified exam %@ to download queue. server timestamp: %@, local timestamp: %@", file.title, [TBScopeData stringFromDate:file.modifiedDate.date], ex.dateModified);
                                         [self.examDownloadQueue addObject:file];
+                                        examDownloadsEnqueued++;
                                         // previousSyncHadNoChanges = NO;
                                     }
                                 }
                             }
                         }
+                        [TBScopeData CSLog:[NSString stringWithFormat:@"Added %d exams to download queue.", examDownloadsEnqueued] inCategory:@"SYNC"];
                     }];
                 } else {
-                    [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description] inCategory:@"SYNC"];
+                    [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@", error.description] inCategory:@"SYNC"];
                     // previousSyncHadNoChanges = NO;
                 }
             }
@@ -258,15 +259,18 @@ BOOL _hasAttemptedLogUpload;
         [TBScopeData CSLog:@"Fetching new images from Google Drive." inCategory:@"SYNC"];
         pred = [NSPredicate predicateWithFormat:@"(path = nil) && (googleDriveFileID != nil)"];
         results = [CoreDataHelper searchObjectsForEntity:@"Images" withPredicate:pred andSortKey:nil andSortAscending:YES andContext:tmpMOC];
+        int imageDownloadsEnqueued = 0;
         for (Images* im in results) {
             if ([self.imageDownloadQueue indexOfObject:im]==NSNotFound) {
-                [TBScopeData CSLog:[NSString stringWithFormat:@"Adding image #%d from slide #%d from exam %@ to download queue",im.fieldNumber,im.slide.slideNumber,im.slide.exam.examID]
-                        inCategory:@"SYNC"];
+                NSLog(@"Adding image #%d from slide #%d from exam %@ to download queue", im.fieldNumber, im.slide.slideNumber, im.slide.exam.examID);
 
                 [self.imageDownloadQueue addObject:im];
+                imageDownloadsEnqueued++;
                 // previousSyncHadNoChanges = NO;
             }
+            [tmpMOC refreshObject:im mergeChanges:NO];
         }
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Added %d images to download queue", imageDownloadsEnqueued] inCategory:@"SYNC"];
 
         // Start processing queues. We wait to dispatch this for 5s because we want
         // to make sure the server has a chance to respond to the requests made
@@ -612,6 +616,7 @@ BOOL _hasAttemptedLogUpload;
         
         //get the image file metadata
         GTLQuery* query = [GTLQueryDrive queryForFilesGetWithFileId:tmpImage.googleDriveFileID];
+        // NOTE: Google Drive queries MUST be run on the main thread to receive a response
         [self executeQueryWithTimeout:query
                       completionHandler:^(GTLServiceTicket *ticket,
                                           GTLDriveFile *file, NSError *error) {
