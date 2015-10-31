@@ -307,7 +307,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 
     NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
-    [tmpMOC performBlock:^{
+    [tmpMOC performBlockAndWait:^{
         Logs* logEntry = (Logs*)[NSEntityDescription insertNewObjectForEntityForName:@"Logs" inManagedObjectContext:tmpMOC];
         logEntry.entry = entry;
         logEntry.category = cat;
@@ -325,7 +325,7 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
         // NOTE: we don't use [[TBScopeData sharedData] saveCoreData] here because
         // it in turn saves a log message to CoreData causing infinite recursion.
         NSManagedObjectContext *mainMOC = [[TBScopeData sharedData] managedObjectContext];
-        [mainMOC performBlock:^{
+        [mainMOC performBlockAndWait:^{
             NSError *mainError;
             if (![mainMOC save:&mainError]) {
                 NSLog(@"Error persisting log message to core data.");
