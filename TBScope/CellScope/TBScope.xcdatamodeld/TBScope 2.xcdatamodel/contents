@@ -43,7 +43,7 @@
         <relationship name="imageROIs" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ROIs" inverseName="imageAnalysisResult" inverseEntity="ROIs" syncable="YES"/>
     </entity>
     <entity name="Images" representedClassName="Images" syncable="YES">
-        <attribute name="fieldNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="fieldNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="googleDriveFileID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="imageContentMetrics" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageFocusMetrics" optional="YES" attributeType="String" syncable="YES"/>

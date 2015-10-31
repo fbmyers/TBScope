@@ -258,7 +258,14 @@ BOOL _hasAttemptedLogUpload;
         // search CD for images with empty path
         [TBScopeData CSLog:@"Fetching new images from Google Drive." inCategory:@"SYNC"];
         pred = [NSPredicate predicateWithFormat:@"(path = nil) && (googleDriveFileID != nil)"];
-        results = [CoreDataHelper searchObjectsForEntity:@"Images" withPredicate:pred andSortKey:nil andSortAscending:YES andContext:tmpMOC];
+        NSArray *sortDescriptors = @[
+            [[NSSortDescriptor alloc] initWithKey:@"slide.exam.dateModified" ascending:NO],
+            [[NSSortDescriptor alloc] initWithKey:@"fieldNumber" ascending:YES],
+        ];
+        results = [CoreDataHelper searchObjectsForEntity:@"Images"
+                                           withPredicate:pred
+                                      andSortDescriptors:sortDescriptors
+                                              andContext:tmpMOC];
         int imageDownloadsEnqueued = 0;
         for (Images* im in results) {
             if ([self.imageDownloadQueue indexOfObject:im]==NSNotFound) {
