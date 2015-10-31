@@ -74,14 +74,17 @@
     //TODO: have this populate textfields and call resignAndLogin
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"BypassLogin"])
     {
-        //BYPASS_LOGIN allows you to skip the login screen during debugging
-        //it searches Core Data for the admin account, and sets currentUser to that account
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(username == 'admin')"];
-        NSMutableArray* results = [CoreDataHelper searchObjectsForEntity:@"Users" withPredicate:pred andSortKey:@"username" andSortAscending:YES andContext:[[TBScopeData sharedData] managedObjectContext]];
-        [[TBScopeData sharedData] setCurrentUser:(Users*)results[0]];
-        [self performSegueWithIdentifier:@"LoginSegue" sender:nil];
-        
-        [TBScopeData CSLog:@"Login bypassed" inCategory:@"USER"];
+        NSManagedObjectContext *mainMOC = [[TBScopeData sharedData] managedObjectContext];
+        [mainMOC performBlock:^{
+            //BYPASS_LOGIN allows you to skip the login screen during debugging
+            //it searches Core Data for the admin account, and sets currentUser to that account
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"(username == 'admin')"];
+            NSMutableArray* results = [CoreDataHelper searchObjectsForEntity:@"Users" withPredicate:pred andSortKey:@"username" andSortAscending:YES andContext:mainMOC];
+            [[TBScopeData sharedData] setCurrentUser:(Users*)results[0]];
+            [self performSegueWithIdentifier:@"LoginSegue" sender:nil];
+
+            [TBScopeData CSLog:@"Login bypassed" inCategory:@"USER"];
+        }];
     }
     else
         [TBScopeData CSLog:@"Login screen presented" inCategory:@"USER"];
