@@ -152,43 +152,47 @@ BOOL _hasAttemptedLogUpload;
                     [self.examUploadQueue addObject:ex];
                     // previousSyncHadNoChanges = NO;
                 } else {  // exam exists on both client and server, so check dates
-                    // get modified date on server
-                    GTLQuery* query = [GTLQueryDrive queryForFilesGetWithFileId:ex.googleDriveFileID];
-                    [self executeQueryWithTimeout:query
-                                completionHandler:^(GTLServiceTicket *ticket, GTLDriveFile *file, NSError *error) {
-                                    if (error==nil) {
-                                        if ([[TBScopeData dateFromString:ex.dateModified] timeIntervalSinceDate:file.modifiedDate.date]>0) {
-                                            [TBScopeData CSLog:[NSString stringWithFormat:@"Adding modified exam %@ to upload queue. server timestamp: %@, local timestamp: %@",ex.examID,[TBScopeData stringFromDate:file.modifiedDate.date],ex.dateModified]
-                                                    inCategory:@"SYNC"];
-                                            [self.examUploadQueue addObject:ex];
-                                            previousSyncHadNoChanges = NO;
-                                        }
-                                    } else if (error.code==404) {  // the file referenced by this exam isn't present on server, so remove this google drive ID
-                                        [TBScopeData CSLog:@"Requested JSON file doesn't exist in Google Drive (error 404), so removing this reference."
-                                                inCategory:@"SYNC"];
+                    // Google Drive queries must be run on the main thread
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        // get modified date on server
+                        GTLQuery* query = [GTLQueryDrive queryForFilesGetWithFileId:ex.googleDriveFileID];
+                        [self executeQueryWithTimeout:query completionHandler:^(GTLServiceTicket *ticket, GTLDriveFile *file, NSError *error) {
+                            if (error==nil) {
+                                if ([[TBScopeData dateFromString:ex.dateModified] timeIntervalSinceDate:file.modifiedDate.date]>0) {
+                                    [TBScopeData CSLog:[NSString stringWithFormat:@"Adding modified exam %@ to upload queue. server timestamp: %@, local timestamp: %@",ex.examID,[TBScopeData stringFromDate:file.modifiedDate.date],ex.dateModified]
+                                            inCategory:@"SYNC"];
+                                    [self.examUploadQueue addObject:ex];
+                                    previousSyncHadNoChanges = NO;
+                                }
+                            } else if (error.code==404) {  // the file referenced by this exam isn't present on server, so remove this google drive ID
+                                [TBScopeData CSLog:@"Requested JSON file doesn't exist in Google Drive (error 404), so removing this reference."
+                                        inCategory:@"SYNC"];
 
-                                        // remove all google drive references
-                                        ex.googleDriveFileID = nil;
-                                        for (Slides* sl in ex.examSlides)
-                                            for (Images* im in sl.slideImages)
-                                                im.googleDriveFileID = nil;
+                                [tmpMOC performBlock:^{
+                                    // remove all google drive references
+                                    ex.googleDriveFileID = nil;
+                                    for (Slides* sl in ex.examSlides)
+                                        for (Images* im in sl.slideImages)
+                                            im.googleDriveFileID = nil;
 
-                                        // Save exam/images
-                                        NSError *tmpMOCSaveError;
-                                        if (![tmpMOC save:&tmpMOCSaveError]) {
-                                            NSLog(@"Error saving temporary managed object context.");
-                                        }
-                                        [[TBScopeData sharedData] saveCoreData];
-                                    } else {
-                                        [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description]
-                                                inCategory:@"SYNC"];
-                                        // previousSyncHadNoChanges = NO;
+                                    // Save exam/images
+                                    NSError *tmpMOCSaveError;
+                                    if (![tmpMOC save:&tmpMOCSaveError]) {
+                                        NSLog(@"Error saving temporary managed object context.");
                                     }
-                                }
-                                errorHandler:^(NSError* error){
-                                    [TBScopeData CSLog:@"Query couldn't be executed." inCategory:@"SYNC"];
-                                }
-                     ];
+                                    [[TBScopeData sharedData] saveCoreData];
+                                }];
+                            } else {
+                                [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description]
+                                        inCategory:@"SYNC"];
+                                // previousSyncHadNoChanges = NO;
+                            }
+                        }
+                        errorHandler:^(NSError* error){
+                            [TBScopeData CSLog:@"Query couldn't be executed." inCategory:@"SYNC"];
+                        }
+                    ];
+                    });
                 }
             } //next exam
         }
@@ -196,53 +200,57 @@ BOOL _hasAttemptedLogUpload;
         /////////////////////////
         // pull exams
         // get all exams on server
-        [TBScopeData CSLog:@"Fetching new/modified exams from Google Drive." inCategory:@"SYNC"];
-        GTLQueryDrive *query = [GTLQueryDrive queryForFilesList]; //THIS QUERY IS NOT DOWNLOADING FILES THAT WEREN'T UPLOADED FROM APP...WHY!!???
-        //the problem with fetching only GD records since this ipad's last sync date is if they were modified before this date but uploaded after, this would not pick them up
-        //simplest solution is to just check ALL the JSON objects in GD, but that will cause more network chatter. not sure a straightforward workaround.
-        //if (ONLY_CHECK_RECORDS_SINCE_LAST_FULL_SYNC)
-        //    query.q = [NSString stringWithFormat:@"modifiedDate > '%@' and mimeType='application/json'",[GTLDateTime dateTimeWithDate:lastFullSync timeZone:[NSTimeZone systemTimeZone]].RFC3339String];
-        //else
-        query.q = @"mimeType='application/json'";
-        query.includeDeleted = false;
-        query.includeSubscribed = true;
-        [self executeQueryWithTimeout:query
-                    completionHandler:^(GTLServiceTicket *ticket, GTLDriveFileList *files, NSError *error) {
-                        if (error == nil) {
-                            [TBScopeData CSLog:[NSString stringWithFormat:@"Fetched %ld exam JSON files from Google Drive.",(long)files.items.count]
-                                    inCategory:@"SYNC"];
+        // Google Drive queries must be run on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [TBScopeData CSLog:@"Fetching new/modified exams from Google Drive." inCategory:@"SYNC"];
+            GTLQueryDrive *query = [GTLQueryDrive queryForFilesList]; //THIS QUERY IS NOT DOWNLOADING FILES THAT WEREN'T UPLOADED FROM APP...WHY!!???
+            //the problem with fetching only GD records since this ipad's last sync date is if they were modified before this date but uploaded after, this would not pick them up
+            //simplest solution is to just check ALL the JSON objects in GD, but that will cause more network chatter. not sure a straightforward workaround.
+            //if (ONLY_CHECK_RECORDS_SINCE_LAST_FULL_SYNC)
+            //    query.q = [NSString stringWithFormat:@"modifiedDate > '%@' and mimeType='application/json'",[GTLDateTime dateTimeWithDate:lastFullSync timeZone:[NSTimeZone systemTimeZone]].RFC3339String];
+            //else
+            query.q = @"mimeType='application/json'";
+            query.includeDeleted = false;
+            query.includeSubscribed = true;
+            [self executeQueryWithTimeout:query completionHandler:^(GTLServiceTicket *ticket, GTLDriveFileList *files, NSError *error) {
+                if (error == nil) {
+                    [TBScopeData CSLog:[NSString stringWithFormat:@"Fetched %ld exam JSON files from Google Drive.",(long)files.items.count]
+                            inCategory:@"SYNC"];
 
-                            for (GTLDriveFile* file in files) {
-                                if ([self.examDownloadQueue indexOfObject:file]==NSNotFound) {  //not already in the queue
-                                    // check if there is a corresponding record in CD for this googleFileID
-                                    NSPredicate* pred = [NSPredicate predicateWithFormat:@"(googleDriveFileID == %@)", file.identifier];
-                                    NSArray* result = [CoreDataHelper searchObjectsForEntity:@"Exams" withPredicate:pred andSortKey:@"dateModified" andSortAscending:YES andContext:tmpMOC];
-                                    if (result.count==0) {
-                                        [TBScopeData CSLog:[NSString stringWithFormat:@"Adding new exam %@ to download queue. server timestamp: %@",file.title,file.modifiedDate.date]
+                    [tmpMOC performBlock:^{
+                        for (GTLDriveFile* file in files) {
+                            if ([self.examDownloadQueue indexOfObject:file]==NSNotFound) {  //not already in the queue
+                                // check if there is a corresponding record in CD for this googleFileID
+                                NSPredicate* pred = [NSPredicate predicateWithFormat:@"(googleDriveFileID == %@)", file.identifier];
+                                NSArray* result = [CoreDataHelper searchObjectsForEntity:@"Exams" withPredicate:pred andSortKey:@"dateModified" andSortAscending:YES andContext:tmpMOC];
+                                if (result.count==0) {
+                                    [TBScopeData CSLog:[NSString stringWithFormat:@"Adding new exam %@ to download queue. server timestamp: %@",file.title,file.modifiedDate.date]
+                                            inCategory:@"SYNC"];
+                                    [self.examDownloadQueue addObject:file];
+                                    // previousSyncHadNoChanges = NO;
+                                } else {
+                                    Exams* ex = (Exams*)result[0];
+                                    if ([[TBScopeData dateFromString:ex.dateModified] timeIntervalSinceDate:file.modifiedDate.date]<0) {
+                                        [TBScopeData CSLog:[NSString stringWithFormat:@"Adding modified exam %@ to download queue. server timestamp: %@, local timestamp: %@",file.title,[TBScopeData stringFromDate:file.modifiedDate.date],ex.dateModified]
                                                 inCategory:@"SYNC"];
+
                                         [self.examDownloadQueue addObject:file];
                                         // previousSyncHadNoChanges = NO;
-                                    } else {
-                                        Exams* ex = (Exams*)result[0];
-                                        if ([[TBScopeData dateFromString:ex.dateModified] timeIntervalSinceDate:file.modifiedDate.date]<0) {
-                                            [TBScopeData CSLog:[NSString stringWithFormat:@"Adding modified exam %@ to download queue. server timestamp: %@, local timestamp: %@",file.title,[TBScopeData stringFromDate:file.modifiedDate.date],ex.dateModified]
-                                                    inCategory:@"SYNC"];
-
-                                            [self.examDownloadQueue addObject:file];
-                                            // previousSyncHadNoChanges = NO;
-                                        }
                                     }
                                 }
                             }
-                        } else {
-                            [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description] inCategory:@"SYNC"];
-                            // previousSyncHadNoChanges = NO;
                         }
-                    }
-                    errorHandler:^(NSError* error) {
-                        [TBScopeData CSLog:@"Query couldn't be executed" inCategory:@"SYNC"];
-                    }
+                    }];
+                } else {
+                    [TBScopeData CSLog:[NSString stringWithFormat:@"An error occured while querying Google Drive: %@",error.description] inCategory:@"SYNC"];
+                    // previousSyncHadNoChanges = NO;
+                }
+            }
+            errorHandler:^(NSError* error) {
+                [TBScopeData CSLog:@"Query couldn't be executed" inCategory:@"SYNC"];
+            }
         ];
+        });
 
         /////////////////////////
         // pull images
