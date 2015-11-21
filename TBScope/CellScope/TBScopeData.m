@@ -14,7 +14,6 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 @implementation TBScopeData
 
 @synthesize managedObjectContext = _managedObjectContext;
-@synthesize logMOC = _logMOC;
 
 + (id)sharedData {
     static TBScopeData *newData = nil;
@@ -27,22 +26,16 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 
 - (id)init {
     if (self = [super init]) {
-        
         NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
         if (coordinator != nil) {
-            _managedObjectContext = [[NSManagedObjectContext alloc] init];
+            _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
             [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-            
-            _logMOC = [[NSManagedObjectContext alloc] init];
-            [_logMOC setPersistentStoreCoordinator:coordinator];
         }
     }
     return self;
 }
 
-
 // Returns the managed object context for the application.
-// If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
 - (NSManagedObjectContext *)managedObjectContext
 {
     return _managedObjectContext;
@@ -145,18 +138,16 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 
 - (void) saveCoreData
 {
-    NSError *error;
-    if (_managedObjectContext.hasChanges)
-    {
-        if ([_managedObjectContext save:&error])
-        {
-            [TBScopeData CSLog:@"Committed changes to core data" inCategory:@"DATA"];
-        }
-        else
-        {
-            [TBScopeData CSLog:[NSString stringWithFormat:@"Failed to commit to core data: %@", error.description]
-                    inCategory:@"DATA"];
-        }
+    if (_managedObjectContext.hasChanges) {
+        [_managedObjectContext performBlock:^{
+            NSError *error;
+            if ([_managedObjectContext save:&error]) {
+                [TBScopeData CSLog:@"Committed changes to core data" inCategory:@"DATA"];
+            } else {
+                NSString *logMessage = [NSString stringWithFormat:@"Failed to commit to core data: %@", error.description];
+                [TBScopeData CSLog:logMessage inCategory:@"DATA"];
+            }
+        }];
     }
 }
 
@@ -308,25 +299,39 @@ NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     [slide addSlideImagesObject:image];
     
     [self saveCoreData];
-    
-    
 }
 
 + (void)CSLog:(NSString*)entry inCategory:(NSString*)cat
 {
-    
     NSLog(@"%@",[NSString stringWithFormat:@"%@>> %@",cat,entry]);
 
-    Logs* logEntry = (Logs*)[NSEntityDescription insertNewObjectForEntityForName:@"Logs" inManagedObjectContext:[[TBScopeData sharedData] logMOC]];
-    
-    logEntry.entry = entry;
-    logEntry.category = cat;
-    logEntry.date = [TBScopeData stringFromDate:[NSDate date]];
-    logEntry.synced = NO;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{ //trying this, not sure how to ensure thread safety here
-        [[[TBScopeData sharedData] logMOC] save:nil];
-    });
+    NSManagedObjectContext *tmpMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    tmpMOC.parentContext = [[TBScopeData sharedData] managedObjectContext];
+    [tmpMOC performBlockAndWait:^{
+        Logs* logEntry = (Logs*)[NSEntityDescription insertNewObjectForEntityForName:@"Logs" inManagedObjectContext:tmpMOC];
+        logEntry.entry = entry;
+        logEntry.category = cat;
+        logEntry.date = [TBScopeData stringFromDate:[NSDate date]];
+        logEntry.synced = NO;
+
+        // Push to parent
+        NSError *error;
+        if (![tmpMOC save:&error]) {
+            // handle error
+            NSLog(@"Error saving temporary context: %@", error.description);
+        }
+
+        // Save parent context to disk asynchronously
+        // NOTE: we don't use [[TBScopeData sharedData] saveCoreData] here because
+        // it in turn saves a log message to CoreData causing infinite recursion.
+        NSManagedObjectContext *mainMOC = [[TBScopeData sharedData] managedObjectContext];
+        [mainMOC performBlockAndWait:^{
+            NSError *mainError;
+            if (![mainMOC save:&mainError]) {
+                NSLog(@"Error persisting log message to core data.");
+            }
+        }];
+    }];
 }
 
 // Validate the input string with the given pattern and

@@ -7,6 +7,7 @@
 //
 
 #import "ImageQualityAnalyzer.h"
+#import "TBScopeCamera.h"
 #include <opencv2/imgproc/imgproc.hpp>
 #include <vector>       // std::vector
 #include <algorithm>    // std::sort
@@ -402,11 +403,20 @@ double meanOfVector(std::vector<int> values) {
     iq.varianceOfLaplacian = 0;  // varianceOfLaplacian(src);
     iq.modifiedLaplacian = 0;  // modifiedLaplacian(src);
     iq.tenengrad1 = 0;  // tenengrad(src, 1);
-    iq.tenengrad3 = tenengrad(green, 3);
     iq.tenengrad9 = 0;  // tenengrad(src, 9);
     iq.maxVal = 0;  // maxVal;
     iq.contrast = 0;
-    iq.greenContrast = meanHigh/MAX(1.0, meanLow);
+
+    // These are really processor intensive, so we only calculate one based
+    // on whether we're in BF or FL.
+    NSInteger currentFocusMode = [[TBScopeCamera sharedCamera] focusMode];
+    if (currentFocusMode == TBScopeCameraFocusModeSharpness) {
+        iq.tenengrad3 = tenengrad(green, 3);
+        iq.greenContrast = 0;
+    } else {
+        iq.tenengrad3 = 0;
+        iq.greenContrast = meanHigh/MAX(1.0, meanLow);
+    }
     //TODO: need a metric for overall image content (if > 20%, throw it out)
 
     src.release();

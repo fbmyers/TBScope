@@ -5,7 +5,16 @@
 
 // For retrieval of objects
 +(NSMutableArray *)getObjectsForEntity:(NSString*)entityName withSortKey:(NSString*)sortKey andSortAscending:(BOOL)sortAscending andContext:(NSManagedObjectContext *)managedObjectContext;
-+(NSMutableArray *)searchObjectsForEntity:(NSString*)entityName withPredicate:(NSPredicate *)predicate andSortKey:(NSString*)sortKey andSortAscending:(BOOL)sortAscending andContext:(NSManagedObjectContext *)managedObjectContext;
++(NSMutableArray *)searchObjectsForEntity:(NSString*)entityName
+                            withPredicate:(NSPredicate *)predicate
+                               andSortKey:(NSString*)sortKey
+                         andSortAscending:(BOOL)sortAscending
+                               andContext:(NSManagedObjectContext *)managedObjectContext;
++(NSMutableArray *)searchObjectsForEntity:(NSString*)entityName
+                            withPredicate:(NSPredicate *)predicate
+                       andSortDescriptors:(NSArray*)sortDescriptors
+                               andContext:(NSManagedObjectContext*)managedObjectContext;
+
 
 // For deletion of objects
 +(BOOL)deleteAllObjectsForEntity:(NSString*)entityName withPredicate:(NSPredicate*)predicate andContext:(NSManagedObjectContext *)managedObjectContext;

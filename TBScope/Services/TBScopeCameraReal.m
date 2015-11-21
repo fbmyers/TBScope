@@ -13,6 +13,7 @@
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) AVCaptureDeviceInput *input;
 @property (nonatomic, strong) AVCaptureStillImageOutput *stillOutput;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic) ImageQuality currentImageQuality;
 @property (nonatomic) BOOL isFocusLocked;
 @property (nonatomic) BOOL isExposureLocked;
@@ -45,18 +46,18 @@
 
     // Set custom white balance/iso
     [self setExposureLock:YES];
-    [self setWhiteBalanceRed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceRedGain"]
-                       Green:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceGreenGain"]
-                        Blue:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceBlueGain"]];
-    [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDuration"]
-                     ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeed"]];
+    [self _setWhiteBalanceGainsFromUserDefaults];
+    [self _setExposureAndISOFromUserDefaults];
     
     // Setup still image output
     self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
     //NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, @1.0, AVVideoQualityKey, nil];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [self.stillOutput setOutputSettings:outputSettings];
-    
+
+    // Set up the preview layer
+    self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+
     // Add session input and output
     [self.session addInput:self.input];
     [self.session addOutput:self.stillOutput];
@@ -210,7 +211,7 @@
 
 -(AVCaptureVideoPreviewLayer *)captureVideoPreviewLayer
 {
-    return [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    return self.previewLayer;
 }
 
 - (void)startPreview
@@ -276,17 +277,42 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (void)takeDownCamera
 {
     [self stopPreview];
-    AVCaptureInput* input2 = [self.session.inputs objectAtIndex:0];
-    [self.session removeInput:input2];
-    AVCaptureVideoDataOutput* output = (AVCaptureVideoDataOutput*)[self.session.outputs objectAtIndex:0];
-    [self.session removeOutput:output];
+    for(AVCaptureInput *input1 in self.session.inputs) {
+        [self.session removeInput:input1];
+    }
+    for(AVCaptureOutput *output1 in self.session.outputs) {
+        [self.session removeOutput:output1];
+    }
     self.session = nil;
+    self.device = nil;
+    self.input = nil;
+    self.previewLayer = nil;
+    self.stillOutput = nil;
+}
+
+- (void)_setWhiteBalanceGainsFromUserDefaults
+{
+    [self setWhiteBalanceRed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceRedGain"]
+                       Green:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceGreenGain"]
+                        Blue:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraWhiteBalanceBlueGain"]];
 }
 
 - (void)_setExposureAndISOFromUserDefaults
 {
-    [self setExposureDuration:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDuration"]
-                     ISOSpeed:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeed"]];
+    int isoSpeed, exposureDuration;
+    if (self.focusMode == TBScopeCameraFocusModeSharpness) {  // brightfield
+        exposureDuration = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationBF"];
+        isoSpeed = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedBF"];
+    } else {  // fluorescence
+        exposureDuration = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraExposureDurationFL"];
+        isoSpeed = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"CameraISOSpeedFL"];
+    }
+
+    // Limit ISO speed to camera's range
+    isoSpeed = MAX(isoSpeed, self.device.activeFormat.minISO);
+    isoSpeed = MIN(isoSpeed, self.device.activeFormat.maxISO);
+    [self setExposureDuration:exposureDuration
+                     ISOSpeed:isoSpeed];
 }
 
 - (void)_sendExposureReport

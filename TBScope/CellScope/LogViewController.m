@@ -54,7 +54,7 @@
     NSPredicate* pred = [NSPredicate predicateWithFormat:predicateString];
     
     self.logData  = [CoreDataHelper searchObjectsForEntity:@"Logs" withPredicate:nil andSortKey:@"date" andSortAscending:NO andContext:[[TBScopeData sharedData] managedObjectContext]];
-    
+    [[self tableView] reloadData];
 }
 
 #pragma mark - Table view data source

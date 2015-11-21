@@ -279,10 +279,32 @@ const int MAX_Z_POSITION = 50000;  //  50,000 is safely clear of the tray
     [ble write:[NSData dataWithBytes:buf length:3]];
 }
 
-- (void) moveStageWithDirection:(CSStageDirection) dir
-                          Steps:(UInt16)steps
-                    StopOnLimit:(BOOL)stopOnLimit
-                   DisableAfter:(BOOL)disableAfter
+// Move stage in maxStepsPerRound increments since moving in larger
+// increments makes a lot of noise and causes the microscope to
+// vibrate
+- (void)moveStageWithDirection:(CSStageDirection)dir
+                         Steps:(UInt16)steps
+                   StopOnLimit:(BOOL)stopOnLimit
+                  DisableAfter:(BOOL)disableAfter
+{
+    const int maxStepsPerRound = 100;
+    int stepsSoFar = 0;
+    while (stepsSoFar < steps) {
+        int stepsThisRound = MIN(steps, maxStepsPerRound);
+        NSLog(@"Moving %d steps", stepsThisRound);
+        [self _moveStageWithDirection:dir
+                                Steps:stepsThisRound
+                          StopOnLimit:stopOnLimit
+                         DisableAfter:disableAfter];
+        [self waitForStage];
+        stepsSoFar += stepsThisRound;
+    }
+}
+
+- (void) _moveStageWithDirection:(CSStageDirection)dir
+                           Steps:(UInt16)steps
+                     StopOnLimit:(BOOL)stopOnLimit
+                    DisableAfter:(BOOL)disableAfter
 {
     UInt8 buf[3] = {0x00, 0x00, 0x00};
     

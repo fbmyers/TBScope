@@ -103,13 +103,14 @@ AVAudioPlayer* _avPlayer;
     else
     {
         [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionSlideCenter];
-        for (int i=0; i<18500; i+=1000) {
-            [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
-                                                               Steps:1000
-                                                         StopOnLimit:YES
-                                                        DisableAfter:YES];
-            [NSThread sleepForTimeInterval:0.1];
-        }
+
+        // Move to a reasonable start position; 18500 seems to be a reasonable default
+        // based on a few sample bead slides and TB smears.
+        [[TBScopeHardware sharedHardware] moveToPosition:CSStagePositionZHome];
+        [[TBScopeHardware sharedHardware] moveStageWithDirection:CSStageDirectionFocusDown
+                                                           Steps:18500
+                                                     StopOnLimit:YES
+                                                    DisableAfter:YES];
     }
 }
 
@@ -164,7 +165,8 @@ AVAudioPlayer* _avPlayer;
     [self.previewView takeDownCamera];
     
     //[self.previewView.session stopRunning];
-    
+
+    [super viewWillDisappear:animated];
 }
 
 - (void)abortCapture
@@ -199,45 +201,67 @@ AVAudioPlayer* _avPlayer;
     
     //Crop the circle out of it
     //image = [ImageQualityAnalyzer maskCircleFromImage:image];
-    
+
+    __weak typeof(self) weakSelf = self;
+    void (^saveBlock)(NSURL *);
+    saveBlock = ^(NSURL *assetURL){
+        Images* newImage = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
+        newImage.path = assetURL.absoluteString;
+        newImage.fieldNumber = weakSelf.currentField+1;
+        newImage.metadata = [[TBScopeCamera sharedCamera] lastImageMetadata];
+        [weakSelf.currentSlide addSlideImagesObject:newImage];
+
+        [TBScopeData touchExam:weakSelf.currentSlide.exam];
+        [[TBScopeData sharedData] saveCoreData];
+
+        weakSelf.currentField++;
+
+        [weakSelf updatePrompt];
+
+        if (weakSelf.currentField==[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]) {
+            //done
+            weakSelf.snapButton.enabled = NO;
+            weakSelf.snapButton.alpha = 0.4;
+            weakSelf.analyzeButton.enabled = YES;
+            weakSelf.analyzeButton.tintColor = [UIColor whiteColor];
+        }
+
+        [TBScopeData CSLog:[NSString stringWithFormat:@"Saved image for %@ - %d-%d, to filename: %@",
+                            weakSelf.currentSlide.exam.examID,
+                            weakSelf.currentSlide.slideNumber,
+                            newImage.fieldNumber,
+                            newImage.path]
+                inCategory:@"CAPTURE"];
+    };
+
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    __block __weak void (^weakBlock)(NSURL *, NSError *);
-    void (^block)(NSURL *, NSError *) ;
-    weakBlock = block = ^(NSURL *assetURL, NSError *error){
+    __block UIImage *blockImage = image;
+    __block void (^interiorBlock)(NSURL *, NSError *);
+    void (^block)(NSURL *, NSError *);
+    interiorBlock = block = ^(NSURL *assetURL, NSError *error){
         if (error) {
-            [TBScopeData CSLog:@"Error saving image to asset library, will retry." inCategory:@"CAPTURE"];
-            [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:weakBlock];
+            // NSLog(@"Image save failure %@", blockImage);
+            if ([error code] == ALAssetsLibraryWriteBusyError) {
+                [TBScopeData CSLog:@"Error saving image to asset library, will retry." inCategory:@"CAPTURE"];
+                // TODO: figure out how to do this without leaking a ton of memory.
+                // dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+                //     [library writeImageToSavedPhotosAlbum:blockImage.CGImage orientation:(ALAssetOrientation)[blockImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
+                //         NSLog(@"Image save retry %@", blockImage);
+                //         interiorBlock(assetURL, error);
+                //     }];
+                // });
+            }
         } else {
-            Images* newImage = (Images*)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:[[TBScopeData sharedData] managedObjectContext]];
-            newImage.path = assetURL.absoluteString;
-            newImage.fieldNumber = self.currentField+1;
-            newImage.metadata = [[TBScopeCamera sharedCamera] lastImageMetadata];
-            [self.currentSlide addSlideImagesObject:newImage];
+            NSLog(@"Image save success %@", blockImage);
             
             // Commit to core data
-            [TBScopeData touchExam:self.currentSlide.exam];
-            [[TBScopeData sharedData] saveCoreData];
-            
-            self.currentField++;
-
-            [self updatePrompt];
-            
-            if (self.currentField==[[NSUserDefaults standardUserDefaults] integerForKey:@"NumFieldsPerSlide"]) {
-                //done
-                self.snapButton.enabled = NO;
-                self.snapButton.alpha = 0.4;
-                self.analyzeButton.enabled = YES;
-                self.analyzeButton.tintColor = [UIColor whiteColor];
+            if (![[NSThread currentThread] isMainThread]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    saveBlock(assetURL);
+                });
+            } else {
+                saveBlock(assetURL);
             }
-            
-            [TBScopeData CSLog:[NSString stringWithFormat:@"Saved image for %@ - %d-%d, to filename: %@",
-                                self.currentSlide.exam.examID,
-                                self.currentSlide.slideNumber,
-                                newImage.fieldNumber,
-                                newImage.path]
-                    inCategory:@"CAPTURE"];
-            
-            
         }
     };
     [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:block];

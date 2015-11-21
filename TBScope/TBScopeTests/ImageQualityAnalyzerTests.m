@@ -26,6 +26,8 @@
 }
 
 - (void)testThatFocusedBrightfieldImageIsSharperThanBlurryBrightfield {
+    [[TBScopeCamera sharedCamera] setFocusMode:TBScopeCameraFocusModeSharpness];
+
     ImageQuality focusedIQ = [self _imageQualityForImageNamed:@"bf_focused"];
     ImageQuality blurryIQ = [self _imageQualityForImageNamed:@"bf_blurry"];
 
@@ -33,7 +35,9 @@
     XCTAssert(focusedIQ.tenengrad3 > blurryIQ.tenengrad3);
 }
 
-- (void)testThatFocusedFluorescenceImagesHaveHigherContrastThanBluryFluorescence {
+- (void)testThatFocusedFluorescenceImagesHaveHigherContrastThanBlurryFluorescence {
+    [[TBScopeCamera sharedCamera] setFocusMode:TBScopeCameraFocusModeContrast];
+
     // Image set 01
     NSDecimalNumber *fl_01_01 = [self _contrastForImageNamed:@"fl_01_01"];
     NSDecimalNumber *fl_01_02 = [self _contrastForImageNamed:@"fl_01_02"];
