@@ -22,8 +22,6 @@
 		8A52546B1BBEBEA6009B29BF /* bf_focused.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A5254671BBEBEA6009B29BF /* bf_focused.jpg */; };
 		8A52546F1BBED52A009B29BF /* TBScopeFocusManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A52546E1BBED52A009B29BF /* TBScopeFocusManagerTests.m */; };
 		8A5CDE591BB4489F004E30A3 /* TBScopeHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE581BB4489F004E30A3 /* TBScopeHardware.m */; };
-		8A5CDE5C1BB44A34004E30A3 /* TBScopeHardwareMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE5B1BB44A34004E30A3 /* TBScopeHardwareMock.m */; };
-		8A5CDE5F1BB44BE5004E30A3 /* TBScopeHardwareReal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CDE5E1BB44BE5004E30A3 /* TBScopeHardwareReal.m */; };
 		8AE3C6B41BE56EEA00EABA78 /* drive.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AE3C6B01BE56EEA00EABA78 /* drive.png */; };
 		8AE3C6B51BE56EEA00EABA78 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AE3C6B11BE56EEA00EABA78 /* gear.png */; };
 		8AE3C6B61BE56EEA00EABA78 /* notebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AE3C6B21BE56EEA00EABA78 /* notebook.png */; };
@@ -68,9 +66,6 @@
 		A500C0B818AC0E4100D8C569 /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A500C0B418AC0E4100D8C569 /* CJSONSerializer.m */; };
 		A500C0B918AC0E4100D8C569 /* NSDictionary_JSONExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A500C0B618AC0E4100D8C569 /* NSDictionary_JSONExtensions.m */; };
 		A500C0BD18AC0E8F00D8C569 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = A500C0BB18AC0E8F00D8C569 /* BLE.m */; };
-		A50B06171831D6C800880350 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = A50B06161831D6C800880350 /* model_out.txt */; };
-		A50B06191831D74600880350 /* train_max.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B06181831D74600880350 /* train_max.csv */; };
-		A50B061B1831D75500880350 /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = A50B061A1831D75500880350 /* train_min.csv */; };
 		A50B06521835695100880350 /* SlideDiagnosisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06511835695100880350 /* SlideDiagnosisViewController.m */; };
 		A50B06551835697700880350 /* ImageResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A50B06541835697700880350 /* ImageResultViewController.m */; };
 		A513226219E5FDF900B11AEE /* FollowUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A513226119E5FDF900B11AEE /* FollowUpViewController.m */; };
@@ -114,6 +109,9 @@
 		A5B45F9818303E51002F4D30 /* ExamListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B45F9718303E51002F4D30 /* ExamListViewController.m */; };
 		A5B72A7318988FB90013DA9F /* GoogleDriveSync.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */; };
 		A5B72A8F1899F88F0013DA9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5B72A911899F88F0013DA9F /* Localizable.strings */; };
+		A5BC24771C0129E10068413D /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = A5BC24741C0129E10068413D /* model_out.txt */; };
+		A5BC24781C0129E10068413D /* train_max.csv in Resources */ = {isa = PBXBuildFile; fileRef = A5BC24751C0129E10068413D /* train_max.csv */; };
+		A5BC24791C0129E10068413D /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = A5BC24761C0129E10068413D /* train_min.csv */; };
 		A5C0156D18F8C9B7004BC143 /* PrintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C0156C18F8C9B7004BC143 /* PrintViewController.m */; };
 		A5C0157D18F8CB37004BC143 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C0157C18F8CB37004BC143 /* CoreText.framework */; };
 		A5C0157F18FDD1D5004BC143 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C0157E18FDD1D5004BC143 /* MessageUI.framework */; };
@@ -417,9 +415,6 @@
 		A500C0BA18AC0E8F00D8C569 /* BLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLE.h; path = CellScope/BLE.h; sourceTree = "<group>"; };
 		A500C0BB18AC0E8F00D8C569 /* BLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLE.m; path = CellScope/BLE.m; sourceTree = "<group>"; };
 		A500C0BC18AC0E8F00D8C569 /* BLEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLEDefines.h; path = CellScope/BLEDefines.h; sourceTree = "<group>"; };
-		A50B06161831D6C800880350 /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_out.txt; sourceTree = "<group>"; };
-		A50B06181831D74600880350 /* train_max.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = train_max.csv; sourceTree = "<group>"; };
-		A50B061A1831D75500880350 /* train_min.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = train_min.csv; sourceTree = "<group>"; };
 		A50B06501835695100880350 /* SlideDiagnosisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideDiagnosisViewController.h; sourceTree = "<group>"; };
 		A50B06511835695100880350 /* SlideDiagnosisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideDiagnosisViewController.m; sourceTree = "<group>"; };
 		A50B06531835697700880350 /* ImageResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResultViewController.h; sourceTree = "<group>"; };
@@ -481,6 +476,9 @@
 		A5B72A7218988FB90013DA9F /* GoogleDriveSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GoogleDriveSync.m; path = CellScope/GoogleDriveSync.m; sourceTree = "<group>"; };
 		A5B72A931899FF6C0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A5B72A95189A025F0013DA9F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A5BC24741C0129E10068413D /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_out.txt; sourceTree = "<group>"; };
+		A5BC24751C0129E10068413D /* train_max.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = train_max.csv; sourceTree = "<group>"; };
+		A5BC24761C0129E10068413D /* train_min.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = train_min.csv; sourceTree = "<group>"; };
 		A5C0156B18F8C9B7004BC143 /* PrintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintViewController.h; sourceTree = "<group>"; };
 		A5C0156C18F8C9B7004BC143 /* PrintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintViewController.m; sourceTree = "<group>"; };
 		A5C0157C18F8CB37004BC143 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -785,11 +783,11 @@
 				A515265D19C2715C00AFC42E /* scanning_started.mp3 */,
 				9BD352BF15FAAC3D00E331E9 /* Images */,
 				ACC23A21176241C000C6BF9D /* default-configuration.plist */,
+				A5BC24741C0129E10068413D /* model_out.txt */,
+				A5BC24751C0129E10068413D /* train_max.csv */,
+				A5BC24761C0129E10068413D /* train_min.csv */,
 				9B6BF0C215E19ACD002834C5 /* CellScope-Info.plist */,
-				A50B06161831D6C800880350 /* model_out.txt */,
 				A5176663195C817400EBCEF0 /* circlemask.png */,
-				A50B06181831D74600880350 /* train_max.csv */,
-				A50B061A1831D75500880350 /* train_min.csv */,
 				A5B72A911899F88F0013DA9F /* Localizable.strings */,
 				9B6BF0C315E19ACD002834C5 /* InfoPlist.strings */,
 				9B6BF0C615E19ACD002834C5 /* main.m */,
@@ -1080,6 +1078,7 @@
 				9B6BF0B115E19ACD002834C5 /* Frameworks */,
 				9B6BF0B215E19ACD002834C5 /* Resources */,
 				7F962E17E53A8D5245EE584C /* Copy Pods Resources */,
+				B4913A032CF72520533B1CBE /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1293,6 +1292,8 @@
 				A5CF1A19187E4B8A00C2C2E1 /* zup.png in Resources */,
 				8AE3C6B51BE56EEA00EABA78 /* gear.png in Resources */,
 				A5CF1A28187E65AC00C2C2E1 /* DHC5_CHP21_1010107_S1_R1_HLH_I2_Fluor_N_F.tif in Resources */,
+				A5BC24781C0129E10068413D /* train_max.csv in Resources */,
+				A5BC24771C0129E10068413D /* model_out.txt in Resources */,
 				8AE3C6B41BE56EEA00EABA78 /* drive.png in Resources */,
 				9B6BF0C515E19ACD002834C5 /* InfoPlist.strings in Resources */,
 				A513228119E9E6AA00B11AEE /* slide3icon.png in Resources */,
@@ -1317,15 +1318,14 @@
 				A5176664195C817400EBCEF0 /* circlemask.png in Resources */,
 				A513227C19E9E6AA00B11AEE /* scalearrow@2x.png in Resources */,
 				8A5254051BBD6666009B29BF /* bf_mock.jpg in Resources */,
-				A50B06171831D6C800880350 /* model_out.txt in Resources */,
 				A5CF1A2F187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I2_Fluor_N_F.tif in Resources */,
 				A5CF1A13187E4B8A00C2C2E1 /* left.png in Resources */,
+				A5BC24791C0129E10068413D /* train_min.csv in Resources */,
 				A5CF1A14187E4B8A00C2C2E1 /* right.png in Resources */,
 				8A5254071BBD666E009B29BF /* fl_mock.jpg in Resources */,
 				A5FCCD1D18B6DC830004B2F5 /* scanslide.png in Resources */,
 				A5CF1A2E187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I1_Fluor_N_F.tif in Resources */,
 				A5C8E17B196F86860072D99C /* pictureicon.png in Resources */,
-				A50B061B1831D75500880350 /* train_min.csv in Resources */,
 				A515265F19C2715C00AFC42E /* scanning_complete.mp3 in Resources */,
 				A515265E19C2715C00AFC42E /* please_refocus.mp3 in Resources */,
 				A513227B19E9E6AA00B11AEE /* resultsicon@2x.png in Resources */,
@@ -1343,7 +1343,6 @@
 				A5CF1A31187E664A00C2C2E1 /* DHC5_CHP21_1010195_S1_R1_HLH_I4_Fluor_N_F.tif in Resources */,
 				A513227E19E9E6AA00B11AEE /* slide1icon@2x.png in Resources */,
 				A5CF1A08187DF4E400C2C2E1 /* DHC5_CHP21_1010296_S1_R1_HLH_I1_Fluor_Y_F.tif in Resources */,
-				A50B06191831D74600880350 /* train_max.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1378,6 +1377,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B4913A032CF72520533B1CBE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1427,7 +1441,6 @@
 				A5CF19FA187A39DF00C2C2E1 /* CameraScrollView.m in Sources */,
 				AC5E748D179F3DA700BDC4EB /* Debug.cpp in Sources */,
 				AC5E749F179F3F3200BDC4EB /* Classifier.cpp in Sources */,
-				8A5CDE5F1BB44BE5004E30A3 /* TBScopeHardwareReal.m in Sources */,
 				A5FD379A183DBE6400C67D85 /* SettingsViewController.m in Sources */,
 				A599E1111824413300B52EF2 /* ResultsTabBarController.m in Sources */,
 				AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */,
@@ -1456,7 +1469,6 @@
 				A513226C19E8AD4E00B11AEE /* LogViewController.m in Sources */,
 				A5B72A7318988FB90013DA9F /* GoogleDriveSync.m in Sources */,
 				A513228819E9F65E00B11AEE /* LogEntryDetailViewController.m in Sources */,
-				8A5CDE5C1BB44A34004E30A3 /* TBScopeHardwareMock.m in Sources */,
 				84072C4B196BB3EA004F8826 /* ImageQualityAnalyzer.mm in Sources */,
 				A500C0B918AC0E4100D8C569 /* NSDictionary_JSONExtensions.m in Sources */,
 				A5FCCD3318B6F0730004B2F5 /* SlideAnalysisResults.m in Sources */,
@@ -1718,7 +1730,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1745,7 +1757,7 @@
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
